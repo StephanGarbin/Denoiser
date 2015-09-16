@@ -7,20 +7,24 @@
 #include "Image.h"
 #include "ImageBlockProcessor.h"
 #include "IDX2.h"
+#include "Rectangle.h"
 #include "ImagePatch.h"
 
-void loadImage(Image** image, const std::string& fileName);
-void createImage(Image** image);
+#include <tbb\tick_count.h>
 
-void saveImage(Image* image, const std::string& fileName);
+void loadImage(Denoise::Image** image, const std::string& fileName);
+void createImage(Denoise::Image** image);
+
+void saveImage(Denoise::Image* image, const std::string& fileName);
 
 
 int main(int argc, char* argv[])
 {
-	std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
+	std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
+	//std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
 	std::string outputFile = "C:/Users/Stephan/Desktop/llama_padded.png";
 
-	Image* image = nullptr;
+	Denoise::Image* image = nullptr;
 
 	loadImage(&image, inputFile);
 	image->checkImageIntegrity(true);
@@ -33,36 +37,50 @@ int main(int argc, char* argv[])
 	image->padImage(pad, false);
 	//image->accessFullImage();*/
 
-	int idx = 10;
+	int idx = 150;
 
-	std::vector<std::vector<IDX2> > similarPatches;
-	std::vector<IDX2> similarPatchesComparison;
+	std::vector<std::vector<Denoise::IDX2> > similarPatches;
+	std::vector<Denoise::IDX2> similarPatchesComparison;
 	ImagePatch templatePatch;
 	templatePatch.height = 6;
 	templatePatch.width = 6;
 	templatePatch.col = 0;
 	templatePatch.row = 0;
-	IDX2 singlePosition(idx, idx);
-	ImageBlockProcessor blockProcess(*image);
+	Denoise::IDX2 singlePosition(idx, idx);
+	Denoise::ImageBlockProcessor blockProcess(*image);
 
-	//Image* image = nullptr;
-	//createImage(&image);
+	Denoise::Rectangle block;
+	block.left = 0;
+	block.bottom = 0;
+	block.right = image->width();
+	block.top = image->height();
 
-	//std::cout << "Image: " << std::endl;
-	//image->print();
+	std::cout << "Processing Integral Method..." << std::endl;
+	tbb::tick_count start = tbb::tick_count::now();
+	blockProcess.computeNMostSimilar(templatePatch, block, 1, 1, 30, 30, 32, 0.1f, 2, similarPatches);
+	tbb::tick_count end = tbb::tick_count::now();
+	std::cout << "Time: " << (end - start).seconds() << "s." << std::endl;
 
-	//std::vector<std::vector<IDX2> > similarPatches;
-	//std::vector<IDX2> similarPatchesComparison;
-	//ImagePatch templatePatch;
-	//templatePatch.height = 2;
-	//templatePatch.width = 2;
-	//templatePatch.col = 0;
-	//templatePatch.row = 0;
-	//IDX2 singlePosition(2, 2);
-	//ImageBlockProcessor blockProcess(*image);
-
-	blockProcess.computeNMostSimilarNaive(similarPatchesComparison, singlePosition, templatePatch, 2, 2, 32, 10000.0f, 2);
-	blockProcess.computeNMostSimilar(similarPatches, templatePatch, 1, 1, 2, 2, 32, 10000.0f, 2);
+	std::vector<std::vector<Denoise::IDX2> > similarPatchesComparisonArray;
+	similarPatchesComparisonArray.resize(block.size() * 2);
+	for (int i = 0; i < similarPatchesComparisonArray.size(); ++i)
+	{
+		similarPatchesComparisonArray[i].reserve(45);
+	}
+	std::cout << "Processing Naive Method..." << std::endl;
+	tbb::tick_count start2 = tbb::tick_count::now();
+	for (int row = 20; row < block.height() - 20; ++row)
+	{
+		for (int col = 20; col < block.width() - 20; ++col)
+		{
+			Denoise::IDX2 position(row, col);
+			blockProcess.computeNMostSimilarNaive(similarPatchesComparisonArray[row * (block.width()) + col], position, templatePatch, 30, 30, 32, 0.1f, 2);
+		}
+	}
+	tbb::tick_count end2 = tbb::tick_count::now();
+	std::cout << "Time: " << (end2 - start2).seconds() << "s." << std::endl;
+		
+	blockProcess.computeNMostSimilarNaive(similarPatchesComparison, singlePosition, templatePatch, 30, 30, 32, 10000.0f, 2);
 
 	std::cout << "Reference: " << std::endl;
 	for (int i = 0; i < similarPatchesComparison.size(); ++i)
@@ -85,7 +103,7 @@ int main(int argc, char* argv[])
 	delete image;
 }
 
-void loadImage(Image** image, const std::string& fileName)
+void loadImage(Denoise::Image** image, const std::string& fileName)
 {
 	std::vector<unsigned char> png;
 	std::vector<unsigned char> rawImage; //the raw pixels
@@ -100,8 +118,8 @@ void loadImage(Image** image, const std::string& fileName)
 
 	//the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
 
-	Dimension dim(width, height);
-	*image = new Image(dim, 4);
+	Denoise::Dimension dim(width, height);
+	*image = new Denoise::Image(dim, 4);
 
 	for (size_t i = 0; i < rawImage.size(); i+=4)
 	{
@@ -112,7 +130,7 @@ void loadImage(Image** image, const std::string& fileName)
 	}
 }
 
-void saveImage(Image* image, const std::string& fileName)
+void saveImage(Denoise::Image* image, const std::string& fileName)
 {
 	std::vector<unsigned char> png;
 
@@ -140,10 +158,10 @@ void saveImage(Image* image, const std::string& fileName)
 
 }
 
-void createImage(Image** image)
+void createImage(Denoise::Image** image)
 {
-	Dimension dim(6, 6);
-	*image = new Image(dim, 1);
+	Denoise::Dimension dim(6, 6);
+	*image = new Denoise::Image(dim, 1);
 
 	std::vector<float> values;
 	values.push_back(1.0f);

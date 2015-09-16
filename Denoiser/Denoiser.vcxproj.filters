@@ -47,5 +47,8 @@
     <ClInclude Include="IDX2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
