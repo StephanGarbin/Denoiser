@@ -125,8 +125,8 @@ namespace Denoise
 		{
 			for (int col = imageBlock.left; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
 			{
-				//matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)] =
-				//	matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].getPatches();
+				matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)] =
+					matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].getPatches();
 			}
 		}
 

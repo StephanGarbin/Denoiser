@@ -25,6 +25,13 @@ namespace Denoise
 			distance = Distance;
 		}
 
+		IDX2(const IDX2& other)
+		{
+			row = other.row;
+			col = other.col;
+			distance = other.distance;
+		}
+
 		bool operator>(const IDX2& rhs)
 		{
 			return distance > rhs.distance;
@@ -33,6 +40,16 @@ namespace Denoise
 		bool operator<(const IDX2& rhs)
 		{
 			return distance < rhs.distance;
+		}
+
+		friend bool operator>(const IDX2& lhs, const IDX2& rhs)
+		{
+			return lhs.distance > rhs.distance;
+		}
+
+		friend bool operator<(const IDX2& lhs, const IDX2& rhs)
+		{
+			return lhs.distance < rhs.distance;
 		}
 
 		size_t row;

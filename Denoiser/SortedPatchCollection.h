@@ -2,6 +2,7 @@
 #include "IDX2.h"
 
 #include <vector>
+#include <list>
 
 namespace Denoise
 {
