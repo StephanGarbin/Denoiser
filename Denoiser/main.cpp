@@ -20,8 +20,8 @@ void saveImage(Denoise::Image* image, const std::string& fileName);
 
 int main(int argc, char* argv[])
 {
-	std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
-	//std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
+	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
+	std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
 	std::string outputFile = "C:/Users/Stephan/Desktop/llama_padded.png";
 
 	Denoise::Image* image = nullptr;

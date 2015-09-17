@@ -1,43 +1,20 @@
-﻿Build started 16/09/2015 22:39:01.
-     1>Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 17/09/2015 18:04:30.
+     1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt Image.cpp ImageBlockProcessor.cpp ImagePatch.h lodepng.cpp main.cpp
-         Image.cpp
-         ImageBlockProcessor.cpp
-     1>ImageBlockProcessor.cpp(41): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(42): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(57): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(58): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(78): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(80): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(161): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(162): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-         ImagePatch.h
-         lodepng.cpp
-     1>lodepng.cpp(773): warning C4334: '<<' : result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
-     1>lodepng.cpp(1439): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
-     1>lodepng.cpp(1443): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
-     1>lodepng.cpp(1515): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>lodepng.cpp(3443): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>lodepng.cpp(4246): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>lodepng.cpp(4294): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>lodepng.cpp(4374): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>lodepng.cpp(5314): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
-         main.cpp
-     1>main.cpp(55): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
-     1>main.cpp(56): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
-     1>main.cpp(153): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt SortedPatchCollection.cpp
+         SortedPatchCollection.cpp
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\Image.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\Image.obj
          x64\Release\ImageBlockProcessor.obj
          x64\Release\ImagePatch.obj
          x64\Release\lodepng.obj
          x64\Release\main.obj
+         x64\Release\SortedPatchCollection.obj
          Generating code
          Finished generating code
-         Denoiser.vcxproj -> S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe
-     1>Done Building Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Rebuild target(s)).
+         Denoiser.vcxproj -> C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe
+     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.89
+Time Elapsed 00:00:01.20

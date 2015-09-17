@@ -4,6 +4,7 @@
 #include <tbb\parallel_for.h>
 #include <tbb\blocked_range.h>
 #include <tbb\blocked_range2d.h>
+#include "SortedPatchCollection.h"
 
 namespace Denoise
 {
@@ -31,11 +32,14 @@ namespace Denoise
 		m_image.accessFullImage();
 
 		//resize result array
-		matchedBlocks.resize((m_image.width() / stepSizeCols) * (m_image.height() / stepSizeRows));
-		for (size_t i = 0; i < matchedBlocks.size(); ++i)
-		{
-			matchedBlocks[i].reserve((windowSizeRows * windowSizeCols) / 2);
-		}
+		//matchedBlocks.resize((m_image.width() / stepSizeCols) * (m_image.height() / stepSizeRows));
+		//for (size_t i = 0; i < matchedBlocks.size(); ++i)
+		//{
+		//	matchedBlocks[i].reserve((windowSizeRows * windowSizeCols) / 2);
+		//}
+
+		std::vector<SortedPatchCollection> matchedBlocksSorted;
+		matchedBlocksSorted.resize(imageBlock.size());
 
 		//do block matching
 		int halfWindowSizeRows = windowSizeRows / 2;
@@ -86,7 +90,9 @@ namespace Denoise
 
 							if (distance < maxDistance)
 							{
-								matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)].push_back(
+								/*matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)].push_back(
+									IDX2(row + shiftRows, col + shiftCols, distance));*/
+								matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].insertPatch32(
 									IDX2(row + shiftRows, col + shiftCols, distance));
 							}
 						}
@@ -96,20 +102,35 @@ namespace Denoise
 		}
 
 		//sort & truncate results (if necessary)
-		for (int i = 0; i < matchedBlocks.size(); ++i)
+		//for (int i = 0; i < matchedBlocks.size(); ++i)
+		//{
+		//	if (matchedBlocks[i].empty())
+		//	{
+		//		continue;
+		//	}
+
+		//	std::sort(matchedBlocks[i].begin(), matchedBlocks[i].end());
+
+		//	if (matchedBlocks[i].size() > maxSimilar)
+		//	{
+		//		matchedBlocks[i].erase(matchedBlocks[i].begin() + maxSimilar, matchedBlocks[i].end());
+		//	}
+		//}
+		
+		matchedBlocks.resize((m_image.width() / stepSizeCols) * (m_image.height() / stepSizeRows));
+
+		std::cout << "Done getting patches; " << matchedBlocksSorted.size() << "; " << matchedBlocks.size() << std::endl;
+
+		for (int row = imageBlock.bottom; row < imageBlock.top - templatePatch.height; row += stepSizeRows)
 		{
-			if (matchedBlocks[i].empty())
+			for (int col = imageBlock.left; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
 			{
-				continue;
-			}
-
-			std::sort(matchedBlocks[i].begin(), matchedBlocks[i].end());
-
-			if (matchedBlocks[i].size() > maxSimilar)
-			{
-				matchedBlocks[i].erase(matchedBlocks[i].begin() + maxSimilar, matchedBlocks[i].end());
+				//matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)] =
+				//	matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].getPatches();
 			}
 		}
+
+		matchedBlocksSorted.clear();
 	}
 
 	void ImageBlockProcessor::computeIntegralImage(const std::vector<double>& pixels, const Rectangle& imageBlock,
