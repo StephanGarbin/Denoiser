@@ -15,9 +15,10 @@ namespace Denoise
 
 		void insertPatch32(const IDX2& patch);
 
-		std::vector<IDX2>& getPatches() { return m_patches; }
+		std::vector<IDX2>& getPatches();
 
 	private:
 		std::vector<IDX2> m_patches;
+		std::list<IDX2> m_patchesList;
 	};
 }

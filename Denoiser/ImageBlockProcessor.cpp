@@ -187,6 +187,7 @@ namespace Denoise
 		refPatch.row = position.row;
 		refPatch.height = 6;
 		refPatch.width = 6;
+		SortedPatchCollection foundMatches;
 
 		for (int shiftRows = -halfWindowSizeRows; shiftRows <= halfWindowSizeRows; ++shiftRows)
 		{
@@ -201,16 +202,18 @@ namespace Denoise
 
 				if (distance < maxDistance)
 				{
-					matchedBlocks.push_back(IDX2(currentPatch.row, currentPatch.col, distance));
+					foundMatches.insertPatch32(IDX2(currentPatch.row, currentPatch.col, distance));
+					//matchedBlocks.push_back(IDX2(currentPatch.row, currentPatch.col, distance));
 				}
 			}
 		}
 
-		std::sort(matchedBlocks.begin(), matchedBlocks.end());
-		if (matchedBlocks.size() > 32)
-		{
-			matchedBlocks.erase(matchedBlocks.begin() + 32, matchedBlocks.end());
-		}
+		//std::sort(matchedBlocks.begin(), matchedBlocks.end());
+		//if (matchedBlocks.size() > 32)
+		//{
+		//	matchedBlocks.erase(matchedBlocks.begin() + 32, matchedBlocks.end());
+		//}
+		matchedBlocks = foundMatches.getPatches();
 	}
 
 }
