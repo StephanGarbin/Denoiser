@@ -22,3 +22,6 @@ bool freeCUDAFloatBuffer(float* dev_ptr);
 bool copyMem2Device(float* dev_ptr, float* ptr, size_t numFloats);
 
 bool copyMemFromDevice(float* ptr, float* dev_ptr, size_t numFloats);
+
+
+

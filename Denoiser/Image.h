@@ -4,27 +4,11 @@
 #include<string>
 
 #include "ImagePatch.h"
+#include "Dimension.h"
+
+
 namespace Denoise
 {
-
-	struct Dimension
-	{
-		Dimension()
-		{
-			width = 0;
-			height = 0;
-		}
-
-		Dimension(size_t Width, size_t Height)
-		{
-			width = Width;
-			height = Height;
-		}
-
-		size_t width;
-		size_t height;
-	};
-
 	struct Padding
 	{
 		size_t left;
@@ -54,6 +38,8 @@ namespace Denoise
 		inline size_t height();
 		inline size_t size();
 		inline size_t numChannels();
+		inline Dimension fullDimension() { return m_fullImageDim; }
+		inline Dimension actualDimension() { return m_actualImageDim; }
 
 		//Normalisation
 		inline bool isNormalised() { return m_isNormalised; }
