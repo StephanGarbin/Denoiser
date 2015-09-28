@@ -10,4 +10,9 @@ namespace Denoise
 		stream << value;
 		return stream.str();
 	}
+
+	inline int sqr(int x)
+	{
+		return x * x;
+	}
 }

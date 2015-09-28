@@ -10,6 +10,9 @@
 #include "Rectangle.h"
 #include "ImagePatch.h"
 
+#include "ImageNLMeansProcessor.h"
+#include "NLMeansSettings.h"
+
 #include <tbb\tick_count.h>
 
 void loadImage(Denoise::Image** image, const std::string& fileName);
@@ -20,9 +23,11 @@ void saveImage(Denoise::Image* image, const std::string& fileName);
 
 int main(int argc, char* argv[])
 {
-	std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
-	//std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/llama_padded.png";
+	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
+	/*std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
+	std::string outputFile = "C:/Users/Stephan/Desktop/llama_padded.png";*/
+	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
+	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
 
 	Denoise::Image* image = nullptr;
 
@@ -37,8 +42,7 @@ int main(int argc, char* argv[])
 	image->padImage(pad, false);
 	//image->accessFullImage();*/
 
-	int idx = 150;
-
+	/*int idx = 150;
 	std::vector<std::vector<Denoise::IDX2> > similarPatches;
 	std::vector<Denoise::IDX2> similarPatchesComparison;
 	ImagePatch templatePatch;
@@ -48,19 +52,16 @@ int main(int argc, char* argv[])
 	templatePatch.row = 0;
 	Denoise::IDX2 singlePosition(idx, idx);
 	Denoise::ImageBlockProcessor blockProcess(*image);
-
 	Denoise::Rectangle block;
 	block.left = 0;
 	block.bottom = 0;
 	block.right = image->width();
 	block.top = image->height();
-
 	std::cout << "Processing Integral Method..." << std::endl;
 	tbb::tick_count start = tbb::tick_count::now();
 	blockProcess.computeNMostSimilar(templatePatch, block, 1, 1, 30, 30, 32, 0.1f, 2, similarPatches);
 	tbb::tick_count end = tbb::tick_count::now();
 	std::cout << "Time: " << (end - start).seconds() << "s." << std::endl;
-
 	std::vector<std::vector<Denoise::IDX2> > similarPatchesComparisonArray;
 	similarPatchesComparisonArray.resize(block.size() * 2);
 	for (int i = 0; i < similarPatchesComparisonArray.size(); ++i)
@@ -79,26 +80,44 @@ int main(int argc, char* argv[])
 	}
 	tbb::tick_count end2 = tbb::tick_count::now();
 	std::cout << "Time: " << (end2 - start2).seconds() << "s." << std::endl;
-		
 	blockProcess.computeNMostSimilarNaive(similarPatchesComparison, singlePosition, templatePatch, 30, 30, 32, 10000.0f, 2);
-
 	std::cout << "Reference: " << std::endl;
 	for (int i = 0; i < similarPatchesComparison.size(); ++i)
 	{
 		std::cout << "(" << similarPatchesComparison[i].col << ", " << similarPatchesComparison[i].row
 			<< ", " << similarPatchesComparison[i].distance << ");  ";
 	}
-
 	std::cout << std::endl << "New: " << std::endl;
 	for (int i = 0; i < similarPatches[image->width() * idx + idx].size(); ++i)
 	{
 		std::cout << "(" << similarPatches[image->width() * idx + idx][i].col << ", "
 			<< similarPatches[image->width() * idx + idx][i].row << ", "
 			<< similarPatches[image->width() * idx + idx][i].distance << ");  ";
-	}
+	}*/
 
-	//image->undoNormalise();
-	//saveImage(image, outputFile);
+	//Denoise::Image result(image->actualDimension(), image->format());
+	Denoise::Image result(*image);
+
+	Denoise::ImageNLMeansProcessor nlMeansFilter(image, &result);
+
+	Denoise::NLMeansSettings nlMeansFilterSettings;
+	nlMeansFilterSettings.maxAllowedPatchDistance = 100000.0f;
+	nlMeansFilterSettings.numPatchesPerBlock = 32;
+	nlMeansFilterSettings.patchSize = 5;
+	nlMeansFilterSettings.searchWindowSize = 20;
+	nlMeansFilterSettings.stepSizeCols = 1;
+	nlMeansFilterSettings.stepSizeRows = 1;
+	nlMeansFilterSettings.usePatchWeighting = false;
+	nlMeansFilterSettings.variance = 10.0f;
+
+	nlMeansFilter.process(nlMeansFilterSettings, true);
+
+	image->undoNormalise();
+	result.undoNormalise();
+
+	result.setAlphaToOne();
+
+	saveImage(&result, outputFile);
 
 	delete image;
 }
@@ -119,7 +138,7 @@ void loadImage(Denoise::Image** image, const std::string& fileName)
 	//the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
 
 	Denoise::Dimension dim(width, height);
-	*image = new Denoise::Image(dim, 4);
+	*image = new Denoise::Image(dim, Denoise::Image::FLOAT_4);
 
 	for (size_t i = 0; i < rawImage.size(); i+=4)
 	{

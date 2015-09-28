@@ -14,6 +14,35 @@ namespace Denoise
 	}
 
 
+	Image::Image(const Image& other)
+	{
+		m_fullImageDim = other.m_fullImageDim;
+		m_actualImageDim = other.m_actualImageDim;
+		m_padding = other.m_padding;
+		m_numChannels = other.m_numChannels;
+
+		m_accessingFullImage = other.m_accessingFullImage;
+		m_isPadded = other.m_isPadded;
+
+		m_format = other.m_format;
+
+		m_verbosityLevel = other.m_verbosityLevel;
+
+		m_isNormalised = other.m_isNormalised;
+		m_normalisationValue = other.m_normalisationValue;
+
+		m_pixelData.resize(other.m_pixelData.size());
+		for (size_t c = 0; c < m_pixelData.size(); ++c)
+		{
+			m_pixelData[c] = new float[m_fullImageDim.width * m_fullImageDim.height];
+			for (size_t i = 0; i < m_fullImageDim.width * m_fullImageDim.height; ++i)
+			{
+				m_pixelData[c][i] = other.m_pixelData[c][i];
+			}
+		}
+	}
+
+
 	Image::~Image()
 	{
 		for (size_t c = 0; c < m_numChannels; ++c)
@@ -22,8 +51,7 @@ namespace Denoise
 		}
 	}
 
-	void
-		Image::initialise(const Dimension& imageDimension, size_t format)
+	void Image::initialise(const Dimension& imageDimension, size_t format)
 	{
 			m_actualImageDim = imageDimension;
 			m_fullImageDim = imageDimension;
@@ -36,11 +64,13 @@ namespace Denoise
 			m_isPadded = false;
 
 			//resize internal arrays
-			m_pixelData.resize(format);
+			m_pixelData.resize(format + 1);
 			for (size_t c = 0; c < m_pixelData.size(); ++c)
 			{
 				m_pixelData[c] = new float[imageDimension.width * imageDimension.height];
 			}
+
+			m_normalisationValue = 1.0f;
 		}
 
 	bool Image::padImage(Padding& padAmount, bool blackOutside)
@@ -220,9 +250,9 @@ namespace Denoise
 
 		std::sort(maxPixelsValuesPerChannel.begin(), maxPixelsValuesPerChannel.end(), std::greater<float>());
 
-		normalisationValue = maxPixelsValuesPerChannel[0];
+		m_normalisationValue = maxPixelsValuesPerChannel[0];
 
-		if (normalisationValue == 0.0f)
+		if (m_normalisationValue == 0.0f)
 		{
 			printError("Cannot normalise. Maximum Pixel Value is 0.0.");
 		}
@@ -233,13 +263,13 @@ namespace Denoise
 			{
 				for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 				{
-					m_pixelData[c][i] /= normalisationValue;
+					m_pixelData[c][i] /= m_normalisationValue;
 				}
 			}
 		}
 	}
 
-	void Image::undoNormalise()
+	void Image::undoNormalise(float normalisationValue)
 	{
 		if (!m_isNormalised)
 		{
@@ -251,12 +281,19 @@ namespace Denoise
 		{
 			for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 			{
-				m_pixelData[c][i] *= normalisationValue;
+				if (normalisationValue == -1.0f)
+				{
+					m_pixelData[c][i] *= m_normalisationValue;
+				}
+				else
+				{
+					m_pixelData[c][i] *= normalisationValue;
+				}
 			}
 		}
 
 		m_isNormalised = false;
-		normalisationValue = 0.0f;
+		m_normalisationValue = 1.0f;
 	}
 
 	float Image::maxPixelValue(size_t channel)
@@ -365,30 +402,30 @@ namespace Denoise
 		}
 	}
 
-	void Image::cpy2Block3d(const std::vector<ImagePatch>& patches, float* block, size_t channel)
+	void Image::cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, size_t channel)
 	{
 		for (size_t p = 0; p < patches.size(); ++p)
 		{
-			for (size_t row = 0; row < patches[p].height; ++row)
+			for (size_t row = 0; row <patchTemplate.height; ++row)
 			{
-				for (size_t col = 0; col < patches[p].width; ++col)
+				for (size_t col = 0; col < patchTemplate.width; ++col)
 				{
-					size_t blockIdx = (patches[p].width * patches[p].height) * p + row * patches[p].width + col;
+					size_t blockIdx = (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
 					block[blockIdx] = m_pixelData[channel][IDX2_2_1(patches[p].row + row, patches[p].col + col)];
 				}
 			}
 		}
 	}
 
-	void Image::cpyfromBlock3d(const std::vector<ImagePatch>& patches, float* block, size_t channel)
+	void Image::cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, size_t channel)
 	{
 		for (size_t p = 0; p < patches.size(); ++p)
 		{
-			for (size_t row = 0; row < patches[p].height; ++row)
+			for (size_t row = 0; row < patchTemplate.height; ++row)
 			{
-				for (size_t col = 0; col < patches[p].width; ++col)
+				for (size_t col = 0; col < patchTemplate.width; ++col)
 				{
-					size_t blockIdx = (patches[p].width * patches[p].height) * p + row * patches[p].width + col;
+					size_t blockIdx = (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
 					m_pixelData[channel][IDX2_2_1(patches[p].row + row, patches[p].col + col)] = block[blockIdx];
 				}
 			}
@@ -439,5 +476,21 @@ namespace Denoise
 		}
 
 		std::cout << std::endl << std::endl;
+	}
+
+	void Image::setAlphaToOne()
+	{
+		switch (m_format)
+		{
+		case FLOAT_4:
+			for (size_t i = 0; i < width(); ++i)
+			{
+				m_pixelData[3][i] = 1.0f;
+			}
+			break;
+		default:
+			printError("Cannot set Alpha Channel to one as format is not handled internally for this function.");
+			break;
+		}
 	}
 }

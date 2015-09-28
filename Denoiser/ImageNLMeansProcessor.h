@@ -11,13 +11,14 @@ namespace Denoise
 	class ImageNLMeansProcessor
 	{
 	public:
-		ImageNLMeansProcessor(Image* image);
+		ImageNLMeansProcessor(Image* image, Image* imageResult);
 		~ImageNLMeansProcessor();
 
 		void process(const NLMeansSettings& settings, bool processMatching = true);
 
 	private:
 		Image* m_image;
+		Image* m_imageResult;
 		NLMeansSettings m_settings;
 		BufferAggregator m_buffer;
 		std::vector<std::vector<IDX2> > m_matchedBlocks;

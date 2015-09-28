@@ -4,6 +4,7 @@
 #include<string>
 
 #include "ImagePatch.h"
+#include "IDX2.h"
 #include "Dimension.h"
 
 
@@ -21,6 +22,7 @@ namespace Denoise
 	{
 	public:
 		Image(const Dimension& imageDimension, size_t format);
+		Image(const Image& other);
 		~Image();
 
 		inline float getPixel(const size_t channel, const size_t idx);
@@ -41,17 +43,21 @@ namespace Denoise
 		inline Dimension fullDimension() { return m_fullImageDim; }
 		inline Dimension actualDimension() { return m_actualImageDim; }
 
+		inline size_t format() { return m_format; }
+
 		//Normalisation
 		inline bool isNormalised() { return m_isNormalised; }
 		void normalise();
-		void undoNormalise();
+		void undoNormalise(float normalisationValue = -1.0f);
+
+		inline float normalisationValue() { return m_normalisationValue; }
 
 		//Block matching
 		inline float blockMatch_Naive(const ImagePatch& patch1, const ImagePatch& patch2, size_t channel, int norm);
 
 		//Block copy from/to
-		void cpy2Block3d(const std::vector<ImagePatch>& patches, float* block, size_t channel);
-		void cpyfromBlock3d(const std::vector<ImagePatch>& patches, float* block, size_t channel);
+		void cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, size_t channel);
+		void cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, size_t channel);
 
 		//Misceallaneous Functions
 		float maxPixelValue(size_t channel);
@@ -60,6 +66,9 @@ namespace Denoise
 
 		bool checkImageIntegrity(bool enforceIntegrity);
 		void print(int channel = -1);
+
+		//Convenience
+		void setAlphaToOne();
 
 		inline size_t IDX2_2_1(const size_t row, const size_t col); //always uses full image
 
@@ -96,7 +105,7 @@ namespace Denoise
 
 		//Normalisation
 		bool m_isNormalised;
-		float normalisationValue;
+		float m_normalisationValue;
 
 		//General
 		void initialise(const Dimension& imageDimension, size_t format);

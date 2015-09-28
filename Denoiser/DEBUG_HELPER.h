@@ -4,21 +4,21 @@
 
 #include <fftw3.h>
 
-void hardThreshold(double* block, double variance);
-void dctTransform(double* block, double* result);
-void normaliseDCT(double* block, bool inverse);
-void inverseDctTransform(double* block, double* result);
-void cfwht(double* x, int start, int n, int seqLength, int offset, std::vector<double>& fwhtMem, int stride);
+void hardThreshold(float* block, float variance);
+void dctTransform(float* block, float* result);
+void normaliseDCT(float* block, bool inverse);
+void inverseDctTransform(float* block, float* result);
+void cfwht(float* x, int start, int n, int seqLength, int offset, std::vector<float>& fwhtMem, int stride);
 
 /* The gateway function */
-void bm3dDEBUG(double* block, double variance)
+void bm3dDEBUG(float* block, float variance)
 {
-	std::vector<double> fwhtMem;
+	std::vector<float> fwhtMem;
 	fwhtMem.resize(128);
 
 	int totalSize = 8 * 8 * 32;
 
-	double* temp = new double[totalSize];
+	float* temp = new float[totalSize];
 
 	normaliseDCT(block, false);
 	dctTransform(block, temp);
@@ -45,13 +45,13 @@ void bm3dDEBUG(double* block, double variance)
 
 	for (int i = 0; i < totalSize; ++i)
 	{
-		block[i] /= (double)(8 * 2);
+		block[i] /= (float)(8 * 2);
 	}
 
 	delete[] temp;
 }
 
-void hardThreshold(double* block, double variance)
+void hardThreshold(float* block, float variance)
 {
 	int totalSize = 8 * 8 * 32;
 
@@ -64,13 +64,13 @@ void hardThreshold(double* block, double variance)
 	}
 }
 
-void dctTransform(double* block, double* result)
+void dctTransform(float* block, float* result)
 {
 	int patchSize = 8;
 	int level = 32;
 
-	double* in = new double[8 * 8 * 32];
-	// double* out = new double[8 * 8 * 32];
+	float* in = new float[8 * 8 * 32];
+	// float* out = new float[8 * 8 * 32];
 
 	int n[2];
 	n[0] = patchSize;
@@ -81,29 +81,29 @@ void dctTransform(double* block, double* result)
 	int ostride = 1;
 	int *inembed = n;
 	int *onembed = n;
-	fftw_r2r_kind forwardKind[2];
+	fftwf_r2r_kind forwardKind[2];
 	forwardKind[0] = FFTW_REDFT10;
 	forwardKind[1] = FFTW_REDFT10;
 
-	fftw_plan transformPlan = fftw_plan_many_r2r(2, n, 32, in, inembed, istride, idist,
+	fftwf_plan transformPlan = fftwf_plan_many_r2r(2, n, 32, in, inembed, istride, idist,
 		in, onembed, ostride, odist, forwardKind, FFTW_ESTIMATE);
 
-	fftw_execute_r2r(transformPlan, block, block);
+	fftwf_execute_r2r(transformPlan, block, block);
 
-	fftw_destroy_plan(transformPlan);
+	fftwf_destroy_plan(transformPlan);
 
 	delete[] in;
 	//delete[] out;
 }
 
 
-void inverseDctTransform(double* block, double* result)
+void inverseDctTransform(float* block, float* result)
 {
 	int patchSize = 8;
 	int level = 32;
 
-	double* in = new double[8 * 8 * 32];
-	//double* out = new double[8 * 8 * 32];
+	float* in = new float[8 * 8 * 32];
+	//float* out = new float[8 * 8 * 32];
 
 	int n[2];
 	n[0] = patchSize;
@@ -114,27 +114,27 @@ void inverseDctTransform(double* block, double* result)
 	int ostride = 1;
 	int *inembed = n;
 	int *onembed = n;
-	fftw_r2r_kind forwardKind[2];
+	fftwf_r2r_kind forwardKind[2];
 	forwardKind[0] = FFTW_REDFT01;
 	forwardKind[1] = FFTW_REDFT01;
 
-	fftw_plan transformPlan = fftw_plan_many_r2r(2, n, 32, block, inembed, istride, idist,
+	fftwf_plan transformPlan = fftwf_plan_many_r2r(2, n, 32, block, inembed, istride, idist,
 		in, onembed, ostride, odist, forwardKind, FFTW_ESTIMATE);
 
-	fftw_execute_r2r(transformPlan, block, block);
+	fftwf_execute_r2r(transformPlan, block, block);
 
-	fftw_destroy_plan(transformPlan);
+	fftwf_destroy_plan(transformPlan);
 
 	delete[] in;
 	//delete[] out;
 }
 
-void normaliseDCT(double* block, bool inverse)
+void normaliseDCT(float* block, bool inverse)
 {
 	int patchSize = 8;
 	int numPatches = 32;
 
-	double multFactor = 0.5 / (double)(patchSize);
+	float multFactor = 0.5 / (float)(patchSize);
 
 	for (int p = 0; p < numPatches; ++p)
 	{
@@ -184,12 +184,12 @@ void normaliseDCT(double* block, bool inverse)
 }
 
 void
-cfwht(double* x, int start, int n, int seqLength, int offset, std::vector<double>& fwhtMem, int stride)
+cfwht(float* x, int start, int n, int seqLength, int offset, std::vector<float>& fwhtMem, int stride)
 {
 	if (n == 2)
 	{
-		double a = x[offset + start * stride];
-		double b = x[offset + (start + 1) * stride];
+		float a = x[offset + start * stride];
+		float b = x[offset + (start + 1) * stride];
 		x[offset + start * stride] = a + b;
 		x[offset + (start + 1) * stride] = a - b;
 	}
@@ -199,8 +199,8 @@ cfwht(double* x, int start, int n, int seqLength, int offset, std::vector<double
 
 		for (int i = 0; i < halfN; ++i)
 		{
-			double a = x[offset + (start + i * 2) * stride];
-			double b = x[offset + (start + i * 2 + 1) * stride];
+			float a = x[offset + (start + i * 2) * stride];
+			float b = x[offset + (start + i * 2 + 1) * stride];
 			x[offset + (start + i) * stride] = a + b;
 
 			fwhtMem[start + i * 1] = a - b;
