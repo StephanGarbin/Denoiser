@@ -59,32 +59,39 @@ namespace Denoise
 		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock];
 
 		//2. Process Blocks
-		for (size_t row = 1; row < m_image->height() - m_settings.patchSize; row += m_settings.stepSizeRows)
+		for (size_t channel = 0; channel < 3; ++channel)
 		{
-			for (size_t col = 1; col < m_image->width() - m_settings.patchSize; col += m_settings.stepSizeCols)
+			for (size_t row = 1; row < m_image->height() - m_settings.patchSize; row += m_settings.stepSizeRows)
 			{
-				size_t numValidPatches;
-
-				m_image->cpy2Block3d(m_matchedBlocks[row * matchRegion.width() + col], rawImageBlock, patchTemplate, 0, numValidPatches);
-
-				for (size_t depth = 0; depth < numValidPatches; ++depth)
+				for (size_t col = 1; col < m_image->width() - m_settings.patchSize; col += m_settings.stepSizeCols)
 				{
-					float weight = 1.0f;
-					
-					if (m_settings.usePatchWeighting)
-					{
-						weight = std::exp(
-							-std::max(std::pow(m_matchedBlocks[row * matchRegion.width() + col][depth].distance, 2) - 2.0f * m_settings.variance, 0.0f)
-							/ (10.0f * std::sqrt(m_settings.variance)));
-					}
+					size_t numValidPatches;
 
-					for (size_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
+					m_image->cpy2Block3d(m_matchedBlocks[row * matchRegion.width() + col], rawImageBlock, patchTemplate, channel, numValidPatches);
+
+					for (size_t depth = 0; depth < numValidPatches; ++depth)
 					{
-						for (size_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
+						double weight = 1.0f;
+
+						if (m_settings.usePatchWeighting)
 						{
-							m_buffer.addValueNumerator(0, row + patchRow, col + patchCol,
-								rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol]);
-							m_buffer.addValueDenominator(0, row + patchRow, col + patchCol, weight);
+							weight = std::exp(
+								-std::max((double)m_matchedBlocks[row * matchRegion.width() + col][depth].distance - 2.0 * (double)m_settings.variance, 0.0)
+								/ (10.0 * std::sqrt((double)m_settings.variance)));
+							if (weight > 1.0)
+							{
+								std::cout << weight << ";";
+							}
+						}
+
+						for (size_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
+						{
+							for (size_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
+							{
+								m_buffer.addValueNumerator(channel, row + patchRow, col + patchCol,
+									rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol]);
+								m_buffer.addValueDenominator(channel, row + patchRow, col + patchCol, weight);
+							}
 						}
 					}
 				}
@@ -95,11 +102,14 @@ namespace Denoise
 		m_buffer.divideBuffers();
 
 		//set result image
-		for (size_t row = 0; row < m_image->height(); row += m_settings.stepSizeRows)
+		for (size_t channel = 0; channel < 3; ++channel)
 		{
-			for (size_t col = 0; col < m_image->width(); col += m_settings.stepSizeCols)
+			for (size_t row = 0; row < m_image->height(); row += m_settings.stepSizeRows)
 			{
-				m_imageResult->setPixel(0, row, col, m_buffer.getValueResult(0, row, col));
+				for (size_t col = 0; col < m_image->width(); col += m_settings.stepSizeCols)
+				{
+					m_imageResult->setPixel(channel, row, col, m_buffer.getValueResult(channel, row, col));
+				}
 			}
 		}
 
