@@ -402,10 +402,17 @@ namespace Denoise
 		}
 	}
 
-	void Image::cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, size_t channel)
+	void Image::cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
+		size_t channel, size_t& numValidPatches)
 	{
+		numValidPatches = 0;
+
 		for (size_t p = 0; p < patches.size(); ++p)
 		{
+			if (patches[p].distance == std::numeric_limits<float>::max())
+			{
+				break;
+			}
 			for (size_t row = 0; row <patchTemplate.height; ++row)
 			{
 				for (size_t col = 0; col < patchTemplate.width; ++col)
@@ -414,12 +421,14 @@ namespace Denoise
 					block[blockIdx] = m_pixelData[channel][IDX2_2_1(patches[p].row + row, patches[p].col + col)];
 				}
 			}
+			++numValidPatches;
 		}
 	}
 
-	void Image::cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, size_t channel)
+	void Image::cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
+		size_t channel, size_t numValidPatches)
 	{
-		for (size_t p = 0; p < patches.size(); ++p)
+		for (size_t p = 0; p < numValidPatches; ++p)
 		{
 			for (size_t row = 0; row < patchTemplate.height; ++row)
 			{

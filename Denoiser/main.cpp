@@ -24,10 +24,10 @@ void saveImage(Denoise::Image* image, const std::string& fileName);
 int main(int argc, char* argv[])
 {
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
-	/*std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/llama_padded.png";*/
-	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
+	std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
+	std::string outputFile = "C:/Users/Stephan/Desktop/llama_padded.png";
+	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
+	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
 
 	Denoise::Image* image = nullptr;
 
@@ -101,14 +101,14 @@ int main(int argc, char* argv[])
 	Denoise::ImageNLMeansProcessor nlMeansFilter(image, &result);
 
 	Denoise::NLMeansSettings nlMeansFilterSettings;
-	nlMeansFilterSettings.maxAllowedPatchDistance = 100000.0f;
+	nlMeansFilterSettings.maxAllowedPatchDistance = 0.5f;
 	nlMeansFilterSettings.numPatchesPerBlock = 32;
 	nlMeansFilterSettings.patchSize = 5;
 	nlMeansFilterSettings.searchWindowSize = 20;
 	nlMeansFilterSettings.stepSizeCols = 1;
 	nlMeansFilterSettings.stepSizeRows = 1;
 	nlMeansFilterSettings.usePatchWeighting = false;
-	nlMeansFilterSettings.variance = 10.0f;
+	nlMeansFilterSettings.variance = 0.01f;
 
 	nlMeansFilter.process(nlMeansFilterSettings, true);
 

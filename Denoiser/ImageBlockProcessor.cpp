@@ -1,9 +1,6 @@
 #include "ImageBlockProcessor.h"
 
 #include <algorithm>
-#include <tbb\parallel_for.h>
-#include <tbb\blocked_range.h>
-#include <tbb\blocked_range2d.h>
 #include "SortedPatchCollection.h"
 
 namespace Denoise
@@ -30,13 +27,6 @@ namespace Denoise
 	{
 		//make sure we are accessing the full image
 		m_image.accessFullImage();
-
-		//resize result array
-		//matchedBlocks.resize((m_image.width() / stepSizeCols) * (m_image.height() / stepSizeRows));
-		//for (size_t i = 0; i < matchedBlocks.size(); ++i)
-		//{
-		//	matchedBlocks[i].reserve((windowSizeRows * windowSizeCols) / 2);
-		//}
 
 		std::vector<SortedPatchCollection> matchedBlocksSorted;
 		matchedBlocksSorted.resize(imageBlock.size());
@@ -79,51 +69,39 @@ namespace Denoise
 				computeIntegralImage(distanceImage, imageBlock, integralImage);
 
 				//C. Evaluate Patch Distances
-				for (int row = imageBlock.bottom; row < imageBlock.top - templatePatch.height; row += stepSizeRows)
+				for (int row = imageBlock.bottom + 1; row < imageBlock.top - templatePatch.height; row += stepSizeRows)
 				{
-					for (int col = imageBlock.left; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
+					for (int col = imageBlock.left + 1; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
 					{
-						if (row - imageBlock.bottom > 0 && row - imageBlock.bottom + templatePatch.height < m_image.height() - templatePatch.height - 1
-							&& col - imageBlock.left > 0 && col - imageBlock.left + templatePatch.width < m_image.width() - templatePatch.width - 1)
+						if (row  + shiftRows < 0
+							|| col  + shiftCols < 0)
 						{
-							float distance = patchDistanceIntegralImage(integralImage, templatePatch, imageBlock, IDX2(row - imageBlock.bottom, col - imageBlock.left));
+							continue;
+						}
 
-							if (distance < maxDistance)
-							{
-								/*matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)].push_back(
-									IDX2(row + shiftRows, col + shiftCols, distance));*/
-								matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].insertPatch32(
-									IDX2(row + shiftRows, col + shiftCols, distance));
-							}
+						if (row + shiftRows >= m_image.height() - templatePatch.height
+							|| col + shiftCols >= m_image.width() - templatePatch.width)
+						{
+							continue;
+						}
+
+						float distance = patchDistanceIntegralImage(integralImage, templatePatch, imageBlock, IDX2(row - imageBlock.bottom, col - imageBlock.left));
+
+						if (distance <= maxDistance)
+						{
+							matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].insertPatch32(
+								IDX2(row + shiftRows, col + shiftCols, distance));
 						}
 					}
 				}
 			}
 		}
 
-		//sort & truncate results (if necessary)
-		//for (int i = 0; i < matchedBlocks.size(); ++i)
-		//{
-		//	if (matchedBlocks[i].empty())
-		//	{
-		//		continue;
-		//	}
-
-		//	std::sort(matchedBlocks[i].begin(), matchedBlocks[i].end());
-
-		//	if (matchedBlocks[i].size() > maxSimilar)
-		//	{
-		//		matchedBlocks[i].erase(matchedBlocks[i].begin() + maxSimilar, matchedBlocks[i].end());
-		//	}
-		//}
-		
 		matchedBlocks.resize((m_image.width() / stepSizeCols) * (m_image.height() / stepSizeRows));
 
-		std::cout << "Done getting patches; " << matchedBlocksSorted.size() << "; " << matchedBlocks.size() << std::endl;
-
-		for (int row = imageBlock.bottom; row < imageBlock.top - templatePatch.height; row += stepSizeRows)
+		for (int row = imageBlock.bottom; row < imageBlock.top; row += stepSizeRows)
 		{
-			for (int col = imageBlock.left; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
+			for (int col = imageBlock.left; col < imageBlock.right; col += stepSizeCols)
 			{
 				matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)] =
 					matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].getPatches();
@@ -139,12 +117,12 @@ namespace Denoise
 		//see e.g. http://www.ipol.im/pub/art/2014/57/article.pdf for details on this recurrence-relation
 		integralImage[0] = pixels[0];
 
-		for (int col = 1; col < imageBlock.width(); ++col)
+		for (int col = std::max(imageBlock.left - 1, 1); col < imageBlock.width(); ++col)
 		{
 			integralImage[col] = integralImage[col - 1] + pixels[col];
 		}
 
-		for (int row = 1; row < imageBlock.height(); ++row)
+		for (int row = std::max(imageBlock.bottom - 1, 1); row < imageBlock.height(); ++row)
 		{
 			long double s = pixels[row * imageBlock.width()];
 			integralImage[row * imageBlock.width()] = integralImage[(row - 1) * imageBlock.width()] + s;

@@ -14,6 +14,8 @@ namespace Denoise
 		{
 			m_patches[i].distance = std::numeric_limits<float>::max();
 		}
+
+		m_numInitialPatchesLeft = m_patches.size();
 		//for (int i = 0; i < 32; ++i)
 		//{
 		//	m_patchesList.push_back(IDX2(0, 0, std::numeric_limits<float>::max()));
@@ -22,7 +24,7 @@ namespace Denoise
 
 	SortedPatchCollection::SortedPatchCollection(size_t maxNumPatches)
 	{
-		
+		std::cout << "Sorted Patch Collection Error: Not implemented yet!" << std::endl;
 	}
 
 
@@ -33,29 +35,34 @@ namespace Denoise
 
 	void SortedPatchCollection::insertPatch32(const IDX2& patch)
 	{
-			//1. Find Insertion Place
-			std::vector<IDX2>::iterator insertLocation = std::upper_bound<std::vector<IDX2>::iterator>(m_patches.begin(), m_patches.end(), patch);
+		//1. Find Insertion Place
+		std::vector<IDX2>::iterator insertLocation = std::upper_bound<std::vector<IDX2>::iterator>(m_patches.begin(), m_patches.end(), patch);
 
-			if (insertLocation == m_patches.end())
-			{
-				return;
-			}
+		if (insertLocation == m_patches.end())
+		{
+			return;
+		}
 
-			//2. Shift Vector
-			for (int i = 31; i > std::distance<std::vector<IDX2>::iterator>(m_patches.begin(), insertLocation); --i)
-			{
-				m_patches[i] = m_patches[i - 1];
-			}
-			
+		//2. Shift Vector
+		for (int i = 31; i > std::distance<std::vector<IDX2>::iterator>(m_patches.begin(), insertLocation); --i)
+		{
+			m_patches[i] = m_patches[i - 1];
+		}
+		
 
-			//for (std::vector<IDX2>::iterator it = --m_patches.end(); it != insertLocation; --it)
-			//{
-			//	std::swap(--it, it);
-			//}
+		//for (std::vector<IDX2>::iterator it = --m_patches.end(); it != insertLocation; --it)
+		//{
+		//	std::swap(--it, it);
+		//}
 
 
-			//3. Update Vector
-			*insertLocation = patch;
+		//3. Update Vector
+		*insertLocation = patch;
+
+		if (m_numInitialPatchesLeft > 0)
+		{
+			--m_numInitialPatchesLeft;
+		}
 
 		////1. Find Insertion Place
 		//std::list<IDX2>::iterator insertLocation = std::upper_bound<std::list<IDX2>::iterator>(m_patchesList.begin(), m_patchesList.end(), patch);
@@ -79,5 +86,4 @@ namespace Denoise
 
 		return m_patches;
 	}
-
 }

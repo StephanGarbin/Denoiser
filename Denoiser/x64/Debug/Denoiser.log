@@ -1,9 +1,35 @@
-﻿Build started 28/09/2015 23:23:34.
-     1>Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
-     1>Link:
-         Denoiser.vcxproj -> S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.exe
-     1>Done Building Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
+﻿Build started 29/09/2015 16:14:19.
+     1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ImageBlockProcessor.cpp
+         ImageBlockProcessor.cpp
+     1>ImageBlockProcessor.cpp(35): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(36): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(51): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(52): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(72): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(74): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(106): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(108): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(164): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(165): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.exe" /INCREMENTAL /NOLOGO /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.lib" /MACHINE:X64 x64\Debug\BlockMatching.cu.obj
+         x64\Debug\BM3D.cu.obj
+         x64\Debug\Common.cu.obj
+         x64\Debug\Memory.cu.obj
+         x64\Debug\NLMeans.cu.obj
+         x64\Debug\BufferAggregator.obj
+         x64\Debug\Image.obj
+         x64\Debug\ImageBlockProcessor.obj
+         x64\Debug\ImageNLMeansProcessor.obj
+         x64\Debug\ImagePatch.obj
+         x64\Debug\lodepng.obj
+         x64\Debug\main.obj
+         x64\Debug\SortedPatchCollection.obj
+         Denoiser.vcxproj -> C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.exe
+     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.09
+Time Elapsed 00:00:00.94

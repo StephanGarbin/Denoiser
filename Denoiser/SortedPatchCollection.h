@@ -17,8 +17,11 @@ namespace Denoise
 
 		std::vector<IDX2>& getPatches();
 
+		size_t getNumMeaningfulPatches() { return m_patches.size() - m_numInitialPatchesLeft; }
+
 	private:
 		std::vector<IDX2> m_patches;
-		std::list<IDX2> m_patchesList;
+		//std::list<IDX2> m_patchesList;
+		size_t m_numInitialPatchesLeft;
 	};
 }

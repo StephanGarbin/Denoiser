@@ -8,6 +8,8 @@
 
 #include "common.h"
 
+#include <algorithm>
+
 namespace Denoise
 {
 
@@ -55,26 +57,35 @@ namespace Denoise
 		}
 
 		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock];
+
 		//2. Process Blocks
-		for (size_t row = 10; row < m_image->height() - m_settings.patchSize - 10; row += m_settings.stepSizeRows)
+		for (size_t row = 1; row < m_image->height() - m_settings.patchSize; row += m_settings.stepSizeRows)
 		{
-			for (size_t col = 10; col < m_image->width() - m_settings.patchSize - 10; col += m_settings.stepSizeCols)
+			for (size_t col = 1; col < m_image->width() - m_settings.patchSize; col += m_settings.stepSizeCols)
 			{
-				m_image->cpy2Block3d(m_matchedBlocks[row * matchRegion.width() + col], rawImageBlock, patchTemplate, 0);
+				size_t numValidPatches;
 
-				for (size_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
+				m_image->cpy2Block3d(m_matchedBlocks[row * matchRegion.width() + col], rawImageBlock, patchTemplate, 0, numValidPatches);
+
+				for (size_t depth = 0; depth < numValidPatches; ++depth)
 				{
-					for (size_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
+					float weight = 1.0f;
+					
+					if (m_settings.usePatchWeighting)
 					{
-						float sum = 0.0f;
-						for (size_t depth = 0; depth < m_settings.numPatchesPerBlock; ++depth)
-						{
-							sum += rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol];
-						}
+						weight = std::exp(
+							-std::max(std::pow(m_matchedBlocks[row * matchRegion.width() + col][depth].distance, 2) - 2.0f * m_settings.variance, 0.0f)
+							/ (10.0f * std::sqrt(m_settings.variance)));
+					}
 
-						sum /= (float)(m_settings.numPatchesPerBlock);
-						m_buffer.addValueNumerator(0, row + patchRow, col + patchCol, sum);
-						m_buffer.addValueDenominator(0, row + patchRow, col + patchCol, 1.0f);
+					for (size_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
+					{
+						for (size_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
+						{
+							m_buffer.addValueNumerator(0, row + patchRow, col + patchCol,
+								rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol]);
+							m_buffer.addValueDenominator(0, row + patchRow, col + patchCol, weight);
+						}
 					}
 				}
 			}
@@ -84,9 +95,9 @@ namespace Denoise
 		m_buffer.divideBuffers();
 
 		//set result image
-		for (size_t row = 0; row < m_image->height() - m_settings.patchSize; row += m_settings.stepSizeRows)
+		for (size_t row = 0; row < m_image->height(); row += m_settings.stepSizeRows)
 		{
-			for (size_t col = 0; col < m_image->width() - m_settings.patchSize; col += m_settings.stepSizeCols)
+			for (size_t col = 0; col < m_image->width(); col += m_settings.stepSizeCols)
 			{
 				m_imageResult->setPixel(0, row, col, m_buffer.getValueResult(0, row, col));
 			}
