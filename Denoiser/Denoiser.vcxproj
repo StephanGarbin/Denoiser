@@ -160,16 +160,20 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BM3DImageBlockProcessor.cpp" />
     <ClCompile Include="BufferAggregator.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageBlockProcessor.cpp" />
     <ClCompile Include="ImageNLMeansProcessor.cpp" />
+    <ClCompile Include="ImagePartitioner.cpp" />
     <ClCompile Include="ImagePatch.h" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SortedPatchCollection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BM3DImageBlockProcessor.h" />
+    <ClInclude Include="BM3DSettings.h" />
     <ClInclude Include="BufferAggregator.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="CUDA_WRAPPER.h" />
@@ -179,6 +183,7 @@
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageBlockProcessor.h" />
     <ClInclude Include="ImageNLMeansProcessor.h" />
+    <ClInclude Include="ImagePartitioner.h" />
     <ClInclude Include="lodepng.h" />
     <ClInclude Include="NLMeansSettings.h" />
     <ClInclude Include="Rectangle.h" />

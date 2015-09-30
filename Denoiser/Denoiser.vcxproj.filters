@@ -42,6 +42,12 @@
     <ClCompile Include="BufferAggregator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BM3DImageBlockProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImagePartitioner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Image.h">
@@ -81,6 +87,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NLMeansSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BM3DImageBlockProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BM3DSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImagePartitioner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

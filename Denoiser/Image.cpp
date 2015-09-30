@@ -296,7 +296,7 @@ namespace Denoise
 		m_normalisationValue = 1.0f;
 	}
 
-	float Image::maxPixelValue(size_t channel)
+	float Image::maxPixelValue(size_t channel) const
 	{
 		float maxValue = std::numeric_limits<float>::min();
 		for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
@@ -306,7 +306,7 @@ namespace Denoise
 		return maxValue;
 	}
 
-	float Image::minPixelValue(size_t channel)
+	float Image::minPixelValue(size_t channel) const
 	{
 		float minValue = std::numeric_limits<float>::max();
 		for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
@@ -403,7 +403,7 @@ namespace Denoise
 	}
 
 	void Image::cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
-		size_t channel, size_t& numValidPatches)
+		size_t channel, size_t& numValidPatches) const
 	{
 		numValidPatches = 0;
 

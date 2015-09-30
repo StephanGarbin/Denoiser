@@ -30,7 +30,9 @@ namespace Denoise
 		m_image.accessFullImage();
 
 		std::vector<SortedPatchCollection> matchedBlocksSorted;
-		matchedBlocksSorted.resize(imageBlock.size());
+
+		//we only allocate as many blocks as we need
+		matchedBlocksSorted.resize((imageBlock.width() / stepSizeCols) * (imageBlock.height() / stepSizeRows));
 
 		//do block matching
 		int halfWindowSizeRows = windowSizeRows / 2;

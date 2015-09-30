@@ -13,6 +13,9 @@
 #include "ImageNLMeansProcessor.h"
 #include "NLMeansSettings.h"
 
+#include "BM3DImageBlockProcessor.h"
+#include "BM3DSettings.h"
+
 #include <tbb\tick_count.h>
 
 void loadImage(Denoise::Image** image, const std::string& fileName);
@@ -34,6 +37,8 @@ int main(int argc, char* argv[])
 	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
 	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
 
+	//std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
+	//std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
 
 	float stdDeviation = std::atof(argv[1]);
 
@@ -49,7 +54,6 @@ int main(int argc, char* argv[])
 	pad.right = 10;
 	image->padImage(pad, false);
 	//image->accessFullImage();*/
-
 	/*int idx = 150;
 	std::vector<std::vector<Denoise::IDX2> > similarPatches;
 	std::vector<Denoise::IDX2> similarPatchesComparison;
@@ -106,20 +110,33 @@ int main(int argc, char* argv[])
 	//Denoise::Image result(image->actualDimension(), image->format());
 	Denoise::Image result(*image);
 
-	Denoise::ImageNLMeansProcessor nlMeansFilter(image, &result);
+	//Denoise::ImageNLMeansProcessor nlMeansFilter(image, &result);
 
-	Denoise::NLMeansSettings nlMeansFilterSettings;
-	nlMeansFilterSettings.maxAllowedPatchDistance = 10.8f;
-	nlMeansFilterSettings.numPatchesPerBlock = 32;
-	nlMeansFilterSettings.patchSize = 3;
-	nlMeansFilterSettings.searchWindowSize = 20;
-	nlMeansFilterSettings.stepSizeCols = 1;
-	nlMeansFilterSettings.stepSizeRows = 1;
-	nlMeansFilterSettings.usePatchWeighting = true;
-	nlMeansFilterSettings.stdDeviation = stdDeviation;
-	nlMeansFilterSettings.filteringParameter = 0.55f;
+	//Denoise::NLMeansSettings nlMeansFilterSettings;
+	//nlMeansFilterSettings.maxAllowedPatchDistance = 10.8f;
+	//nlMeansFilterSettings.numPatchesPerBlock = 32;
+	//nlMeansFilterSettings.patchSize = 3;
+	//nlMeansFilterSettings.searchWindowSize = 20;
+	//nlMeansFilterSettings.stepSizeCols = 1;
+	//nlMeansFilterSettings.stepSizeRows = 1;
+	//nlMeansFilterSettings.usePatchWeighting = true;
+	//nlMeansFilterSettings.stdDeviation = stdDeviation;
+	//nlMeansFilterSettings.filteringParameter = 0.55f;
+	//nlMeansFilter.process(nlMeansFilterSettings, true);
 
-	nlMeansFilter.process(nlMeansFilterSettings, true);
+	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &result);
+
+	Denoise::BM3DSettings bm3dFilterSettings;
+	bm3dFilterSettings.maxAllowedPatchDistance = 10000.8f;
+	bm3dFilterSettings.numPatchesPerBlock = 32;
+	bm3dFilterSettings.patchSize = 8;
+	bm3dFilterSettings.searchWindowSize = 20;
+	bm3dFilterSettings.stepSizeCols = 1;
+	bm3dFilterSettings.stepSizeRows = 1;
+	bm3dFilterSettings.usePatchWeighting = false;
+	bm3dFilterSettings.stdDeviation = stdDeviation;
+
+	bm3dFilter.process(bm3dFilterSettings, true);
 
 	image->undoNormalise();
 	result.undoNormalise();

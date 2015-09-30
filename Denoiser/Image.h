@@ -25,8 +25,8 @@ namespace Denoise
 		Image(const Image& other);
 		~Image();
 
-		inline float getPixel(const size_t channel, const size_t idx);
-		inline float getPixel(const size_t channel, const size_t row, const size_t col);
+		inline float getPixel(const size_t channel, const size_t idx) const;
+		inline float getPixel(const size_t channel, const size_t row, const size_t col) const;
 
 		inline void setPixel(const size_t channel, const size_t idx, float value);
 		inline void setPixel(const size_t channel, const size_t row, const size_t col, float value);
@@ -36,17 +36,17 @@ namespace Denoise
 		void accessFullImage();
 		void accessActualImage();
 
-		inline size_t width();
-		inline size_t height();
-		inline size_t size();
-		inline size_t numChannels();
-		inline Dimension fullDimension() { return m_fullImageDim; }
-		inline Dimension actualDimension() { return m_actualImageDim; }
+		inline size_t width() const;
+		inline size_t height() const;
+		inline size_t size() const;
+		inline size_t numChannels() const;
+		inline Dimension fullDimension() const { return m_fullImageDim; }
+		inline Dimension actualDimension() const { return m_actualImageDim; }
 
-		inline size_t format() { return m_format; }
+		inline size_t format() const { return m_format; }
 
 		//Normalisation
-		inline bool isNormalised() { return m_isNormalised; }
+		inline bool isNormalised() const { return m_isNormalised; }
 		void normalise();
 		void undoNormalise(float normalisationValue = -1.0f);
 
@@ -56,21 +56,21 @@ namespace Denoise
 		inline float blockMatch_Naive(const ImagePatch& patch1, const ImagePatch& patch2, size_t channel, int norm);
 
 		//Block copy from/to
-		void cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, size_t channel, size_t& numValidPatches);
+		void cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, size_t channel, size_t& numValidPatches) const;
 		void cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, size_t channel, size_t numValidPatches);
 
 		//Misceallaneous Functions
-		float maxPixelValue(size_t channel);
-		float minPixelValue(size_t channel);
+		float maxPixelValue(size_t channel) const;
+		float minPixelValue(size_t channel) const;
 		float averagePixelValue(size_t channel);
 
 		bool checkImageIntegrity(bool enforceIntegrity);
-		void print(int channel = -1);
+		void print(int channel = -1) const;
 
 		//Convenience
 		void setAlphaToOne();
 
-		inline size_t IDX2_2_1(const size_t row, const size_t col); //always uses full image
+		inline size_t IDX2_2_1(const size_t row, const size_t col) const; //always uses full image
 
 		enum Channels
 		{
@@ -116,12 +116,12 @@ namespace Denoise
 		int m_verbosityLevel;
 	};
 
-	float Image::getPixel(const size_t channel, const size_t idx)
+	float Image::getPixel(const size_t channel, const size_t idx) const
 	{
 		return m_pixelData[channel][idx];
 	}
 
-	float Image::getPixel(const size_t channel, const size_t row, const size_t col)
+	float Image::getPixel(const size_t channel, const size_t row, const size_t col) const
 	{
 		if (m_isPadded && !m_accessingFullImage)
 		{
@@ -150,7 +150,7 @@ namespace Denoise
 		}
 	}
 
-	size_t Image::width()
+	size_t Image::width() const
 	{
 		if (m_accessingFullImage)
 		{
@@ -162,7 +162,7 @@ namespace Denoise
 		}
 	}
 
-	size_t Image::height()
+	size_t Image::height() const
 	{
 		if (m_accessingFullImage)
 		{
@@ -174,17 +174,17 @@ namespace Denoise
 		}
 	}
 
-	size_t Image::size()
+	size_t Image::size() const
 	{
 		return m_fullImageDim.height * m_fullImageDim.width;
 	}
 
-	size_t Image::numChannels()
+	size_t Image::numChannels() const
 	{
 		return m_numChannels;
 	}
 
-	size_t Image::IDX2_2_1(const size_t row, const size_t col)
+	size_t Image::IDX2_2_1(const size_t row, const size_t col) const
 	{
 		return row * m_fullImageDim.width + col;
 	}
