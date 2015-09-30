@@ -4,7 +4,8 @@ namespace Denoise
 {
 	struct NLMeansSettings
 	{
-		float variance;
+		float stdDeviation;
+		float filteringParameter;
 
 		size_t stepSizeCols;
 		size_t stepSizeRows;

@@ -20,8 +20,10 @@ namespace Denoise
 		size_t getNumMeaningfulPatches() { return m_patches.size() - m_numInitialPatchesLeft; }
 
 	private:
+
+		void initialise(size_t maxNumPatches);
+
 		std::vector<IDX2> m_patches;
-		//std::list<IDX2> m_patchesList;
 		size_t m_numInitialPatchesLeft;
 	};
 }

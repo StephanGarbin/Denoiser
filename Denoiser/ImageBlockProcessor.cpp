@@ -23,7 +23,8 @@ namespace Denoise
 		size_t windowSizeRows, size_t windowSizeCols,
 		size_t maxSimilar, float maxDistance,
 		int norm,
-		std::vector<std::vector<IDX2> >& matchedBlocks)
+		std::vector<std::vector<IDX2> >& matchedBlocks,
+		size_t numChannelsToUse)
 	{
 		//make sure we are accessing the full image
 		m_image.accessFullImage();
@@ -36,37 +37,49 @@ namespace Denoise
 		int halfWindowSizeCols = windowSizeCols / 2;
 
 		//Compute in double precision to avoid round-off errors for large images
-		std::vector<double> distanceImage(imageBlock.size());
-		std::vector<double> integralImage(imageBlock.size());
+		std::vector<std::vector<double> > distanceImage(numChannelsToUse);
+		std::vector<std::vector<double> > integralImage(numChannelsToUse);
+
+		for (size_t c = 0; c < numChannelsToUse; ++c)
+		{
+			distanceImage[c].resize(imageBlock.size());
+			integralImage[c].resize(imageBlock.size());
+		}
 
 		for (int shiftRows = -halfWindowSizeRows; shiftRows <= halfWindowSizeRows; ++shiftRows)
 		{
 			for (int shiftCols = -halfWindowSizeCols; shiftCols <= halfWindowSizeCols; ++shiftCols)
 			{
-				//A. Compute Pixel Differences
-				for (int row = imageBlock.bottom; row < imageBlock.top; ++row)
+				for (size_t c = 0; c < numChannelsToUse; ++c)
 				{
-					for (int col = imageBlock.left; col < imageBlock.right; ++col)
+					//A. Compute Pixel Differences
+					for (int row = imageBlock.bottom; row < imageBlock.top; ++row)
 					{
-						int idx = row * m_image.width() + col;
-						int compareIdx = (row + shiftRows) * m_image.width() + (col + shiftCols);
-						int blockIdx = (row - imageBlock.bottom) * imageBlock.width() + (col - imageBlock.left);
-						if (row + shiftRows < 0
-							|| col + shiftCols < 0
-							|| row + shiftRows > m_image.height() - 1
-							|| col + shiftCols > m_image.width() - 1)
+						for (int col = imageBlock.left; col < imageBlock.right; ++col)
 						{
-							distanceImage[blockIdx] = 0.0f;
-						}
-						else
-						{
-							distanceImage[blockIdx] = std::pow((double)m_image.getPixel(0, idx) - (double)m_image.getPixel(0, compareIdx), norm);
+							int idx = row * m_image.width() + col;
+							int compareIdx = (row + shiftRows) * m_image.width() + (col + shiftCols);
+							int blockIdx = (row - imageBlock.bottom) * imageBlock.width() + (col - imageBlock.left);
+							if (row + shiftRows < 0
+								|| col + shiftCols < 0
+								|| row + shiftRows > m_image.height() - 1
+								|| col + shiftCols > m_image.width() - 1)
+							{
+								distanceImage[c][blockIdx] = 0.0f;
+							}
+							else
+							{
+								distanceImage[c][blockIdx] = std::pow((double)m_image.getPixel(c, idx) - (double)m_image.getPixel(c, compareIdx), norm);
+							}
 						}
 					}
 				}
 
 				//B. Compute Integral Image
-				computeIntegralImage(distanceImage, imageBlock, integralImage);
+				for (size_t c = 0; c < numChannelsToUse; ++c)
+				{
+					computeIntegralImage(distanceImage[c], imageBlock, integralImage[c]);
+				}
 
 				//C. Evaluate Patch Distances
 				for (int row = imageBlock.bottom + 1; row < imageBlock.top - templatePatch.height; row += stepSizeRows)
@@ -85,9 +98,16 @@ namespace Denoise
 							continue;
 						}
 
-						float distance = patchDistanceIntegralImage(integralImage, templatePatch, imageBlock, IDX2(row - imageBlock.bottom, col - imageBlock.left));
+						double distance = 0.0;
+						for (size_t c = 0; c < numChannelsToUse; ++c)
+						{
+							distance += patchDistanceIntegralImage(integralImage[c],
+								templatePatch, imageBlock, IDX2(row - imageBlock.bottom, col - imageBlock.left));
+						}
 
-						if (distance <= maxDistance)
+						distance /= (double)numChannelsToUse;
+
+						if (distance <= (double)maxDistance)
 						{
 							matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].insertPatch32(
 								IDX2(row + shiftRows, col + shiftCols, distance));
@@ -96,6 +116,9 @@ namespace Denoise
 				}
 			}
 		}
+
+		distanceImage.clear();
+		integralImage.clear();
 
 		matchedBlocks.resize((m_image.width() / stepSizeCols) * (m_image.height() / stepSizeRows));
 
@@ -132,24 +155,6 @@ namespace Denoise
 				integralImage[row * imageBlock.width() + col] = integralImage[(row - 1) * imageBlock.width() + col] + s;
 			}
 		}
-	}
-
-	float ImageBlockProcessor::patchDistanceIntegralImage(const std::vector<double>& integralImage, const ImagePatch& templatePatch,
-		const Rectangle& imageBlock, const IDX2& position)
-	{
-		double result = integralImage[(position.row + templatePatch.height - 1) * imageBlock.width()
-			+ position.col + templatePatch.width - 1];
-
-		result -= integralImage[(position.row + templatePatch.height - 1) * imageBlock.width()
-			+ position.col - 1];
-
-		result -= integralImage[(position.row - 1) * imageBlock.width()
-			+ position.col + templatePatch.width - 1];
-
-		result += integralImage[(position.row - 1) * imageBlock.width()
-			+ position.col - 1];
-
-		return (float)result;
 	}
 
 	void ImageBlockProcessor::computeNMostSimilarNaive(std::vector<IDX2>& matchedBlocks, const IDX2& position, const ImagePatch& templatePatch,

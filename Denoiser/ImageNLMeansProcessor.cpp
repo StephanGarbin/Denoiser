@@ -51,7 +51,7 @@ namespace Denoise
 				m_settings.stepSizeRows, m_settings.stepSizeCols,
 				m_settings.searchWindowSize, m_settings.searchWindowSize,
 				settings.numPatchesPerBlock, settings.maxAllowedPatchDistance,
-				2, m_matchedBlocks);
+				2, m_matchedBlocks, 3);
 
 			std::cout << "Finished Block Matching..." << std::endl;
 		}
@@ -76,21 +76,20 @@ namespace Denoise
 						if (m_settings.usePatchWeighting)
 						{
 							weight = std::exp(
-								-std::max((double)m_matchedBlocks[row * matchRegion.width() + col][depth].distance - 2.0 * (double)m_settings.variance, 0.0)
-								/ (10.0 * std::sqrt((double)m_settings.variance)));
-							if (weight > 1.0)
-							{
-								std::cout << weight << ";";
-							}
+								- std::max((double)m_matchedBlocks[row * matchRegion.width() + col][depth].distance - 2.0 * std::pow((double)m_settings.stdDeviation, 2), 0.0)
+								/ ((double)m_settings.filteringParameter * (double)m_settings.stdDeviation));
 						}
 
 						for (size_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
 						{
 							for (size_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
 							{
-								m_buffer.addValueNumerator(channel, row + patchRow, col + patchCol,
-									rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol]);
-								m_buffer.addValueDenominator(channel, row + patchRow, col + patchCol, weight);
+								if (patchRow == patchTemplate.height / 2 && patchCol == patchTemplate.width / 2)
+								{
+									m_buffer.addValueNumerator(channel, row + patchRow, col + patchCol,
+										rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol]);
+									m_buffer.addValueDenominator(channel, row + patchRow, col + patchCol, weight);
+								}
 							}
 						}
 					}

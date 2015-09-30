@@ -4,14 +4,14 @@
 
 #include <fftw3.h>
 
-void hardThreshold(float* block, float variance);
+void hardThreshold(float* block, float stdDeviation);
 void dctTransform(float* block, float* result);
 void normaliseDCT(float* block, bool inverse);
 void inverseDctTransform(float* block, float* result);
 void cfwht(float* x, int start, int n, int seqLength, int offset, std::vector<float>& fwhtMem, int stride);
 
 /* The gateway function */
-void bm3dDEBUG(float* block, float variance)
+void bm3dDEBUG(float* block, float stdDeviation)
 {
 	std::vector<float> fwhtMem;
 	fwhtMem.resize(128);
@@ -28,7 +28,7 @@ void bm3dDEBUG(float* block, float variance)
 		cfwht(block, 0, 32, 32, i, fwhtMem, 8 * 8);
 	}
 
-	hardThreshold(block, variance);
+	hardThreshold(block, stdDeviation);
 
 	for (int i = 0; i < 64; ++i)
 	{
@@ -51,13 +51,13 @@ void bm3dDEBUG(float* block, float variance)
 	delete[] temp;
 }
 
-void hardThreshold(float* block, float variance)
+void hardThreshold(float* block, float stdDeviation)
 {
 	int totalSize = 8 * 8 * 32;
 
 	for (int i = 0; i < totalSize; ++i)
 	{
-		if (std::abs(block[i]) <= variance * 2.7)
+		if (std::abs(block[i]) <= stdDeviation * 2.7)
 		{
 			block[i] = 0.0;
 		}

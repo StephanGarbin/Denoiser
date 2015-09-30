@@ -16,18 +16,26 @@
 #include <tbb\tick_count.h>
 
 void loadImage(Denoise::Image** image, const std::string& fileName);
-void createImage(Denoise::Image** image);
 
 void saveImage(Denoise::Image* image, const std::string& fileName);
 
 
 int main(int argc, char* argv[])
 {
+	if (argc != 2)
+	{
+		std::cout << "Error: Please provide standard deviation!" << std::endl;
+		return 0;
+	}
+
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
 	//std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/llama_padded.png";
 	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
 	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
+
+
+	float stdDeviation = std::atof(argv[1]);
 
 	Denoise::Image* image = nullptr;
 
@@ -101,14 +109,15 @@ int main(int argc, char* argv[])
 	Denoise::ImageNLMeansProcessor nlMeansFilter(image, &result);
 
 	Denoise::NLMeansSettings nlMeansFilterSettings;
-	nlMeansFilterSettings.maxAllowedPatchDistance = 0.8f;
+	nlMeansFilterSettings.maxAllowedPatchDistance = 10.8f;
 	nlMeansFilterSettings.numPatchesPerBlock = 32;
-	nlMeansFilterSettings.patchSize = 5;
+	nlMeansFilterSettings.patchSize = 3;
 	nlMeansFilterSettings.searchWindowSize = 20;
 	nlMeansFilterSettings.stepSizeCols = 1;
 	nlMeansFilterSettings.stepSizeRows = 1;
 	nlMeansFilterSettings.usePatchWeighting = true;
-	nlMeansFilterSettings.variance = 0.1f;
+	nlMeansFilterSettings.stdDeviation = stdDeviation;
+	nlMeansFilterSettings.filteringParameter = 0.55f;
 
 	nlMeansFilter.process(nlMeansFilterSettings, true);
 
@@ -175,65 +184,4 @@ void saveImage(Denoise::Image* image, const std::string& fileName)
 	//if there's an error, display it
 	if (error) std::cout << "encoder error " << error << ": " << lodepng_error_text(error) << std::endl;
 
-}
-
-void createImage(Denoise::Image** image)
-{
-	Denoise::Dimension dim(6, 6);
-	*image = new Denoise::Image(dim, 1);
-
-	std::vector<float> values;
-	values.push_back(1.0f);
-	values.push_back(2.0f);
-	values.push_back(3.0f);
-	values.push_back(4.0f);
-	values.push_back(5.0f);
-	values.push_back(6.0f);
-
-	values.push_back(6.0f);
-	values.push_back(1.0f);
-	values.push_back(2.0f);
-	values.push_back(3.0f);
-	values.push_back(5.0f);
-	values.push_back(4.0f);
-
-	values.push_back(5.0f);
-	values.push_back(9.0f);
-	values.push_back(7.0f);
-	values.push_back(1.0f);
-	values.push_back(2.0f);
-	values.push_back(8.0f);
-
-	values.push_back(6.0f);
-	values.push_back(5.0f);
-	values.push_back(1.0f);
-	values.push_back(4.0f);
-	values.push_back(2.0f);
-	values.push_back(4.0f);
-
-	values.push_back(9.0f);
-	values.push_back(7.0f);
-	values.push_back(8.0f);
-	values.push_back(6.0f);
-	values.push_back(5.0f);
-	values.push_back(4.0f);
-
-	values.push_back(4.0f);
-	values.push_back(3.0f);
-	values.push_back(6.0f);
-	values.push_back(1.0f);
-	values.push_back(2.0f);
-	values.push_back(2.0f);
-
-	values.push_back(1.0f);
-	values.push_back(2.0f);
-	values.push_back(1.0f);
-	values.push_back(2.0f);
-	values.push_back(2.0f);
-	values.push_back(1.0f);
-
-	for (size_t i = 0; i < 36; ++i)
-	{
-		(*image)->setPixel(0, i, values[i]);
-	}
 }
