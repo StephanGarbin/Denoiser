@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
 	bm3dFilterSettings.maxAllowedPatchDistance = 10000.8f;
 	bm3dFilterSettings.numPatchesPerBlock = 32;
 	bm3dFilterSettings.patchSize = 8;
-	bm3dFilterSettings.searchWindowSize = 20;
+	bm3dFilterSettings.searchWindowSize = 30;
 	bm3dFilterSettings.stepSizeCols = 1;
 	bm3dFilterSettings.stepSizeRows = 1;
 	bm3dFilterSettings.usePatchWeighting = false;

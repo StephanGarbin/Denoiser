@@ -68,7 +68,9 @@ namespace Denoise
 				{
 					size_t numValidPatches;
 
-					m_image->cpy2Block3d(m_matchedBlocks[row * matchRegion.width() + col], rawImageBlock, patchTemplate, channel, numValidPatches);
+					size_t machtedBlockIdx = (row / m_settings.stepSizeRows) * (matchRegion.width() / m_settings.stepSizeCols) + col / m_settings.stepSizeCols;
+
+					m_image->cpy2Block3d(m_matchedBlocks[machtedBlockIdx], rawImageBlock, patchTemplate, channel, numValidPatches);
 
 					bm3dDEBUG(rawImageBlock, settings.stdDeviation);
 
@@ -80,12 +82,12 @@ namespace Denoise
 						{
 							for (size_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
 							{
-								m_buffer.addValueNumerator(channel, m_matchedBlocks[row * matchRegion.width() + col][depth].row + patchRow,
-									m_matchedBlocks[row * matchRegion.width() + col][depth].col + patchCol,
+								m_buffer.addValueNumerator(channel, m_matchedBlocks[machtedBlockIdx][depth].row + patchRow,
+									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol,
 									rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol]);
 
-								m_buffer.addValueDenominator(channel, m_matchedBlocks[row * matchRegion.width() + col][depth].row + patchRow,
-									m_matchedBlocks[row * matchRegion.width() + col][depth].col + patchCol, weight);
+								m_buffer.addValueDenominator(channel, m_matchedBlocks[machtedBlockIdx][depth].row + patchRow,
+									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol, weight);
 							}
 						}
 					}

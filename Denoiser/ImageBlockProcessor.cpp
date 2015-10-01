@@ -111,7 +111,7 @@ namespace Denoise
 
 						if (distance <= (double)maxDistance)
 						{
-							matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].insertPatch32(
+							matchedBlocksSorted[((row - imageBlock.bottom) / stepSizeRows) * (imageBlock.width() / stepSizeCols) + (col - imageBlock.left) / stepSizeCols].insertPatch32(
 								IDX2(row + shiftRows, col + shiftCols, distance));
 						}
 					}
@@ -129,7 +129,7 @@ namespace Denoise
 			for (int col = imageBlock.left; col < imageBlock.right; col += stepSizeCols)
 			{
 				matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)] =
-					matchedBlocksSorted[(row - imageBlock.bottom) * imageBlock.width() + col - imageBlock.left].getPatches();
+					matchedBlocksSorted[((row - imageBlock.bottom) / stepSizeRows) * (imageBlock.width() / stepSizeCols) + (col - imageBlock.left) / stepSizeCols].getPatches();
 			}
 		}
 

@@ -441,7 +441,7 @@ namespace Denoise
 		}
 	}
 
-	void Image::print(int channel)
+	void Image::print(int channel) const
 	{
 		if (channel > 0)
 		{
