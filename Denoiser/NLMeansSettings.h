@@ -1,4 +1,5 @@
 #pragma once
+#include "common.h"
 
 namespace Denoise
 {
@@ -7,12 +8,12 @@ namespace Denoise
 		float stdDeviation;
 		float filteringParameter;
 
-		size_t stepSizeCols;
-		size_t stepSizeRows;
+		index_t stepSizeCols;
+		index_t stepSizeRows;
 
-		size_t searchWindowSize;
+		index_t searchWindowSize;
 
-		size_t numPatchesPerBlock;
+		index_t numPatchesPerBlock;
 
 		float maxAllowedPatchDistance;
 

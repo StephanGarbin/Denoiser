@@ -2,6 +2,7 @@
 
 #include "Image.h"
 #include "Rectangle.h"
+#include "common.h"
 
 namespace Denoise
 {
@@ -11,13 +12,13 @@ namespace Denoise
 		ImagePartitioner(const Image& image);
 		~ImagePartitioner();
 
-		void createPartitionScanlines(size_t numSegments);
+		void createPartitionScanlines(index_t numSegments);
 
-		void createPartitionRectangles(size_t numSegments);
+		void createPartitionRectangles(index_t numSegments);
 
-		inline size_t numSegments() const { return m_segments.size(); }
+		inline index_t numSegments() const { return m_segments.size(); }
 
-		inline const Rectangle& getSegment(size_t idx) const { return m_segments[idx]; };
+		inline const Rectangle& getSegment(index_t idx) const { return m_segments[idx]; };
 
 	private:
 		const Image& m_image;

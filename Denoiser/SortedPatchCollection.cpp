@@ -12,15 +12,15 @@ namespace Denoise
 		initialise(32);
 	}
 
-	SortedPatchCollection::SortedPatchCollection(size_t maxNumPatches)
+	SortedPatchCollection::SortedPatchCollection(index_t maxNumPatches)
 	{
 		initialise(maxNumPatches);
 	}
 
-	void SortedPatchCollection::initialise(size_t maxNumPatches)
+	void SortedPatchCollection::initialise(index_t maxNumPatches)
 	{
 		m_patches.resize(maxNumPatches);
-		for (size_t i = 0; i < m_patches.size(); ++i)
+		for (index_t i = 0; i < m_patches.size(); ++i)
 		{
 			m_patches[i].distance = std::numeric_limits<float>::max();
 		}

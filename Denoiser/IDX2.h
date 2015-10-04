@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common.h"
+
 namespace Denoise
 {
 	struct  IDX2
@@ -11,14 +13,14 @@ namespace Denoise
 			distance = 0.0f;
 		}
 
-		IDX2(size_t Row, size_t Col)
+		IDX2(index_t Row, index_t Col)
 		{
 			row = Row;
 			col = Col;
 			distance = 0.0f;
 		}
 
-		IDX2(size_t Row, size_t Col, float Distance)
+		IDX2(index_t Row, index_t Col, float Distance)
 		{
 			row = Row;
 			col = Col;
@@ -52,8 +54,8 @@ namespace Denoise
 			return lhs.distance < rhs.distance;
 		}
 
-		size_t row;
-		size_t col;
+		index_t row;
+		index_t col;
 		float distance;
 	};
 }

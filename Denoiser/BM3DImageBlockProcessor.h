@@ -5,6 +5,7 @@
 #include "IDX2.h"
 #include "BufferAggregator.h"
 #include "Rectangle.h"
+#include "common.h"
 
 namespace Denoise
 {
@@ -16,8 +17,8 @@ namespace Denoise
 
 		void process(const BM3DSettings& settings, bool processMatching = true);
 
-		friend void bm3dCollaborativeKernel(BM3DImageBlockProcessor* processor, size_t threadIdx, const Rectangle& region);
-		friend void bm3dWienerKernel(BM3DImageBlockProcessor* processor, size_t threadIdx, const Rectangle& region);
+		friend void bm3dCollaborativeKernel(BM3DImageBlockProcessor* processor, index_t threadIdx, const Rectangle& region);
+		friend void bm3dWienerKernel(BM3DImageBlockProcessor* processor, index_t threadIdx, const Rectangle& region);
 
 	private:
 

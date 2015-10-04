@@ -8,7 +8,7 @@
 namespace Denoise
 {
 
-	Image::Image(const Dimension& imageDimension, size_t format)
+	Image::Image(const Dimension& imageDimension, index_t format)
 	{
 		initialise(imageDimension, format);
 	}
@@ -32,10 +32,10 @@ namespace Denoise
 		m_normalisationValue = other.m_normalisationValue;
 
 		m_pixelData.resize(other.m_pixelData.size());
-		for (size_t c = 0; c < m_pixelData.size(); ++c)
+		for (index_t c = 0; c < m_pixelData.size(); ++c)
 		{
 			m_pixelData[c] = new float[m_fullImageDim.width * m_fullImageDim.height];
-			for (size_t i = 0; i < m_fullImageDim.width * m_fullImageDim.height; ++i)
+			for (index_t i = 0; i < m_fullImageDim.width * m_fullImageDim.height; ++i)
 			{
 				m_pixelData[c][i] = other.m_pixelData[c][i];
 			}
@@ -45,13 +45,13 @@ namespace Denoise
 
 	Image::~Image()
 	{
-		for (size_t c = 0; c < m_numChannels; ++c)
+		for (index_t c = 0; c < m_numChannels; ++c)
 		{
 			delete[] m_pixelData[c];
 		}
 	}
 
-	void Image::initialise(const Dimension& imageDimension, size_t format)
+	void Image::initialise(const Dimension& imageDimension, index_t format)
 	{
 			m_actualImageDim = imageDimension;
 			m_fullImageDim = imageDimension;
@@ -65,7 +65,7 @@ namespace Denoise
 
 			//resize internal arrays
 			m_pixelData.resize(format + 1);
-			for (size_t c = 0; c < m_pixelData.size(); ++c)
+			for (index_t c = 0; c < m_pixelData.size(); ++c)
 			{
 				m_pixelData[c] = new float[imageDimension.width * imageDimension.height];
 			}
@@ -89,18 +89,18 @@ namespace Denoise
 		m_fullImageDim.width = m_actualImageDim.width + padAmount.left + padAmount.right;
 		m_fullImageDim.height = m_actualImageDim.height + padAmount.top + padAmount.bottom;
 
-		for (size_t c = 0; c < m_numChannels; ++c)
+		for (index_t c = 0; c < m_numChannels; ++c)
 		{
 			//Allocate new buffer;
 			float* replacementChannel = new float[m_fullImageDim.width * m_fullImageDim.height];
 
 			//Copy existing data
-			for (size_t row = 0; row < m_actualImageDim.height; ++row)
+			for (index_t row = 0; row < m_actualImageDim.height; ++row)
 			{
-				for (size_t col = 0; col < m_actualImageDim.width; ++col)
+				for (index_t col = 0; col < m_actualImageDim.width; ++col)
 				{
-					size_t idxOriginal = row * m_actualImageDim.width + col;
-					size_t idxPadded = (row + padAmount.top) * m_fullImageDim.width + (col + padAmount.left);
+					index_t idxOriginal = row * m_actualImageDim.width + col;
+					index_t idxPadded = (row + padAmount.top) * m_fullImageDim.width + (col + padAmount.left);
 					replacementChannel[idxPadded] = m_pixelData[c][idxOriginal];
 				}
 			}
@@ -110,13 +110,13 @@ namespace Denoise
 			m_pixelData[c] = replacementChannel;
 
 			//Mirror pixel values if necessary
-			size_t counter = padAmount.left;
+			index_t counter = padAmount.left;
 			//left
 			if (padAmount.left > 0)
 			{
-				for (size_t col = 0; col < padAmount.left; ++col)
+				for (index_t col = 0; col < padAmount.left; ++col)
 				{
-					for (size_t row = 0; row < m_fullImageDim.height; ++row)
+					for (index_t row = 0; row < m_fullImageDim.height; ++row)
 					{
 						if (!blackOutside)
 						{
@@ -135,9 +135,9 @@ namespace Denoise
 			if (padAmount.top > 0)
 			{
 				counter = 1;
-				for (size_t row = padAmount.top - 1; row > 0; --row)
+				for (index_t row = padAmount.top - 1; row > 0; --row)
 				{
-					for (size_t col = 0; col < m_fullImageDim.width; ++col)
+					for (index_t col = 0; col < m_fullImageDim.width; ++col)
 					{
 						if (!blackOutside)
 						{
@@ -156,9 +156,9 @@ namespace Denoise
 			if (padAmount.right > 0)
 			{
 				counter = 1;
-				for (size_t col = m_fullImageDim.width - padAmount.right; col < m_fullImageDim.width; ++col)
+				for (index_t col = m_fullImageDim.width - padAmount.right; col < m_fullImageDim.width; ++col)
 				{
-					for (size_t row = 0; row < m_fullImageDim.height; ++row)
+					for (index_t row = 0; row < m_fullImageDim.height; ++row)
 					{
 						if (!blackOutside)
 						{
@@ -177,9 +177,9 @@ namespace Denoise
 			if (padAmount.bottom > 0)
 			{
 				counter = 1;
-				for (size_t row = m_fullImageDim.height - padAmount.bottom; row < m_fullImageDim.height; ++row)
+				for (index_t row = m_fullImageDim.height - padAmount.bottom; row < m_fullImageDim.height; ++row)
 				{
-					for (size_t col = 0; col < m_fullImageDim.width; ++col)
+					for (index_t col = 0; col < m_fullImageDim.width; ++col)
 					{
 						if (!blackOutside)
 						{
@@ -243,7 +243,7 @@ namespace Denoise
 	void Image::normalise()
 	{
 		std::vector<float> maxPixelsValuesPerChannel(m_pixelData.size());
-		for (size_t c = 0; c < maxPixelsValuesPerChannel.size(); ++c)
+		for (index_t c = 0; c < maxPixelsValuesPerChannel.size(); ++c)
 		{
 			maxPixelsValuesPerChannel[c] = maxPixelValue(c);
 		}
@@ -259,9 +259,9 @@ namespace Denoise
 		else
 		{
 			m_isNormalised = true;
-			for (size_t c = 0; c < m_pixelData.size(); ++c)
+			for (index_t c = 0; c < m_pixelData.size(); ++c)
 			{
-				for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
+				for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 				{
 					m_pixelData[c][i] /= m_normalisationValue;
 				}
@@ -277,9 +277,9 @@ namespace Denoise
 			return;
 		}
 
-		for (size_t c = 0; c < m_pixelData.size(); ++c)
+		for (index_t c = 0; c < m_pixelData.size(); ++c)
 		{
-			for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
+			for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 			{
 				if (normalisationValue == -1.0f)
 				{
@@ -296,31 +296,31 @@ namespace Denoise
 		m_normalisationValue = 1.0f;
 	}
 
-	float Image::maxPixelValue(size_t channel) const
+	float Image::maxPixelValue(index_t channel) const
 	{
 		float maxValue = std::numeric_limits<float>::min();
-		for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
+		for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 		{
 			maxValue = (m_pixelData[channel][i] > maxValue) ? m_pixelData[channel][i] : maxValue;
 		}
 		return maxValue;
 	}
 
-	float Image::minPixelValue(size_t channel) const
+	float Image::minPixelValue(index_t channel) const
 	{
 		float minValue = std::numeric_limits<float>::max();
-		for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
+		for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 		{
 			minValue = (m_pixelData[channel][i] < minValue) ? m_pixelData[channel][i] : minValue;
 		}
 		return minValue;
 	}
 
-	float Image::averagePixelValue(size_t channel)
+	float Image::averagePixelValue(index_t channel)
 	{
 		//do accumulation in double to avoid precision errors
 		long double pixelSum = 0.0;
-		for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
+		for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 		{
 			pixelSum += (double)m_pixelData[channel][i];
 		}
@@ -331,13 +331,13 @@ namespace Denoise
 
 	bool Image::checkImageIntegrity(bool enforceIntegrity)
 	{
-		size_t containsNegative = 0;
-		size_t containsNaNs = 0;
-		size_t containsInfs = 0;
+		index_t containsNegative = 0;
+		index_t containsNaNs = 0;
+		index_t containsInfs = 0;
 
-		for (size_t c = 0; c < m_pixelData.size(); ++c)
+		for (index_t c = 0; c < m_pixelData.size(); ++c)
 		{
-			for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
+			for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 			{
 				if (std::isnan(m_pixelData[c][i]))
 				{
@@ -369,9 +369,9 @@ namespace Denoise
 
 		if (enforceIntegrity)
 		{
-			for (size_t c = 0; c < m_pixelData.size(); ++c)
+			for (index_t c = 0; c < m_pixelData.size(); ++c)
 			{
-				for (size_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
+				for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 				{
 					if (std::isnan(m_pixelData[c][i]))
 					{
@@ -403,11 +403,11 @@ namespace Denoise
 	}
 
 	void Image::cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
-		size_t channel, size_t& numValidPatches) const
+		index_t channel, index_t& numValidPatches) const
 	{
 		numValidPatches = 0;
 
-		for (size_t p = 0; p < patches.size(); ++p)
+		for (index_t p = 0; p < patches.size(); ++p)
 		{
 			if (patches[p].distance == std::numeric_limits<float>::max())
 			{
@@ -416,11 +416,11 @@ namespace Denoise
 
 			//std::cout << "row = " << patches[p].row << "col = " << patches[p].col << "; ";
 
-			for (size_t row = 0; row <patchTemplate.height; ++row)
+			for (index_t row = 0; row <patchTemplate.height; ++row)
 			{
-				for (size_t col = 0; col < patchTemplate.width; ++col)
+				for (index_t col = 0; col < patchTemplate.width; ++col)
 				{
-					size_t blockIdx = (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
+					index_t blockIdx = (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
 					block[blockIdx] = m_pixelData[channel][IDX2_2_1(patches[p].row + row, patches[p].col + col)];
 				}
 			}
@@ -431,15 +431,15 @@ namespace Denoise
 	}
 
 	void Image::cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
-		size_t channel, size_t numValidPatches)
+		index_t channel, index_t numValidPatches)
 	{
-		for (size_t p = 0; p < numValidPatches; ++p)
+		for (index_t p = 0; p < numValidPatches; ++p)
 		{
-			for (size_t row = 0; row < patchTemplate.height; ++row)
+			for (index_t row = 0; row < patchTemplate.height; ++row)
 			{
-				for (size_t col = 0; col < patchTemplate.width; ++col)
+				for (index_t col = 0; col < patchTemplate.width; ++col)
 				{
-					size_t blockIdx = (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
+					index_t blockIdx = (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
 					m_pixelData[channel][IDX2_2_1(patches[p].row + row, patches[p].col + col)] = block[blockIdx];
 				}
 			}
@@ -497,7 +497,7 @@ namespace Denoise
 		switch (m_format)
 		{
 		case FLOAT_4:
-			for (size_t i = 0; i < width(); ++i)
+			for (index_t i = 0; i < width(); ++i)
 			{
 				m_pixelData[3][i] = 1.0f;
 			}

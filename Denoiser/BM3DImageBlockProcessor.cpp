@@ -8,6 +8,7 @@
 #include "common.h"
 
 #include "DEBUG_HELPER.h"
+#include "Statistics.h"
 
 #include <algorithm>
 #include <tbb\tick_count.h>
@@ -64,27 +65,40 @@ namespace Denoise
 		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock];
 
 		//2. Process Blocks
-		for (size_t channel = 0; channel < 3; ++channel)
+		for (index_t channel = 0; channel < 3; ++channel)
 		{
-			for (size_t row = 1; row < m_image->height() - m_settings.patchSize; row += m_settings.stepSizeRows)
+			for (index_t row = 1; row < m_image->height() - m_settings.patchSize; row += m_settings.stepSizeRows)
 			{
-				for (size_t col = 1; col < m_image->width() - m_settings.patchSize; col += m_settings.stepSizeCols)
+				for (index_t col = 1; col < m_image->width() - m_settings.patchSize; col += m_settings.stepSizeCols)
 				{
-					size_t numValidPatches;
+					index_t numValidPatches;
 
-					size_t machtedBlockIdx = (row / m_settings.stepSizeRows) * (matchRegion.width() / m_settings.stepSizeCols) + col / m_settings.stepSizeCols;
+					index_t machtedBlockIdx = (row / m_settings.stepSizeRows) * (matchRegion.width() / m_settings.stepSizeCols) + col / m_settings.stepSizeCols;
 
 					m_image->cpy2Block3d(m_matchedBlocks[machtedBlockIdx], rawImageBlock, patchTemplate, channel, numValidPatches);
 
-					bm3dDEBUG(rawImageBlock, settings.stdDeviation);
-
+					if (m_settings.averageBlocksBasedOnStd)
+					{
+						if (calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize) < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
+						{
+							setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
+						}
+						else
+						{
+							bm3dDEBUG(rawImageBlock, settings.stdDeviation);
+						}
+					}
+					else
+					{
+						bm3dDEBUG(rawImageBlock, settings.stdDeviation);
+					}
 					double weight = 1.0f;
 
-					for (size_t depth = 0; depth < numValidPatches; ++depth)
+					for (index_t depth = 0; depth < numValidPatches; ++depth)
 					{
-						for (size_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
+						for (index_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
 						{
-							for (size_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
+							for (index_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
 							{
 								m_buffer.addValueNumerator(channel, m_matchedBlocks[machtedBlockIdx][depth].row + patchRow,
 									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol,
@@ -103,11 +117,11 @@ namespace Denoise
 		m_buffer.divideBuffers();
 
 		//set result image
-		for (size_t channel = 0; channel < 3; ++channel)
+		for (index_t channel = 0; channel < 3; ++channel)
 		{
-			for (size_t row = 0; row < m_image->height(); row += 1)
+			for (index_t row = 0; row < m_image->height(); row += 1)
 			{
-				for (size_t col = 0; col < m_image->width(); col += 1)
+				for (index_t col = 0; col < m_image->width(); col += 1)
 				{
 					m_imageResult->setPixel(channel, row, col, m_buffer.getValueResult(channel, row, col));
 				}

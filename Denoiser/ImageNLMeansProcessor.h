@@ -4,6 +4,7 @@
 #include "NLMeansSettings.h"
 #include "IDX2.h"
 #include "BufferAggregator.h"
+#include "common.h"
 
 namespace Denoise
 {

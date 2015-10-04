@@ -172,6 +172,7 @@
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SortedPatchCollection.cpp" />
+    <ClCompile Include="Statistics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BM3DImageBlockProcessor.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="NLMeansSettings.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="SortedPatchCollection.h" />
+    <ClInclude Include="Statistics.h" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="BlockMatching.cu" />

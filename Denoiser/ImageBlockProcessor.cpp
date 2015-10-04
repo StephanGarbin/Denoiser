@@ -19,12 +19,12 @@ namespace Denoise
 
 
 	void ImageBlockProcessor::computeNMostSimilar(const ImagePatch& templatePatch, const Rectangle& imageBlock,
-		size_t stepSizeRows, size_t stepSizeCols,
-		size_t windowSizeRows, size_t windowSizeCols,
-		size_t maxSimilar, float maxDistance,
+		index_t stepSizeRows, index_t stepSizeCols,
+		index_t windowSizeRows, index_t windowSizeCols,
+		index_t maxSimilar, float maxDistance,
 		int norm,
 		std::vector<std::vector<IDX2> >& matchedBlocks,
-		size_t numChannelsToUse)
+		index_t numChannelsToUse)
 	{
 		//make sure we are accessing the full image
 		m_image.accessFullImage();
@@ -42,7 +42,7 @@ namespace Denoise
 		std::vector<std::vector<float> > distanceImage(numChannelsToUse);
 		std::vector<std::vector<double> > integralImage(numChannelsToUse);
 
-		for (size_t c = 0; c < numChannelsToUse; ++c)
+		for (index_t c = 0; c < numChannelsToUse; ++c)
 		{
 			distanceImage[c].resize(imageBlock.size());
 			integralImage[c].resize(imageBlock.size());
@@ -52,33 +52,35 @@ namespace Denoise
 		{
 			for (int shiftCols = -halfWindowSizeCols; shiftCols <= halfWindowSizeCols; ++shiftCols)
 			{
-				for (size_t c = 0; c < numChannelsToUse; ++c)
+				for (index_t c = 0; c < numChannelsToUse; ++c)
 				{
 					//A. Compute Pixel Differences
 					for (int row = imageBlock.bottom; row < imageBlock.top; ++row)
 					{
+						if (row + shiftRows < 0 || row + shiftRows > m_image.height() - 1)
+						{
+							continue;
+						}
+
 						for (int col = imageBlock.left; col < imageBlock.right; ++col)
 						{
-							int idx = row * m_image.width() + col;
-							int compareIdx = (row + shiftRows) * m_image.width() + (col + shiftCols);
-							int blockIdx = (row - imageBlock.bottom) * imageBlock.width() + (col - imageBlock.left);
-							if (row + shiftRows < 0
-								|| col + shiftCols < 0
-								|| row + shiftRows > m_image.height() - 1
+							if (col + shiftCols < 0
 								|| col + shiftCols > m_image.width() - 1)
 							{
-								distanceImage[c][blockIdx] = 0.0f;
+								continue;
 							}
-							else
-							{
-								distanceImage[c][blockIdx] = std::pow(m_image.getPixel(c, idx) - m_image.getPixel(c, compareIdx), norm);
-							}
+
+							index_t idx = row * m_image.width() + col;
+							index_t compareIdx = (row + shiftRows) * m_image.width() + (col + shiftCols);
+							index_t blockIdx = (row - imageBlock.bottom) * imageBlock.width() + (col - imageBlock.left);
+
+							distanceImage[c][blockIdx] = std::pow(m_image.getPixel(c, idx) - m_image.getPixel(c, compareIdx), norm);
 						}
 					}
 				}
 
 				//B. Compute Integral Image
-				for (size_t c = 0; c < numChannelsToUse; ++c)
+				for (index_t c = 0; c < numChannelsToUse; ++c)
 				{
 					computeIntegralImage(distanceImage[c], imageBlock, integralImage[c]);
 				}
@@ -86,22 +88,30 @@ namespace Denoise
 				//C. Evaluate Patch Distances
 				for (int row = imageBlock.bottom + 1; row < imageBlock.top - templatePatch.height; row += stepSizeRows)
 				{
+					if (row + shiftRows < 0)
+					{
+						continue;
+					}
+
+					if (row + shiftRows >= m_image.height() - templatePatch.height)
+					{
+						continue;
+					}
+
 					for (int col = imageBlock.left + 1; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
 					{
-						if (row + shiftRows < 0
-							|| col + shiftCols < 0)
+						if (col + shiftCols < 0)
 						{
 							continue;
 						}
 
-						if (row + shiftRows >= m_image.height() - templatePatch.height
-							|| col + shiftCols >= m_image.width() - templatePatch.width)
+						if (col + shiftCols >= m_image.width() - templatePatch.width)
 						{
 							continue;
 						}
 
 						double distance = 0.0;
-						for (size_t c = 0; c < numChannelsToUse; ++c)
+						for (index_t c = 0; c < numChannelsToUse; ++c)
 						{
 							distance += patchDistanceIntegralImage(integralImage[c],
 								templatePatch, imageBlock, IDX2(row - imageBlock.bottom, col - imageBlock.left));
@@ -160,8 +170,8 @@ namespace Denoise
 	}
 
 	void ImageBlockProcessor::computeNMostSimilarNaive(std::vector<IDX2>& matchedBlocks, const IDX2& position, const ImagePatch& templatePatch,
-		size_t windowSizeRows, size_t windowSizeCols,
-		size_t maxSimilar, float maxDistance, int norm)
+		index_t windowSizeRows, index_t windowSizeCols,
+		index_t maxSimilar, float maxDistance, int norm)
 	{
 		//do block matching
 		int halfWindowSizeRows = windowSizeRows / 2;

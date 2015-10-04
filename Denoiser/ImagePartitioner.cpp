@@ -14,12 +14,12 @@ namespace Denoise
 		m_segments.clear();
 	}
 
-	void ImagePartitioner::createPartitionScanlines(size_t numSegments)
+	void ImagePartitioner::createPartitionScanlines(index_t numSegments)
 	{
 
 	}
 
-	void ImagePartitioner::createPartitionRectangles(size_t numSegments)
+	void ImagePartitioner::createPartitionRectangles(index_t numSegments)
 	{
 
 	}

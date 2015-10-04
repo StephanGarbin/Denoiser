@@ -138,6 +138,8 @@ int main(int argc, char* argv[])
 	bm3dFilterSettings.stepSizeRows = 3;
 	bm3dFilterSettings.usePatchWeighting = false;
 	bm3dFilterSettings.stdDeviation = stdDeviation;
+	bm3dFilterSettings.averageBlocksBasedOnStd = true;
+	bm3dFilterSettings.averageBlocksBasedOnStdFactor = 10.0f;
 
 	bm3dFilter.process(bm3dFilterSettings, true);
 
@@ -169,9 +171,9 @@ void loadImage(Denoise::Image** image, const std::string& fileName)
 	Denoise::Dimension dim(width, height);
 	*image = new Denoise::Image(dim, Denoise::Image::FLOAT_4);
 
-	for (size_t i = 0; i < rawImage.size(); i+=4)
+	for (index_t i = 0; i < rawImage.size(); i+=4)
 	{
-		for (size_t c = 0; c < 4; ++c)
+		for (index_t c = 0; c < 4; ++c)
 		{
 			(*image)->setPixel(c, i / 4, (float)rawImage[i + c]);
 		}
@@ -185,13 +187,13 @@ void saveImage(Denoise::Image* image, const std::string& fileName)
 	std::vector<unsigned char> rawImage;
 	rawImage.resize(image->width() * image->height() * 4);
 
-	for (size_t row = 0; row < image->height(); ++row)
+	for (index_t row = 0; row < image->height(); ++row)
 	{
-		for (size_t col = 0; col < image->width(); ++col)
+		for (index_t col = 0; col < image->width(); ++col)
 		{
-			for (size_t c = 0; c < 4; ++c)
+			for (index_t c = 0; c < 4; ++c)
 			{
-				size_t i = (row * image->width() + col) * 4;
+				index_t i = (row * image->width() + col) * 4;
 
 				rawImage[i + c] = (unsigned char)image->getPixel(c, row, col);
 			}

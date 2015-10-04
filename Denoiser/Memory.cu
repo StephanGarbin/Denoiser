@@ -3,7 +3,7 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
-bool allocateCUDAFloatBuffer(float* ptr, float** dev_ptr, size_t numFloats)
+bool allocateCUDAFloatBuffer(float* ptr, float** dev_ptr, index_t numFloats)
 {
 	cudaError_t deviceStatus;
 
@@ -35,7 +35,7 @@ bool freeCUDAFloatBuffer(float* dev_ptr)
 	}
 }
 
-bool copyMem2Device(float* dev_ptr, float* ptr, size_t numFloats)
+bool copyMem2Device(float* dev_ptr, float* ptr, index_t numFloats)
 {
 	cudaError_t deviceStatus;
 
@@ -51,7 +51,7 @@ bool copyMem2Device(float* dev_ptr, float* ptr, size_t numFloats)
 	}
 }
 
-bool copyMemFromDevice(float* ptr, float* dev_ptr, size_t numFloats)
+bool copyMemFromDevice(float* ptr, float* dev_ptr, index_t numFloats)
 {
 	cudaError_t deviceStatus;
 

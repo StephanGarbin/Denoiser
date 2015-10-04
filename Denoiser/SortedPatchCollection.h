@@ -1,5 +1,6 @@
 #pragma once
 #include "IDX2.h"
+#include "common.h"
 
 #include <vector>
 #include <list>
@@ -10,7 +11,7 @@ namespace Denoise
 	{
 	public:
 		SortedPatchCollection();
-		SortedPatchCollection(size_t maxNumPatches);
+		SortedPatchCollection(index_t maxNumPatches);
 		~SortedPatchCollection();
 
 		void insertPatch(const IDX2& patch);
@@ -19,7 +20,7 @@ namespace Denoise
 
 	private:
 
-		void initialise(size_t maxNumPatches);
+		void initialise(index_t maxNumPatches);
 
 		std::vector<IDX2> m_patches;
 	};

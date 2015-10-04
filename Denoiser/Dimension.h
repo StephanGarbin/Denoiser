@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common.h"
+
 namespace Denoise
 {
 	struct Dimension
@@ -10,13 +12,13 @@ namespace Denoise
 			height = 0;
 		}
 
-		Dimension(size_t Width, size_t Height)
+		Dimension(index_t Width, index_t Height)
 		{
 			width = Width;
 			height = Height;
 		}
 
-		size_t width;
-		size_t height;
+		index_t width;
+		index_t height;
 	};
 }

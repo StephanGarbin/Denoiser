@@ -8,6 +8,7 @@
 #include "ImagePatch.h"
 #include "IDX2.h"
 #include "Rectangle.h"
+#include "common.h"
 
 namespace Denoise
 {
@@ -18,16 +19,16 @@ namespace Denoise
 		~ImageBlockProcessor();
 
 		void computeNMostSimilar(const ImagePatch& templatePatch, const Rectangle& imageBlock,
-			size_t stepSizeRows, size_t stepSizeCols,
-			size_t windowSizeRows, size_t windowSizeCols,
-			size_t maxSimilar, float maxDistance,
+			index_t stepSizeRows, index_t stepSizeCols,
+			index_t windowSizeRows, index_t windowSizeCols,
+			index_t maxSimilar, float maxDistance,
 			int norm,
 			std::vector<std::vector<IDX2> >& matchedBlocks,
-			size_t numChannelsToUse);
+			index_t numChannelsToUse);
 
 		void computeNMostSimilarNaive(std::vector<IDX2>& matchedBlocks, const IDX2& position, const ImagePatch& templatePatch,
-			size_t windowSizeRows, size_t windowSizeCols,
-			size_t maxSimilar, float maxDistance, int norm);
+			index_t windowSizeRows, index_t windowSizeCols,
+			index_t maxSimilar, float maxDistance, int norm);
 
 	private:
 		Image& m_image;

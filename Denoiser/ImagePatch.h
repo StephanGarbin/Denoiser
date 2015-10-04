@@ -1,9 +1,10 @@
 #pragma once
 
+#include "common.h"
 
 struct ImagePatch
 {
-	ImagePatch(size_t Col, size_t Row, size_t Width, size_t Height)
+	ImagePatch(index_t Col, index_t Row, index_t Width, index_t Height)
 	{
 		col = Col;
 		row = Row;
@@ -21,10 +22,10 @@ struct ImagePatch
 		data = nullptr;
 	}
 
-	size_t col;
-	size_t row;
-	size_t width;
-	size_t height;
+	index_t col;
+	index_t row;
+	index_t width;
+	index_t height;
 
 	float * data;
 };

@@ -59,7 +59,7 @@ void hardThreshold(float* block, float stdDeviation)
 	{
 		if (std::abs(block[i]) <= stdDeviation * 2.7)
 		{
-			block[i] = 0.0;
+			block[i] = 0.0f;
 		}
 	}
 }
@@ -134,7 +134,7 @@ void normaliseDCT(float* block, bool inverse)
 	int patchSize = 8;
 	int numPatches = 32;
 
-	float multFactor = 0.5 / (float)(patchSize);
+	float multFactor = 0.5f / (float)(patchSize);
 
 	for (int p = 0; p < numPatches; ++p)
 	{
@@ -149,33 +149,33 @@ void normaliseDCT(float* block, bool inverse)
 				{
 					if (inverse)
 					{
-						block[idx] *= 0.5 * multFactor;
+						block[idx] *= 0.5f * multFactor;
 					}
 					else
 					{
-						block[idx] *= 2.0;
+						block[idx] *= 2.0f;
 					}
 				}
 				else if (row * col == 0)
 				{
 					if (inverse)
 					{
-						block[idx] *= 0.7071067811865475 * multFactor;
+						block[idx] *= 0.7071067811865475f * multFactor;
 					}
 					else
 					{
-						block[idx] *= 1.414213562373095;
+						block[idx] *= 1.414213562373095f;
 					}
 				}
 				else
 				{
 					if (inverse)
 					{
-						block[idx] *= 1.0 * multFactor;
+						block[idx] *= 1.0f * multFactor;
 					}
 					else
 					{
-						block[idx] *= 1.0;
+						block[idx] *= 1.0f;
 					}
 				}
 			}
