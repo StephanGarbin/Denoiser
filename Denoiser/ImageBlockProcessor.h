@@ -35,7 +35,7 @@ namespace Denoise
 		inline double patchDistanceIntegralImage(const std::vector<double>& integralImage, const ImagePatch& templatePatch,
 			const Rectangle& imageBlock, const IDX2& position);
 
-		void computeIntegralImage(const std::vector<double>& pixels, const Rectangle& imageBlock,
+		void computeIntegralImage(const std::vector<float>& pixels, const Rectangle& imageBlock,
 			std::vector<double>& integralImage);
 	};
 

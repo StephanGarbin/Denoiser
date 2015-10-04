@@ -4,6 +4,7 @@
 #include "BM3DSettings.h"
 #include "IDX2.h"
 #include "BufferAggregator.h"
+#include "Rectangle.h"
 
 namespace Denoise
 {

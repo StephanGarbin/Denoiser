@@ -39,7 +39,7 @@ namespace Denoise
 		int halfWindowSizeCols = windowSizeCols / 2;
 
 		//Compute in double precision to avoid round-off errors for large images
-		std::vector<std::vector<double> > distanceImage(numChannelsToUse);
+		std::vector<std::vector<float> > distanceImage(numChannelsToUse);
 		std::vector<std::vector<double> > integralImage(numChannelsToUse);
 
 		for (size_t c = 0; c < numChannelsToUse; ++c)
@@ -71,7 +71,7 @@ namespace Denoise
 							}
 							else
 							{
-								distanceImage[c][blockIdx] = std::pow((double)m_image.getPixel(c, idx) - (double)m_image.getPixel(c, compareIdx), norm);
+								distanceImage[c][blockIdx] = std::pow(m_image.getPixel(c, idx) - m_image.getPixel(c, compareIdx), norm);
 							}
 						}
 					}
@@ -111,7 +111,7 @@ namespace Denoise
 
 						if (distance <= (double)maxDistance)
 						{
-							matchedBlocksSorted[((row - imageBlock.bottom) / stepSizeRows) * (imageBlock.width() / stepSizeCols) + (col - imageBlock.left) / stepSizeCols].insertPatch32(
+							matchedBlocksSorted[((row - imageBlock.bottom) / stepSizeRows) * (imageBlock.width() / stepSizeCols) + (col - imageBlock.left) / stepSizeCols].insertPatch(
 								IDX2(row + shiftRows, col + shiftCols, distance));
 						}
 					}
@@ -136,20 +136,20 @@ namespace Denoise
 		matchedBlocksSorted.clear();
 	}
 
-	void ImageBlockProcessor::computeIntegralImage(const std::vector<double>& pixels, const Rectangle& imageBlock,
+	void ImageBlockProcessor::computeIntegralImage(const std::vector<float>& pixels, const Rectangle& imageBlock,
 		std::vector<double>& integralImage)
 	{
 		//see e.g. http://www.ipol.im/pub/art/2014/57/article.pdf for details on this recurrence-relation
-		integralImage[0] = pixels[0];
+		integralImage[0] = (double)pixels[0];
 
 		for (int col = std::max(imageBlock.left - 1, 1); col < imageBlock.width(); ++col)
 		{
-			integralImage[col] = integralImage[col - 1] + pixels[col];
+			integralImage[col] = integralImage[col - 1] + (double)pixels[col];
 		}
 
 		for (int row = std::max(imageBlock.bottom - 1, 1); row < imageBlock.height(); ++row)
 		{
-			long double s = pixels[row * imageBlock.width()];
+			long double s = (double)pixels[row * imageBlock.width()];
 			integralImage[row * imageBlock.width()] = integralImage[(row - 1) * imageBlock.width()] + s;
 			for (int col = 1; col < imageBlock.width(); ++col)
 			{
@@ -187,7 +187,7 @@ namespace Denoise
 
 				if (distance < maxDistance)
 				{
-					foundMatches.insertPatch32(IDX2(currentPatch.row, currentPatch.col, distance));
+					foundMatches.insertPatch(IDX2(currentPatch.row, currentPatch.col, distance));
 					//matchedBlocks.push_back(IDX2(currentPatch.row, currentPatch.col, distance));
 				}
 			}

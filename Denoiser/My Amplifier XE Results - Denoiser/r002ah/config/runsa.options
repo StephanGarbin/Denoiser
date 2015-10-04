@@ -1,0 +1,103 @@
+-r
+S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\My Amplifier XE Results - Denoiser\r002ah
+--itt-config=frame
+--data-limit-mb=500
+--event-config=CPU_CLK_UNHALTED.THREAD:sa=3200000,CPU_CLK_UNHALTED.REF_TSC:sa=3200000,INST_RETIRED.ANY:sa=3200000
+--sample-after-multiplier=1.0
+--event-mux
+--mrte-mode=native
+--search-dir
+sym=S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release
+--search-dir
+sym=S:\Users\Stephan\Documents\GitHub\Denoiser
+--search-dir
+bin=S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release
+--search-dir
+bin=S:\Users\Stephan\Documents\GitHub\Denoiser
+--search-dir
+bin=S:/Users\Stephan\Documents\GitHub\Denoiser\Denoiser\$(VC_ExecutablePath_x64)
+--search-dir
+bin=S:/Users\Stephan\Documents\GitHub\Denoiser\Denoiser\$(WindowsSDK_ExecutablePath)
+--search-dir
+bin=S:/Users\Stephan\Documents\GitHub\Denoiser\Denoiser\$(VS_ExecutablePath)
+--search-dir
+bin=S:/Users\Stephan\Documents\GitHub\Denoiser\Denoiser\$(MSBuild_ExecutablePath)
+--search-dir
+bin=C:\Program Files (x86)\Microsoft Visual Studio 12.0\Team Tools\Static Analysis Tools\FxCop
+--search-dir
+bin=C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\NativeBinaries\x86
+--search-dir
+bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\mpirt
+--search-dir
+bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32\mpirt
+--search-dir
+bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler
+--search-dir
+bin=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32\compiler
+--search-dir
+bin=S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin
+--search-dir
+bin=S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\libnvvp
+--search-dir
+bin=C:\Windows\system32
+--search-dir
+bin=C:\Windows
+--search-dir
+bin=C:\Windows\System32\Wbem
+--search-dir
+bin=C:\Program Files\Common Files\Autodesk Shared
+--search-dir
+bin=C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn
+--search-dir
+bin=C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0
+--search-dir
+bin=C:\Program Files\Microsoft SQL Server\110\Tools\Binn
+--search-dir
+bin=C:\Qt\4.8.2-x64
+--search-dir
+bin=C:\strawberry\c\bin
+--search-dir
+bin=C:\strawberry\perl\site\bin
+--search-dir
+bin=C:\strawberry\perl\bin
+--search-dir
+bin=C:\Program Files\Java\jdk1.7.0_03\bin
+--search-dir
+bin=S:\Qt\Qt5.1.0\5.1.0\msvc2012_64_opengl\bin
+--search-dir
+bin=S:\Peregrin Labs\Yeti_v1.2.16_Maya2014
+--search-dir
+bin=C:\Program Files\Java\jdk1.7.0_25
+--search-dir
+bin=S:\Program Files\MATLAB\R2013b\runtime\win64
+--search-dir
+bin=S:\Program Files\MATLAB\R2013b\bin
+--search-dir
+bin=S:\Qt\Qt5.1.0\5.1.0\msvc2012_64_opengl\include
+--search-dir
+bin=C:\Program Files (x86)\Git\cmd
+--search-dir
+bin=C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit
+--search-dir
+bin=C:\Program Files\Microsoft\Web Platform Installer
+--search-dir
+bin=C:\Windows\System32\WindowsPowerShell\v1.0
+--search-dir
+bin=S:\Pro
+--search-dir
+bin=S:\Program Files (x86)\MiddleVR\bin
+--search-dir
+bin=S:\Program Files (x86)\MiddleVR\bin64
+--search-dir
+bin=S:\TOOLS\zlib\bin
+--search-dir
+bin=C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common
+--search-dir
+bin=C:\Program Files (x86)\QuickTime\QTSystem
+--search-dir
+bin=C:\Program Files\MiKTeX 2.9\miktex\bin\x64
+--search-dir
+bin=C:\TOOLS\zlib\lib
+--
+S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe
+4

@@ -34,8 +34,11 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
 	//std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/llama_padded.png";
-	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees2.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew2b.png";
+	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees2.png";
+	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew2b.png";
+
+	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
+	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
@@ -131,8 +134,8 @@ int main(int argc, char* argv[])
 	bm3dFilterSettings.numPatchesPerBlock = 32;
 	bm3dFilterSettings.patchSize = 8;
 	bm3dFilterSettings.searchWindowSize = 30;
-	bm3dFilterSettings.stepSizeCols = 4;
-	bm3dFilterSettings.stepSizeRows = 4;
+	bm3dFilterSettings.stepSizeCols = 3;
+	bm3dFilterSettings.stepSizeRows = 3;
 	bm3dFilterSettings.usePatchWeighting = false;
 	bm3dFilterSettings.stdDeviation = stdDeviation;
 
