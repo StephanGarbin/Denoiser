@@ -413,6 +413,9 @@ namespace Denoise
 			{
 				break;
 			}
+
+			//std::cout << "row = " << patches[p].row << "col = " << patches[p].col << "; ";
+
 			for (size_t row = 0; row <patchTemplate.height; ++row)
 			{
 				for (size_t col = 0; col < patchTemplate.width; ++col)
@@ -423,6 +426,8 @@ namespace Denoise
 			}
 			++numValidPatches;
 		}
+
+		//std::cout << std::endl;
 	}
 
 	void Image::cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,

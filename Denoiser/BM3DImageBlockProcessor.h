@@ -15,7 +15,14 @@ namespace Denoise
 
 		void process(const BM3DSettings& settings, bool processMatching = true);
 
+		friend void bm3dCollaborativeKernel(BM3DImageBlockProcessor* processor, size_t threadIdx, const Rectangle& region);
+		friend void bm3dWienerKernel(BM3DImageBlockProcessor* processor, size_t threadIdx, const Rectangle& region);
+
 	private:
+
+		void processCollaborativeFilter();
+		void processWienerFilter();
+
 		Image* m_image;
 		Image* m_imageResult;
 		BM3DSettings m_settings;

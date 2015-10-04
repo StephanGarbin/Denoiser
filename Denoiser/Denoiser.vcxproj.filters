@@ -48,6 +48,9 @@
     <ClCompile Include="ImagePartitioner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BM3DParallelFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Image.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImagePartitioner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BM3DParallelFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -101,9 +101,9 @@ namespace Denoise
 		//set result image
 		for (size_t channel = 0; channel < 3; ++channel)
 		{
-			for (size_t row = 0; row < m_image->height(); row += m_settings.stepSizeRows)
+			for (size_t row = 0; row < m_image->height(); row += 1)
 			{
-				for (size_t col = 0; col < m_image->width(); col += m_settings.stepSizeCols)
+				for (size_t col = 0; col < m_image->width(); col += 1)
 				{
 					m_imageResult->setPixel(channel, row, col, m_buffer.getValueResult(channel, row, col));
 				}
@@ -111,6 +111,16 @@ namespace Denoise
 		}
 
 		delete[] rawImageBlock;
+	}
+
+	void BM3DImageBlockProcessor::processCollaborativeFilter()
+	{
+
+	}
+
+	void BM3DImageBlockProcessor::processWienerFilter()
+	{
+
 	}
 }
 

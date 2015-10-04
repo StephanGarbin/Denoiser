@@ -88,8 +88,8 @@ namespace Denoise
 				{
 					for (int col = imageBlock.left + 1; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
 					{
-						if (row  + shiftRows < 0
-							|| col  + shiftCols < 0)
+						if (row + shiftRows < 0
+							|| col + shiftCols < 0)
 						{
 							continue;
 						}
@@ -124,9 +124,9 @@ namespace Denoise
 
 		matchedBlocks.resize((m_image.width() / stepSizeCols) * (m_image.height() / stepSizeRows));
 
-		for (int row = imageBlock.bottom; row < imageBlock.top; row += stepSizeRows)
+		for (int row = imageBlock.bottom + 1; row < imageBlock.top - templatePatch.height; row += stepSizeRows)
 		{
-			for (int col = imageBlock.left; col < imageBlock.right; col += stepSizeCols)
+			for (int col = imageBlock.left + 1; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
 			{
 				matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)] =
 					matchedBlocksSorted[((row - imageBlock.bottom) / stepSizeRows) * (imageBlock.width() / stepSizeCols) + (col - imageBlock.left) / stepSizeCols].getPatches();

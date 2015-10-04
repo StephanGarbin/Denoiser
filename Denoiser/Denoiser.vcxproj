@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BM3DImageBlockProcessor.cpp" />
+    <ClCompile Include="BM3DParallelFunctions.cpp" />
     <ClCompile Include="BufferAggregator.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageBlockProcessor.cpp" />
@@ -173,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BM3DImageBlockProcessor.h" />
+    <ClInclude Include="BM3DParallelFunctions.h" />
     <ClInclude Include="BM3DSettings.h" />
     <ClInclude Include="BufferAggregator.h" />
     <ClInclude Include="common.h" />
