@@ -63,6 +63,7 @@ namespace Denoise
 		}
 
 		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock];
+		std::vector<float> weights(m_settings.numPatchesPerBlock);
 
 		//2. Process Blocks
 		for (index_t channel = 0; channel < 3; ++channel)
@@ -77,22 +78,32 @@ namespace Denoise
 
 					m_image->cpy2Block3d(m_matchedBlocks[machtedBlockIdx], rawImageBlock, patchTemplate, channel, numValidPatches);
 
+					if (numValidPatches < m_settings.numPatchesPerBlock)
+					{
+						continue;
+					}
+
 					if (m_settings.averageBlocksBasedOnStd)
 					{
-						if (calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize) < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
+						float blockStd = calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
+						//std::cout << blockStd << std::endl;
+						if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
 						{
 							setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
+							for (int i = 0; i < weights.size(); ++i)
+							{
+								weights[i] = 1.0f;
+							}
 						}
 						else
 						{
-							bm3dDEBUG(rawImageBlock, settings.stdDeviation);
+							bm3dDEBUG(rawImageBlock, settings.stdDeviation, m_settings.patchSize, numValidPatches, weights);
 						}
 					}
 					else
 					{
-						bm3dDEBUG(rawImageBlock, settings.stdDeviation);
+						bm3dDEBUG(rawImageBlock, settings.stdDeviation, m_settings.patchSize, numValidPatches, weights);
 					}
-					double weight = 1.0f;
 
 					for (index_t depth = 0; depth < numValidPatches; ++depth)
 					{
@@ -105,7 +116,7 @@ namespace Denoise
 									rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol]);
 
 								m_buffer.addValueDenominator(channel, m_matchedBlocks[machtedBlockIdx][depth].row + patchRow,
-									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol, weight);
+									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol, 1.0f);
 							}
 						}
 					}

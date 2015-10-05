@@ -32,7 +32,12 @@ namespace Denoise
 		std::vector<SortedPatchCollection> matchedBlocksSorted;
 
 		//we only allocate as many blocks as we need
-		matchedBlocksSorted.resize((imageBlock.width() / stepSizeCols) * (imageBlock.height() / stepSizeRows));
+		for (index_t i = 0; i < (imageBlock.width() / stepSizeCols) * (imageBlock.height() / stepSizeRows); ++i)
+		{
+			matchedBlocksSorted.push_back(SortedPatchCollection(maxSimilar));
+
+		}
+		//matchedBlocksSorted.resize((imageBlock.width() / stepSizeCols) * (imageBlock.height() / stepSizeRows));
 
 		//do block matching
 		int halfWindowSizeRows = windowSizeRows / 2;

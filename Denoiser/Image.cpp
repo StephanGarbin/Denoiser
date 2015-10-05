@@ -427,6 +427,39 @@ namespace Denoise
 			++numValidPatches;
 		}
 
+		if (numValidPatches < 32)
+		{
+			if (numValidPatches >= 16)
+			{
+				numValidPatches = 16;
+			}
+			else
+			{
+				if (numValidPatches >= 8)
+				{
+					numValidPatches = 8;
+				}
+				else
+				{
+					if (numValidPatches >= 4)
+					{
+						numValidPatches = 4;
+					}
+					else
+					{
+						if (numValidPatches >= 2)
+						{
+							numValidPatches = 2;
+						}
+						else
+						{
+							numValidPatches = 0;
+						}
+					}
+				}
+			}
+		}
+
 		//std::cout << std::endl;
 	}
 
