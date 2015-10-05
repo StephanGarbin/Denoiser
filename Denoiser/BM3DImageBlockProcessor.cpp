@@ -113,10 +113,10 @@ namespace Denoise
 							{
 								m_buffer.addValueNumerator(channel, m_matchedBlocks[machtedBlockIdx][depth].row + patchRow,
 									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol,
-									rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol]);
+									rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol] * weights[depth]);
 
 								m_buffer.addValueDenominator(channel, m_matchedBlocks[machtedBlockIdx][depth].row + patchRow,
-									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol, 1.0f);
+									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol, weights[depth]);
 							}
 						}
 					}
