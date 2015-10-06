@@ -185,9 +185,9 @@ namespace Denoise
 		ImagePatch refPatch;
 		refPatch.col = position.col;
 		refPatch.row = position.row;
-		refPatch.height = 6;
-		refPatch.width = 6;
-		SortedPatchCollection foundMatches;
+		refPatch.height = 8;
+		refPatch.width = 8;
+		SortedPatchCollection foundMatches(maxSimilar);
 
 		for (int shiftRows = -halfWindowSizeRows; shiftRows <= halfWindowSizeRows; ++shiftRows)
 		{
@@ -196,24 +196,26 @@ namespace Denoise
 				ImagePatch currentPatch;
 				currentPatch.col = position.col + shiftCols;
 				currentPatch.row = position.row + shiftRows;
-				currentPatch.height = 6;
-				currentPatch.width = 6;
-				float distance = m_image.blockMatch_Naive(refPatch, currentPatch, 0, 2);
+				currentPatch.height = 8;
+				currentPatch.width = 8;
+				float distance = (m_image.blockMatch_Naive(refPatch, currentPatch, 0, 2)
+					+ m_image.blockMatch_Naive(refPatch, currentPatch, 1, 2)
+					+ m_image.blockMatch_Naive(refPatch, currentPatch, 2, 2)) / 3.0f;
 
-				if (distance < maxDistance)
+				if (distance <= maxDistance)
 				{
-					foundMatches.insertPatch(IDX2(currentPatch.row, currentPatch.col, distance));
-					//matchedBlocks.push_back(IDX2(currentPatch.row, currentPatch.col, distance));
+					//foundMatches.insertPatch(IDX2(currentPatch.row, currentPatch.col, distance));
+					matchedBlocks.push_back(IDX2(currentPatch.row, currentPatch.col, distance));
 				}
 			}
 		}
 
-		//std::sort(matchedBlocks.begin(), matchedBlocks.end());
-		//if (matchedBlocks.size() > 32)
-		//{
-		//	matchedBlocks.erase(matchedBlocks.begin() + 32, matchedBlocks.end());
-		//}
-		matchedBlocks = foundMatches.getPatches();
+		std::sort(matchedBlocks.begin(), matchedBlocks.end());
+		if (matchedBlocks.size() > maxSimilar)
+		{
+			matchedBlocks.erase(matchedBlocks.begin() + maxSimilar, matchedBlocks.end());
+		}
+		//matchedBlocks = foundMatches.getPatches();
 	}
 
 }

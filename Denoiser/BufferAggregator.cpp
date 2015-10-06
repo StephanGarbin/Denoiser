@@ -1,5 +1,7 @@
 #include "BufferAggregator.h"
 
+#include <iostream>
+
 namespace Denoise
 {
 
@@ -43,6 +45,10 @@ namespace Denoise
 				}
 				else
 				{
+					if (m_numerator[c][i] != 0)
+					{
+						std::cout << "Denominator 0!" << std::endl;
+					}
 					m_numerator[c][i] = 0.0f;
 				}
 			}

@@ -60,6 +60,32 @@ namespace Denoise
 			std::cout << "Finished Block Matching..." << std::endl;
 			tbb::tick_count end = tbb::tick_count::now();
 			std::cout << "Time: " << (end - start).seconds() << "s." << std::endl;
+
+			/*{
+				IDX2 position;
+				position.col = 151;
+				position.row = 151;
+				position.distance = 0.0f;
+
+				std::vector<IDX2> matchedBlocksReference;
+				blockProcessor.computeNMostSimilarNaive(matchedBlocksReference, position, patchTemplate, m_settings.searchWindowSize,
+					m_settings.searchWindowSize, m_settings.numPatchesPerBlock, m_settings.maxAllowedPatchDistance, 2);
+
+				std::cout << "Reference Patch Match: " << matchedBlocksReference.size() << std::endl;
+				for (index_t i = 0; i < matchedBlocksReference.size(); ++i)
+				{
+					std::cout << matchedBlocksReference[i].row << ", " << matchedBlocksReference[i].col << ", " << matchedBlocksReference[i].distance << "; ";
+				}
+				std::cout << std::endl;
+
+				index_t r = (m_image->width() / m_settings.stepSizeCols) * 50 + 50;
+				std::cout << "Block Match Result: " << m_matchedBlocks[r].size() << std::endl;
+				for (index_t i = 0; i < m_matchedBlocks[r].size(); ++i)
+				{
+					std::cout << m_matchedBlocks[r][i].row << ", " << m_matchedBlocks[r][i].col << ", " << m_matchedBlocks[r][i].distance << "; ";
+				}
+				std::cout << std::endl;
+			}*/
 		}
 
 		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock];
@@ -68,25 +94,20 @@ namespace Denoise
 		//2. Process Blocks
 		for (index_t channel = 0; channel < 3; ++channel)
 		{
-			for (index_t row = 1; row < m_image->height() - m_settings.patchSize; row += m_settings.stepSizeRows)
+			for (index_t row = 1 + 30; row < m_image->height() - m_settings.patchSize - 30; row += m_settings.stepSizeRows)
 			{
-				for (index_t col = 1; col < m_image->width() - m_settings.patchSize; col += m_settings.stepSizeCols)
+				for (index_t col = 1 + 30; col < m_image->width() - m_settings.patchSize - 30; col += m_settings.stepSizeCols)
 				{
 					index_t numValidPatches;
 
 					index_t machtedBlockIdx = (row / m_settings.stepSizeRows) * (matchRegion.width() / m_settings.stepSizeCols) + col / m_settings.stepSizeCols;
-
+					
 					m_image->cpy2Block3d(m_matchedBlocks[machtedBlockIdx], rawImageBlock, patchTemplate, channel, numValidPatches);
-
-					if (numValidPatches < m_settings.numPatchesPerBlock)
-					{
-						continue;
-					}
 
 					if (m_settings.averageBlocksBasedOnStd)
 					{
 						float blockStd = calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
-						//std::cout << blockStd << std::endl;
+						
 						if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
 						{
 							setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);

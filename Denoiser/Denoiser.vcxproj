@@ -161,6 +161,7 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BM3DCollaborativeFilterKernel.cpp" />
     <ClCompile Include="BM3DImageBlockProcessor.cpp" />
     <ClCompile Include="BM3DParallelFunctions.cpp" />
     <ClCompile Include="BufferAggregator.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="Statistics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BM3DCollaborativeFilterKernel.h" />
     <ClInclude Include="BM3DImageBlockProcessor.h" />
     <ClInclude Include="BM3DParallelFunctions.h" />
     <ClInclude Include="BM3DSettings.h" />
@@ -193,6 +195,7 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="SortedPatchCollection.h" />
     <ClInclude Include="Statistics.h" />
+    <ClInclude Include="Transforms.h" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="BlockMatching.cu" />
