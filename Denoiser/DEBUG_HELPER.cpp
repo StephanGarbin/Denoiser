@@ -5,7 +5,7 @@ namespace Denoise
 
 	/* The gateway function */
 	void bm3dDEBUG(float* block, float stdDeviation, index_t patchSize, index_t numPatches,
-		std::vector<float>& weights)
+		float& weight)
 	{
 		std::vector<float> fwhtMem;
 		fwhtMem.resize(128);
@@ -19,55 +19,53 @@ namespace Denoise
 
 		normaliseDCT_NEW(block, patchSize, numPatches, false);
 
-		for (index_t i = 0; i < sqr(patchSize); ++i)
-		{
-			cfwht(block, 0, numPatches, numPatches, i, fwhtMem, sqr(patchSize));
-		}
-		hardThreshold(block, stdDeviation, patchSize, numPatches, weights);
-		for (int i = 0; i < sqr(patchSize); ++i)
-		{
-			cfwht(block, 0, numPatches, numPatches, i, fwhtMem, sqr(patchSize));
-		}
-		for (int i = 0; i < totalSize; ++i)
-		{
-			block[i] /= (float)numPatches;
-		}
-
-		//std::vector<float> blockVector(totalSize);
-		//for (index_t d = 0; d < numPatches; ++d)
+		//for (index_t i = 0; i < sqr(patchSize); ++i)
 		//{
-		//	for (index_t row = 0; row < patchSize; ++row)
-		//	{
-		//		for (index_t col = 0; col < patchSize; ++col)
-		//		{
-		//			index_t inputIdx = d * sqr(patchSize) + row * patchSize + col;
-		//			index_t remappedIdx = (row * patchSize + col) * numPatches + d;
-		//			blockVector[remappedIdx] = block[inputIdx];
-		//		}
-		//	}
+		//	cfwht(block, 0, numPatches, numPatches, i, fwhtMem, sqr(patchSize));
 		//}
-		//std::vector<float> cache(100);
-		//std::vector<float> sigmaVector;
-		//sigmaVector.push_back(stdDeviation);
-		//ht_filtering_hadamard(blockVector, cache, numPatches, patchSize, 1, sigmaVector, 2.7f, weights, true);
-		//
-		//for (index_t d = 0; d < numPatches; ++d)
+		//hardThreshold(block, stdDeviation, patchSize, numPatches, weights);
+		//for (int i = 0; i < sqr(patchSize); ++i)
 		//{
-		//	for (index_t row = 0; row < patchSize; ++row)
-		//	{
-		//		for (index_t col = 0; col < patchSize; ++col)
-		//		{
-		//			index_t inputIdx = d * sqr(patchSize) + row * patchSize + col;
-		//			index_t remappedIdx = (row * patchSize + col) * numPatches + d;
-		//			block[inputIdx] = blockVector[remappedIdx];
-		//		}
-		//	}
+		//	cfwht(block, 0, numPatches, numPatches, i, fwhtMem, sqr(patchSize));
+		//}
+		//for (int i = 0; i < totalSize; ++i)
+		//{
+		//	block[i] /= (float)numPatches;
 		//}
 
-		for (index_t i = 1; i < weights.size(); ++i)
+		std::vector<float> blockVector(totalSize);
+		for (index_t d = 0; d < numPatches; ++d)
 		{
-			weights[i] = weights[0];
+			for (index_t row = 0; row < patchSize; ++row)
+			{
+				for (index_t col = 0; col < patchSize; ++col)
+				{
+					index_t inputIdx = d * sqr(patchSize) + row * patchSize + col;
+					index_t remappedIdx = (row * patchSize + col) * numPatches + d;
+					blockVector[remappedIdx] = block[inputIdx];
+				}
+			}
 		}
+		std::vector<float> cache(100);
+		std::vector<float> sigmaVector;
+		sigmaVector.push_back(stdDeviation);
+		std::vector<float> weights(3);
+		ht_filtering_hadamard(blockVector, cache, numPatches, patchSize, 1, sigmaVector, 2.7f, weights, true);
+		
+		for (index_t d = 0; d < numPatches; ++d)
+		{
+			for (index_t row = 0; row < patchSize; ++row)
+			{
+				for (index_t col = 0; col < patchSize; ++col)
+				{
+					index_t inputIdx = d * sqr(patchSize) + row * patchSize + col;
+					index_t remappedIdx = (row * patchSize + col) * numPatches + d;
+					block[inputIdx] = blockVector[remappedIdx];
+				}
+			}
+		}
+
+		weight = weights[0];
 
 		normaliseDCT_NEW(block, patchSize, numPatches, true);
 		inverseDctTransform(block, block, patchSize, numPatches);

@@ -14,7 +14,7 @@ namespace Denoise
 {
 
 	void hardThreshold(float* block, float stdDeviation, index_t patchSize, index_t numPatches,
-		std::vector<float>& weights);
+		float& weight);
 
 	void ht_filtering_hadamard(
 		std::vector<float> &group_3D
@@ -42,5 +42,5 @@ namespace Denoise
 		);
 
 	void bm3dDEBUG(float* block, float stdDeviation, index_t patchSize, index_t numPatches,
-		std::vector<float>& weights);
+		float& weight);
 }

@@ -35,7 +35,6 @@ namespace Denoise
 		m_settings = settings;
 
 		//1. Block Matching
-
 		ImagePatch patchTemplate(0, 0, m_settings.patchSize, m_settings.patchSize);
 		Rectangle matchRegion(0, m_image->width(), m_image->height(), 0);
 
@@ -61,94 +60,75 @@ namespace Denoise
 			std::cout << "Finished Block Matching..." << std::endl;
 			tbb::tick_count end = tbb::tick_count::now();
 			std::cout << "Time: " << (end - start).seconds() << "s." << std::endl;
-
-			/*{
-				IDX2 position;
-				position.col = 151;
-				position.row = 151;
-				position.distance = 0.0f;
-
-				std::vector<IDX2> matchedBlocksReference;
-				blockProcessor.computeNMostSimilarNaive(matchedBlocksReference, position, patchTemplate, m_settings.searchWindowSize,
-					m_settings.searchWindowSize, m_settings.numPatchesPerBlock, m_settings.maxAllowedPatchDistance, 2);
-
-				std::cout << "Reference Patch Match: " << matchedBlocksReference.size() << std::endl;
-				for (index_t i = 0; i < matchedBlocksReference.size(); ++i)
-				{
-					std::cout << matchedBlocksReference[i].row << ", " << matchedBlocksReference[i].col << ", " << matchedBlocksReference[i].distance << "; ";
-				}
-				std::cout << std::endl;
-
-				index_t r = (m_image->width() / m_settings.stepSizeCols) * 50 + 50;
-				std::cout << "Block Match Result: " << m_matchedBlocks[r].size() << std::endl;
-				for (index_t i = 0; i < m_matchedBlocks[r].size(); ++i)
-				{
-					std::cout << m_matchedBlocks[r][i].row << ", " << m_matchedBlocks[r][i].col << ", " << m_matchedBlocks[r][i].distance << "; ";
-				}
-				std::cout << std::endl;
-			}*/
 		}
 
 		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock];
 
 		BM3DCollaborativeFilterKernel collaborativeKernel(m_settings);
 
-		std::cout << "Processing Blocks..." << std::endl;
-
 		//2. Process Blocks
+		//for (index_t channel = 0; channel < 3; ++channel)
+		//{
+		//	for (index_t row = 0; row < m_image->height() - m_settings.patchSize; row += m_settings.stepSizeRows)
+		//	{
+		//		for (index_t col = 0; col < m_image->width() - m_settings.patchSize; col += m_settings.stepSizeCols)
+		//		{
+		//		}
+		//	}
+		//}
 		for (index_t channel = 0; channel < 3; ++channel)
 		{
-			for (index_t row = 1 + 30; row < m_image->height() - m_settings.patchSize - 30; row += m_settings.stepSizeRows)
+			for (index_t i = 0; i < m_matchedBlocks.size(); ++i)
 			{
-				for (index_t col = 1 + 30; col < m_image->width() - m_settings.patchSize - 30; col += m_settings.stepSizeCols)
+				index_t numValidPatches;
+				float weight = 0.0f;
+
+				m_image->cpy2Block3d(m_matchedBlocks[i], rawImageBlock, patchTemplate, channel, numValidPatches);
+
+				if (numValidPatches < 2)
 				{
-					index_t numValidPatches;
-					float weight;
+					continue;
+				}
 
-					index_t machtedBlockIdx = (row / m_settings.stepSizeRows) * (matchRegion.width() / m_settings.stepSizeCols) + col / m_settings.stepSizeCols;
-					
-					m_image->cpy2Block3d(m_matchedBlocks[machtedBlockIdx], rawImageBlock, patchTemplate, channel, numValidPatches);
+				if (m_settings.averageBlocksBasedOnStd)
+				{
+					float blockStd = calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
 
-					if (m_settings.averageBlocksBasedOnStd)
+					if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
 					{
-						float blockStd = calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
-						
-						if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
-						{
-							setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
+						setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
 
-							weight = 1.0f;
-						}
-						else
-						{
-							//bm3dDEBUG(rawImageBlock, settings.stdDeviation, m_settings.patchSize, numValidPatches, weights);
-							collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, weight, m_settings.stdDeviation);
-						}
+						weight = 1.0f;
 					}
 					else
 					{
-						//bm3dDEBUG(rawImageBlock, settings.stdDeviation, m_settings.patchSize, numValidPatches, weights);
 						collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, weight, m_settings.stdDeviation);
 					}
+				}
+				else
+				{
+					bm3dDEBUG(rawImageBlock, m_settings.stdDeviation, m_settings.patchSize, numValidPatches, weight);
+					//collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, weight, m_settings.stdDeviation);
+				}
 
-					for (index_t depth = 0; depth < numValidPatches; ++depth)
+				for (index_t depth = 0; depth < numValidPatches; ++depth)
+				{
+					for (index_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
 					{
-						for (index_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
+						for (index_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
 						{
-							for (index_t patchCol = 0; patchCol < patchTemplate.width; ++patchCol)
-							{
-								m_buffer.addValueNumerator(channel, m_matchedBlocks[machtedBlockIdx][depth].row + patchRow,
-									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol,
-									rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol] * weight);
+							m_buffer.addValueNumerator(channel, m_matchedBlocks[i][depth].row + patchRow,
+								m_matchedBlocks[i][depth].col + patchCol,
+								rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol] * weight);
 
-								m_buffer.addValueDenominator(channel, m_matchedBlocks[machtedBlockIdx][depth].row + patchRow,
-									m_matchedBlocks[machtedBlockIdx][depth].col + patchCol, weight);
-							}
+							m_buffer.addValueDenominator(channel, m_matchedBlocks[i][depth].row + patchRow,
+								m_matchedBlocks[i][depth].col + patchCol, weight);
 						}
 					}
 				}
 			}
 		}
+
 
 		//divide buffers
 		m_buffer.divideBuffers();

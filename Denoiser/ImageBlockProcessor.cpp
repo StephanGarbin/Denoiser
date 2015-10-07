@@ -164,11 +164,11 @@ namespace Denoise
 
 		for (int row = std::max(imageBlock.bottom - 1, 1); row < imageBlock.height(); ++row)
 		{
-			long double s = (double)pixels[row * imageBlock.width()];
+			long double s = (long double)pixels[row * imageBlock.width()];
 			integralImage[row * imageBlock.width()] = integralImage[(row - 1) * imageBlock.width()] + s;
 			for (int col = 1; col < imageBlock.width(); ++col)
 			{
-				s += (double)pixels[row * imageBlock.width() + col];
+				s += (long double)pixels[row * imageBlock.width() + col];
 				integralImage[row * imageBlock.width() + col] = integralImage[(row - 1) * imageBlock.width() + col] + s;
 			}
 		}

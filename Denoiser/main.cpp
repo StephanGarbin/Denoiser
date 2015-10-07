@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
 	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &result);
 
 	Denoise::BM3DSettings bm3dFilterSettings;
-	bm3dFilterSettings.maxAllowedPatchDistance = 30000.8f;
+	bm3dFilterSettings.maxAllowedPatchDistance = 2.8f;
 	bm3dFilterSettings.numPatchesPerBlock = 16;
 	bm3dFilterSettings.patchSize = 8;
 	bm3dFilterSettings.searchWindowSize = 32;
@@ -195,7 +195,14 @@ void saveImage(Denoise::Image* image, const std::string& fileName)
 			{
 				index_t i = (row * image->width() + col) * 4;
 
-				rawImage[i + c] = (unsigned char)image->getPixel(c, row, col);
+				if (image->getPixel(c, row, col) > 0)
+				{
+					rawImage[i + c] = (unsigned char)image->getPixel(c, row, col);
+				}
+				else
+				{
+					rawImage[i + c] = 0;
+				}
 			}
 		}
 	}
