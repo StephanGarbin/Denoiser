@@ -1,6 +1,7 @@
 #include "BM3DCollaborativeFilterKernel.h"
 
 #include "Transforms.h"
+#include <iostream>
 
 namespace Denoise
 {
@@ -18,6 +19,7 @@ namespace Denoise
 		m_transformLevels.push_back(m_settings.numPatchesPerBlock);
 
 		initForwardTransforms();
+		initBackwardTransforms();
 		initNormalisationCoefficients();
 
 		m_fwhtMem.resize(128);
@@ -28,8 +30,8 @@ namespace Denoise
 	{
 		for (index_t i = 0; i < m_transformLevels.size(); ++i)
 		{
-			fftwf_destroy_plan(m_forwardPlans[m_transformLevels[i]]);
-			fftwf_destroy_plan(m_backwardPlans[m_transformLevels[i]]);
+			fftwf_destroy_plan(m_forwardPlans[i]);
+			fftwf_destroy_plan(m_backwardPlans[i]);
 		}
 
 		delete[] m_forwardTransformKind;
@@ -146,7 +148,7 @@ namespace Denoise
 
 		//DCT
 		fftwf_execute_r2r(m_forwardPlans[planIdx], block, block);
-
+	
 		//Normalise DCT
 		for (index_t patch = 0; patch < numPatches; ++patch)
 		{
@@ -167,13 +169,13 @@ namespace Denoise
 		}
 
 		//Thresholding
-		float numRetainedCoefficients = (float)(sqr(m_settings.patchSize) * numPatches);
+		float numRetainedCoefficients = (float)(totalSize);
 
 		for (index_t patch = 0; patch < numPatches; ++patch)
 		{
 			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 			{
-				if (std::fabs(block[i + patch * sqr(m_settings.patchSize)]) <= stdDeviation * 2.7f * sqrtf((float)numPatches));
+				if (std::fabs(block[i + patch * sqr(m_settings.patchSize)]) <= stdDeviation * 2.7f * sqrtf((float)numPatches))
 				{
 					block[i + patch * sqr(m_settings.patchSize)] = 0.0f;
 					numRetainedCoefficients -= 1.0f;
@@ -196,6 +198,12 @@ namespace Denoise
 			cfwht(block, 0, numPatches, numPatches, i, m_fwhtMem, sqr(m_settings.patchSize));
 		}
 
+		//Normalise WHT
+		for (index_t i = 0; i < totalSize; ++i)
+		{
+			block[i] /= (float)m_settings.numPatchesPerBlock;
+		}
+
 		//Normalise DCT
 		for (index_t patch = 0; patch < numPatches; ++patch)
 		{
@@ -211,5 +219,11 @@ namespace Denoise
 
 		//Inverse DCT
 		fftwf_execute_r2r(m_backwardPlans[planIdx], block, block);
+
+		//normalise again
+		for (index_t i = 0; i < totalSize; ++i)
+		{
+			block[i] /= (float)(m_settings.patchSize * 2);
+		}
 	}
 }

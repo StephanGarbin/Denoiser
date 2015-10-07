@@ -165,6 +165,7 @@
     <ClCompile Include="BM3DImageBlockProcessor.cpp" />
     <ClCompile Include="BM3DParallelFunctions.cpp" />
     <ClCompile Include="BufferAggregator.cpp" />
+    <ClCompile Include="DEBUG_HELPER.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageBlockProcessor.cpp" />
     <ClCompile Include="ImageNLMeansProcessor.cpp" />
