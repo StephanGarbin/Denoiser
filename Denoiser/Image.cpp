@@ -443,7 +443,14 @@ namespace Denoise
 						}
 						else
 						{
-							numValidPatches = 0;
+							if (numValidPatches == 1)
+							{
+								numValidPatches = 1;
+							}
+							else
+							{
+								numValidPatches = 0;
+							}
 						}
 					}
 				}

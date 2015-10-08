@@ -67,15 +67,6 @@ namespace Denoise
 		BM3DCollaborativeFilterKernel collaborativeKernel(m_settings);
 
 		//2. Process Blocks
-		//for (index_t channel = 0; channel < 3; ++channel)
-		//{
-		//	for (index_t row = 0; row < m_image->height() - m_settings.patchSize; row += m_settings.stepSizeRows)
-		//	{
-		//		for (index_t col = 0; col < m_image->width() - m_settings.patchSize; col += m_settings.stepSizeCols)
-		//		{
-		//		}
-		//	}
-		//}
 		for (index_t i = 0; i < m_matchedBlocks.size(); ++i)
 		{
 			index_t numValidPatches;
@@ -83,7 +74,7 @@ namespace Denoise
 
 			m_image->cpy2Block3d(m_matchedBlocks[i], rawImageBlock, patchTemplate, -3, numValidPatches);
 
-			if (numValidPatches < 4)
+			if (numValidPatches < 1)
 			{
 				continue;
 			}
@@ -108,7 +99,6 @@ namespace Denoise
 			}
 			else
 			{
-				//bm3dDEBUG(rawImageBlock, m_settings.stdDeviation, m_settings.patchSize, numValidPatches, weight);
 				collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
 			}
 
@@ -133,7 +123,6 @@ namespace Denoise
 				}
 			}
 		}
-
 
 		//divide buffers
 		m_buffer.divideBuffers();

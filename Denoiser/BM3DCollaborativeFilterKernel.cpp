@@ -10,6 +10,8 @@ namespace Denoise
 	{
 		m_settings = settings;
 
+		m_transformLevels.push_back(1);
+
 		//Initialise plans for powers of 2 (block depths)
 		for (index_t level = 2; level < m_settings.numPatchesPerBlock; level*= 2)
 		{
@@ -144,7 +146,32 @@ namespace Denoise
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
 
-		index_t planIdx = (index_t)(sqrtf((float)numPatches) - 1.0f);
+		index_t planIdx;
+		switch (numPatches)
+		{
+		case 1:
+			planIdx = 0;
+			break;
+		case 2:
+			planIdx = 1;
+			break;
+		case 4:
+			planIdx = 2;
+			break;
+		case 8:
+			planIdx = 3;
+			break;
+		case 16:
+			planIdx = 4;
+			break;
+		case 32:
+			planIdx = 5;
+			break;
+		default:
+			std::cout << "ERROR: No DCT plan available for numBlocks = " << numPatches << std::endl;
+			return;
+			break;
+		}
 
 		std::vector<float> numRetainedCoefficients(numChannels);
 		for (index_t i = 0; i < numRetainedCoefficients.size(); ++i)

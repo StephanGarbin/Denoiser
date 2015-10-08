@@ -40,6 +40,9 @@ int main(int argc, char* argv[])
 	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
 	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
 
+	//std::string inputFile = "C:/Users/Stephan/Desktop/computerNoisy.png";
+	//std::string outputFile = "C:/Users/Stephan/Desktop/computerNew.png";
+
 	//std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
 
@@ -130,7 +133,7 @@ int main(int argc, char* argv[])
 	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &result);
 
 	Denoise::BM3DSettings bm3dFilterSettings;
-	bm3dFilterSettings.maxAllowedPatchDistance = 2.8f;
+	bm3dFilterSettings.maxAllowedPatchDistance = 0.00000000000001f;
 	bm3dFilterSettings.numPatchesPerBlock = 16;
 	bm3dFilterSettings.patchSize = 8;
 	bm3dFilterSettings.searchWindowSize = 32;
