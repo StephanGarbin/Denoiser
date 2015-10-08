@@ -91,26 +91,26 @@ namespace Denoise
 				}
 
 				//C. Evaluate Patch Distances
-				for (int row = imageBlock.bottom + 1; row < imageBlock.top - templatePatch.height; row += stepSizeRows)
+				for (int row = imageBlock.bottom; row <= imageBlock.top - templatePatch.height; row += stepSizeRows)
 				{
 					if (row + shiftRows < 0)
 					{
 						continue;
 					}
 
-					if (row + shiftRows >= m_image.height() - templatePatch.height)
+					if (row + shiftRows > m_image.height() - templatePatch.height)
 					{
 						continue;
 					}
 
-					for (int col = imageBlock.left + 1; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
+					for (int col = imageBlock.left; col <= imageBlock.right - templatePatch.width; col += stepSizeCols)
 					{
 						if (col + shiftCols < 0)
 						{
 							continue;
 						}
 
-						if (col + shiftCols >= m_image.width() - templatePatch.width)
+						if (col + shiftCols > m_image.width() - templatePatch.width)
 						{
 							continue;
 						}
@@ -131,6 +131,9 @@ namespace Denoise
 						}
 					}
 				}
+
+				//Evaluate right and top borders (to avoid any black seams in the image)
+				
 			}
 		}
 
@@ -182,11 +185,6 @@ namespace Denoise
 		int halfWindowSizeRows = windowSizeRows / 2;
 		int halfWindowSizeCols = windowSizeCols / 2;
 
-		ImagePatch refPatch;
-		refPatch.col = position.col;
-		refPatch.row = position.row;
-		refPatch.height = 8;
-		refPatch.width = 8;
 		SortedPatchCollection foundMatches(maxSimilar);
 
 		for (int shiftRows = -halfWindowSizeRows; shiftRows <= halfWindowSizeRows; ++shiftRows)
@@ -196,11 +194,11 @@ namespace Denoise
 				ImagePatch currentPatch;
 				currentPatch.col = position.col + shiftCols;
 				currentPatch.row = position.row + shiftRows;
-				currentPatch.height = 8;
-				currentPatch.width = 8;
-				float distance = (m_image.blockMatch_Naive(refPatch, currentPatch, 0, 2)
-					+ m_image.blockMatch_Naive(refPatch, currentPatch, 1, 2)
-					+ m_image.blockMatch_Naive(refPatch, currentPatch, 2, 2)) / 3.0f;
+				currentPatch.height = templatePatch.height;
+				currentPatch.width = templatePatch.width;
+				float distance = (m_image.blockMatch_Naive(templatePatch, currentPatch, 0, 2)
+					+ m_image.blockMatch_Naive(templatePatch, currentPatch, 1, 2)
+					+ m_image.blockMatch_Naive(templatePatch, currentPatch, 2, 2)) / 3.0f;
 
 				if (distance <= maxDistance)
 				{

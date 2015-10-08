@@ -46,14 +46,23 @@ namespace Denoise
 		double result = integralImage[(position.row + templatePatch.height - 1) * imageBlock.width()
 			+ position.col + templatePatch.width - 1];
 
-		result -= integralImage[(position.row + templatePatch.height - 1) * imageBlock.width()
-			+ position.col - 1];
+		if (position.col > 0)
+		{
+			result -= integralImage[(position.row + templatePatch.height - 1) * imageBlock.width()
+				+ position.col - 1];
+		}
 
-		result -= integralImage[(position.row - 1) * imageBlock.width()
-			+ position.col + templatePatch.width - 1];
+		if (position.row > 0)
+		{
+			result -= integralImage[(position.row - 1) * imageBlock.width()
+				+ position.col + templatePatch.width - 1];
+		}
 
-		result += integralImage[(position.row - 1) * imageBlock.width()
-			+ position.col - 1];
+		if (position.col * position.row > 0)
+		{
+			result += integralImage[(position.row - 1) * imageBlock.width()
+				+ position.col - 1];
+		}
 
 		return result;
 	}

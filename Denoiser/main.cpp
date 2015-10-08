@@ -133,16 +133,16 @@ int main(int argc, char* argv[])
 	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &result);
 
 	Denoise::BM3DSettings bm3dFilterSettings;
-	bm3dFilterSettings.maxAllowedPatchDistance = 0.00000000000001f;
+	bm3dFilterSettings.maxAllowedPatchDistance = 1.81f;
 	bm3dFilterSettings.numPatchesPerBlock = 16;
 	bm3dFilterSettings.patchSize = 8;
 	bm3dFilterSettings.searchWindowSize = 32;
-	bm3dFilterSettings.stepSizeCols = 3;
-	bm3dFilterSettings.stepSizeRows = 3;
+	bm3dFilterSettings.stepSizeCols = 1;
+	bm3dFilterSettings.stepSizeRows = 1;
 	bm3dFilterSettings.usePatchWeighting = false;
 	bm3dFilterSettings.stdDeviation = stdDeviation;
-	bm3dFilterSettings.averageBlocksBasedOnStd = false;
-	bm3dFilterSettings.averageBlocksBasedOnStdFactor = 0.00001f;
+	bm3dFilterSettings.averageBlocksBasedOnStd = true;
+	bm3dFilterSettings.averageBlocksBasedOnStdFactor = 0.001f;
 
 	bm3dFilter.process(bm3dFilterSettings, true);
 
