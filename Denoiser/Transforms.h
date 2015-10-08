@@ -6,6 +6,10 @@ namespace Denoise
 {
 	inline void cfwht(float* x, int start, int n, int seqLength, int offset, std::vector<float>& fwhtMem, int stride)
 	{
+		if (n == 1)
+		{
+			return;
+		}
 			if (n == 2)
 			{
 				float a = x[offset + start * stride];

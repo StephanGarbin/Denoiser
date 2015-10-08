@@ -16,7 +16,7 @@ namespace Denoise
 		BM3DCollaborativeFilterKernel(const BM3DSettings& settings);
 		~BM3DCollaborativeFilterKernel();
 
-		void processCollaborativeFilter(float* block, index_t numPatches, float& blockWeight, float stdDeviation);
+		void processCollaborativeFilter(float* block, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight, float stdDeviation);
 
 	private:
 		void initForwardTransforms();

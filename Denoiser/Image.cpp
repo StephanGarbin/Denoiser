@@ -403,7 +403,7 @@ namespace Denoise
 	}
 
 	void Image::cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
-		index_t channel, index_t& numValidPatches) const
+		int channel, index_t& numValidPatches) const
 	{
 		numValidPatches = 0;
 
@@ -414,16 +414,6 @@ namespace Denoise
 				break;
 			}
 
-			//std::cout << "row = " << patches[p].row << "col = " << patches[p].col << "; ";
-
-			for (index_t row = 0; row <patchTemplate.height; ++row)
-			{
-				for (index_t col = 0; col < patchTemplate.width; ++col)
-				{
-					index_t blockIdx = (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
-					block[blockIdx] = m_pixelData[channel][IDX2_2_1(patches[p].row + row, patches[p].col + col)];
-				}
-			}
 			++numValidPatches;
 		}
 
@@ -460,7 +450,38 @@ namespace Denoise
 			}
 		}
 
-		//std::cout << std::endl;
+		if (channel < 0)
+		{
+			for (index_t c = 0; c < channel * -1; ++c)
+			{
+				for (index_t p = 0; p < numValidPatches; ++p)
+				{
+					for (index_t row = 0; row < patchTemplate.height; ++row)
+					{
+						for (index_t col = 0; col < patchTemplate.width; ++col)
+						{
+							index_t valuesPerChannel = (patchTemplate.width * patchTemplate.height) * numValidPatches;
+							index_t blockIdx = c * valuesPerChannel + (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
+							block[blockIdx] = m_pixelData[c][IDX2_2_1(patches[p].row + row, patches[p].col + col)];
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			for (index_t p = 0; p < numValidPatches; ++p)
+			{
+				for (index_t row = 0; row < patchTemplate.height; ++row)
+				{
+					for (index_t col = 0; col < patchTemplate.width; ++col)
+					{
+						index_t blockIdx = (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
+						block[blockIdx] = m_pixelData[channel][IDX2_2_1(patches[p].row + row, patches[p].col + col)];
+					}
+				}
+			}
+		}
 	}
 
 	void Image::cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
@@ -538,6 +559,26 @@ namespace Denoise
 		default:
 			printError("Cannot set Alpha Channel to one as format is not handled internally for this function.");
 			break;
+		}
+	}
+
+
+	void Image::clamp(float minValue, float maxValue)
+	{
+		for (index_t c = 0; c < m_pixelData.size(); ++c)
+		{
+			for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
+			{
+				if (m_pixelData[c][i] < minValue)
+				{
+					m_pixelData[c][i] = minValue;
+				}
+
+				if (m_pixelData[c][i] > maxValue)
+				{
+					m_pixelData[c][i] = maxValue;
+				}
+			}
 		}
 	}
 }

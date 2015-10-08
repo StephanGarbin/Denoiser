@@ -56,13 +56,15 @@ namespace Denoise
 		inline float blockMatch_Naive(const ImagePatch& patch1, const ImagePatch& patch2, index_t channel, int norm);
 
 		//Block copy from/to
-		void cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, index_t channel, index_t& numValidPatches) const;
+		void cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, int channel, index_t& numValidPatches) const;
 		void cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, index_t channel, index_t numValidPatches);
 
 		//Misceallaneous Functions
 		float maxPixelValue(index_t channel) const;
 		float minPixelValue(index_t channel) const;
 		float averagePixelValue(index_t channel);
+
+		void clamp(float minValue, float maxValue);
 
 		bool checkImageIntegrity(bool enforceIntegrity);
 		void print(int channel = -1) const;

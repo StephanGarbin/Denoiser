@@ -139,91 +139,99 @@ namespace Denoise
 		}
 	}
 
-	void BM3DCollaborativeFilterKernel::processCollaborativeFilter(float* block, index_t numPatches, float& blockWeight,
+	void BM3DCollaborativeFilterKernel::processCollaborativeFilter(float* block, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight,
 		float stdDeviation)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
 
 		index_t planIdx = (index_t)(sqrtf((float)numPatches) - 1.0f);
 
-		//DCT
-		fftwf_execute_r2r(m_forwardPlans[planIdx], block, block);
-	
-		//Normalise DCT
-		for (index_t patch = 0; patch < numPatches; ++patch)
+		std::vector<float> numRetainedCoefficients(numChannels);
+		for (index_t i = 0; i < numRetainedCoefficients.size(); ++i)
 		{
-			for (index_t row = 0; row < m_settings.patchSize; ++row)
+			numRetainedCoefficients[i] = (float)(totalSize);
+		}
+
+		for (index_t c = 0; c < numChannels; ++c)
+		{
+			index_t colourOffset = c * totalSize;
+			//DCT
+			fftwf_execute_r2r(m_forwardPlans[planIdx], block + colourOffset, block + colourOffset);
+
+			//Normalise DCT
+			for (index_t patch = 0; patch < numPatches; ++patch)
 			{
-				for (index_t col = 0; col < m_settings.patchSize; ++col)
+				for (index_t row = 0; row < m_settings.patchSize; ++row)
 				{
-					block[patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
-						m_forwardCoefficients[row * m_settings.patchSize + col];
+					for (index_t col = 0; col < m_settings.patchSize; ++col)
+					{
+						block[colourOffset + patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
+							m_forwardCoefficients[row * m_settings.patchSize + col];
+					}
 				}
 			}
-		}
 
-		//WHT
-		for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
-		{
-			cfwht(block, 0, numPatches, numPatches, i, m_fwhtMem, sqr(m_settings.patchSize));
-		}
-
-		//Thresholding
-		float numRetainedCoefficients = (float)(totalSize);
-
-		for (index_t patch = 0; patch < numPatches; ++patch)
-		{
+			//WHT
 			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 			{
-				if (std::fabs(block[i + patch * sqr(m_settings.patchSize)]) <= stdDeviation * 2.7f * sqrtf((float)numPatches))
-				{
-					block[i + patch * sqr(m_settings.patchSize)] = 0.0f;
-					numRetainedCoefficients -= 1.0f;
-				}
+				cfwht(block, 0, numPatches, numPatches, colourOffset + i, m_fwhtMem, sqr(m_settings.patchSize));
 			}
-		}
 
-		if (numRetainedCoefficients > 1.0f)
-		{
-			blockWeight = 1.0f / numRetainedCoefficients;
-		}
-		else
-		{
-			blockWeight = 1.0f;
-		}
-
-		//WHT
-		for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
-		{
-			cfwht(block, 0, numPatches, numPatches, i, m_fwhtMem, sqr(m_settings.patchSize));
-		}
-
-		//Normalise WHT
-		for (index_t i = 0; i < totalSize; ++i)
-		{
-			block[i] /= (float)m_settings.numPatchesPerBlock;
-		}
-
-		//Normalise DCT
-		for (index_t patch = 0; patch < numPatches; ++patch)
-		{
-			for (index_t row = 0; row < m_settings.patchSize; ++row)
+			//Thresholding
+			for (index_t patch = 0; patch < numPatches; ++patch)
 			{
-				for (index_t col = 0; col < m_settings.patchSize; ++col)
+				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 				{
-					block[patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
-						m_backwardCoefficients[row * m_settings.patchSize + col];
+					if (std::fabs(block[colourOffset + i + patch * sqr(m_settings.patchSize)]) <= stdDeviation * 2.7f * sqrtf((float)numPatches))
+					{
+						block[colourOffset + i + patch * sqr(m_settings.patchSize)] = 0.0f;
+						numRetainedCoefficients[c] -= 1.0f;
+					}
 				}
 			}
-		}
 
-		//Inverse DCT
-		fftwf_execute_r2r(m_backwardPlans[planIdx], block, block);
+			//WHT
+			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+			{
+				cfwht(block, 0, numPatches, numPatches, colourOffset + i, m_fwhtMem, sqr(m_settings.patchSize));
+			}
 
-		//normalise again
-		for (index_t i = 0; i < totalSize; ++i)
-		{
-			block[i] /= (float)(m_settings.patchSize * 2);
+			//Normalise WHT
+			for (index_t i = 0; i < totalSize; ++i)
+			{
+				block[colourOffset + i] /= (float)numPatches;
+			}
+
+			//Normalise DCT
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t row = 0; row < m_settings.patchSize; ++row)
+				{
+					for (index_t col = 0; col < m_settings.patchSize; ++col)
+					{
+						block[colourOffset + patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
+							m_backwardCoefficients[row * m_settings.patchSize + col];
+					}
+				}
+			}
+
+			//Inverse DCT
+			fftwf_execute_r2r(m_backwardPlans[planIdx], block + colourOffset, block + colourOffset);
+
+			//normalise again
+			for (index_t i = 0; i < totalSize; ++i)
+			{
+				block[colourOffset + i] /= (float)(m_settings.patchSize * 2);
+			}
+
+			if (numRetainedCoefficients[c] > 1.0f)
+			{
+				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation, 2) * numRetainedCoefficients[c]);
+			}
+			else
+			{
+				blockWeight[c] = 1.0f;
+			}
 		}
 	}
 }

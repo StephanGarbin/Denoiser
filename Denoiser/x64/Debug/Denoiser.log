@@ -1,27 +1,154 @@
-﻿Build started 04/10/2015 16:35:00.
-     1>Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ImageBlockProcessor.cpp
+﻿Build started 08/10/2015 11:59:08.
+     1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Rebuild target(s)).
+     1>CudaClean:
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp8afb0c220b9645a0a1c45012bc29a6f8.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\BlockMatching.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BlockMatching.cu" -clean
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\BlockMatching.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BlockMatching.cu" -clean 
+         BlockMatching.cu
+       CudaClean:
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp2b2f388abefd4f7ca73aee0e944bfbfc.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\BM3D.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BM3D.cu" -clean
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\BM3D.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BM3D.cu" -clean 
+         BM3D.cu
+       CudaClean:
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp82867f8ac7374d9b87f527fbac7fc0a4.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\Common.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Common.cu" -clean
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\Common.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Common.cu" -clean 
+         Common.cu
+       CudaClean:
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmpbd02307cc5114e8b95498733eaa4446a.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\Memory.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Memory.cu" -clean
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\Memory.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Memory.cu" -clean 
+         Memory.cu
+       CudaClean:
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmpcb7dd61e9c8343c9b7f387c5368e439a.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\NLMeans.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\NLMeans.cu" -clean
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\NLMeans.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\NLMeans.cu" -clean 
+         NLMeans.cu
+       AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64 /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BlockMatching.cu 
+       AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64 /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BM3D.cu 
+       AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64 /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Common.cu 
+       AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64 /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Memory.cu 
+       AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64 /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /I. /FIcuda_runtime.h /c C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\NLMeans.cu 
+       CudaBuild:
+         Compiling CUDA source file BlockMatching.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp4466815282f54183a75745a76d6675da.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\BlockMatching.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BlockMatching.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\BlockMatching.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BlockMatching.cu" 
+         BlockMatching.cu
+       CudaBuild:
+         Compiling CUDA source file BM3D.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmpdf6960f02c884cba85cfa464016ebccf.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\BM3D.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BM3D.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\BM3D.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BM3D.cu" 
+         BM3D.cu
+       CudaBuild:
+         Compiling CUDA source file Common.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp3a68bbbe33f347c3a33e2d367597d858.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\Common.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Common.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\Common.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Common.cu" 
+         Common.cu
+       CudaBuild:
+         Compiling CUDA source file Memory.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmpf420ed0246934de693070123bd9cde1e.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\Memory.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Memory.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\Memory.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Memory.cu" 
+         Memory.cu
+       CudaBuild:
+         Compiling CUDA source file NLMeans.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp9e6668affa5f4f6fa9e1625622e0db4d.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\NLMeans.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\NLMeans.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_20,code=\"sm_20,compute_20\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"  -G   --keep-dir x64\Debug -maxrregcount=0  --machine 64 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o x64\Debug\NLMeans.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\NLMeans.cu" 
+         NLMeans.cu
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt BM3DCollaborativeFilterKernel.cpp BM3DImageBlockProcessor.cpp BM3DParallelFunctions.cpp BufferAggregator.cpp DEBUG_HELPER.cpp Image.cpp ImageBlockProcessor.cpp ImageNLMeansProcessor.cpp ImagePartitioner.cpp ImagePatch.h lodepng.cpp main.cpp SortedPatchCollection.cpp Statistics.cpp
+         Statistics.cpp
+         SortedPatchCollection.cpp
+     1>SortedPatchCollection.cpp(45): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         main.cpp
+     1>main.cpp(46): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         lodepng.cpp
+     1>lodepng.cpp(773): warning C4334: '<<' : result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+     1>lodepng.cpp(1439): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>lodepng.cpp(1443): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>lodepng.cpp(1515): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(3443): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(4246): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(4294): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(4374): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(5314): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         ImagePatch.h
+         ImagePartitioner.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImagePartitioner.h(19): warning C4267: 'return' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         ImageNLMeansProcessor.cpp
+     1>ImageNLMeansProcessor.cpp(91): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
          ImageBlockProcessor.cpp
-     1>ImageBlockProcessor.cpp(38): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(39): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(62): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(63): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(87): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(89): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(115): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>ImageBlockProcessor.cpp(127): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(129): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(167): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
-     1>ImageBlockProcessor.cpp(168): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>ImageBlockProcessor.cpp(65): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(73): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(94): warning C4018: '<' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(101): warning C4018: '>=' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(106): warning C4018: '<' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(113): warning C4018: '>=' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(130): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessor.cpp(142): warning C4018: '<' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(144): warning C4018: '<' : signed/unsigned mismatch
+         Image.cpp
+     1>Image.cpp(412): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(425): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>Image.cpp(513): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(515): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(517): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(531): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(534): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(536): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(538): warning C4018: '<' : signed/unsigned mismatch
+         DEBUG_HELPER.cpp
+     1>DEBUG_HELPER.cpp(74): warning C4018: '<' : signed/unsigned mismatch
+     1>DEBUG_HELPER.cpp(179): warning C4018: '<' : signed/unsigned mismatch
+     1>DEBUG_HELPER.cpp(182): warning C4018: '<' : signed/unsigned mismatch
+     1>DEBUG_HELPER.cpp(184): warning C4018: '<' : signed/unsigned mismatch
+     1>DEBUG_HELPER.cpp(345): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>DEBUG_HELPER.cpp(346): warning C4305: '=' : truncation from 'double' to 'float'
+         BufferAggregator.cpp
+         BM3DParallelFunctions.cpp
+         BM3DImageBlockProcessor.cpp
+         BM3DCollaborativeFilterKernel.cpp
+     1>BM3DCollaborativeFilterKernel.cpp(117): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(119): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(164): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(166): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(175): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(183): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(194): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(208): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(210): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.exe" /INCREMENTAL /NOLOGO /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.lib" /MACHINE:X64 x64\Debug\BlockMatching.cu.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.exe" /INCREMENTAL /NOLOGO /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.lib" /MACHINE:X64 x64\Debug\BlockMatching.cu.obj
          x64\Debug\BM3D.cu.obj
          x64\Debug\Common.cu.obj
          x64\Debug\Memory.cu.obj
          x64\Debug\NLMeans.cu.obj
+         x64\Debug\BM3DCollaborativeFilterKernel.obj
          x64\Debug\BM3DImageBlockProcessor.obj
+         x64\Debug\BM3DParallelFunctions.obj
          x64\Debug\BufferAggregator.obj
+         x64\Debug\DEBUG_HELPER.obj
          x64\Debug\Image.obj
          x64\Debug\ImageBlockProcessor.obj
          x64\Debug\ImageNLMeansProcessor.obj
@@ -30,9 +157,10 @@
          x64\Debug\lodepng.obj
          x64\Debug\main.obj
          x64\Debug\SortedPatchCollection.obj
-         Denoiser.vcxproj -> S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.exe
-     1>Done Building Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
+         x64\Debug\Statistics.obj
+         Denoiser.vcxproj -> C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Debug\Denoiser.exe
+     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Rebuild target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.81
+Time Elapsed 00:00:34.66

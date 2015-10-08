@@ -12,7 +12,7 @@
 #include "Statistics.h"
 
 #include <algorithm>
-#include <tbb\tick_count.h>
+//#include <tbb\tick_count.h>
 
 namespace Denoise
 {
@@ -48,7 +48,7 @@ namespace Denoise
 		}
 		else
 		{
-			tbb::tick_count start = tbb::tick_count::now();
+			//tbb::tick_count start = tbb::tick_count::now();
 			ImageBlockProcessor blockProcessor(*m_image);
 
 			blockProcessor.computeNMostSimilar(patchTemplate, matchRegion,
@@ -57,12 +57,12 @@ namespace Denoise
 				settings.numPatchesPerBlock, settings.maxAllowedPatchDistance,
 				2, m_matchedBlocks, 3);
 
-			std::cout << "Finished Block Matching..." << std::endl;
-			tbb::tick_count end = tbb::tick_count::now();
-			std::cout << "Time: " << (end - start).seconds() << "s." << std::endl;
+			//std::cout << "Finished Block Matching..." << std::endl;
+			//tbb::tick_count end = tbb::tick_count::now();
+			//std::cout << "Time: " << (end - start).seconds() << "s." << std::endl;
 		}
 
-		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock];
+		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock * 3];
 
 		BM3DCollaborativeFilterKernel collaborativeKernel(m_settings);
 
@@ -76,41 +76,46 @@ namespace Denoise
 		//		}
 		//	}
 		//}
-		for (index_t channel = 0; channel < 3; ++channel)
+		for (index_t i = 0; i < m_matchedBlocks.size(); ++i)
 		{
-			for (index_t i = 0; i < m_matchedBlocks.size(); ++i)
+			index_t numValidPatches;
+			std::vector<float> weights(3);
+
+			m_image->cpy2Block3d(m_matchedBlocks[i], rawImageBlock, patchTemplate, -3, numValidPatches);
+
+			if (numValidPatches < 4)
 			{
-				index_t numValidPatches;
-				float weight = 0.0f;
+				continue;
+			}
 
-				m_image->cpy2Block3d(m_matchedBlocks[i], rawImageBlock, patchTemplate, channel, numValidPatches);
+			if (m_settings.averageBlocksBasedOnStd)
+			{
+				float blockStd = calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
 
-				if (numValidPatches < 2)
+				if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
 				{
-					continue;
-				}
+					setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
 
-				if (m_settings.averageBlocksBasedOnStd)
-				{
-					float blockStd = calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
-
-					if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
+					for (index_t channel = 0; channel < weights.size(); ++channel)
 					{
-						setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlock, m_settings.patchSize);
-
-						weight = 1.0f;
-					}
-					else
-					{
-						collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, weight, m_settings.stdDeviation);
+						weights[channel] = 1.0f;
 					}
 				}
 				else
 				{
-					bm3dDEBUG(rawImageBlock, m_settings.stdDeviation, m_settings.patchSize, numValidPatches, weight);
-					//collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, weight, m_settings.stdDeviation);
+					collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
 				}
+			}
+			else
+			{
+				//bm3dDEBUG(rawImageBlock, m_settings.stdDeviation, m_settings.patchSize, numValidPatches, weight);
+				collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+			}
 
+			index_t sizePerChannel = numValidPatches * patchTemplate.width * patchTemplate.height;
+
+			for (index_t channel = 0; channel < 3; ++channel)
+			{
 				for (index_t depth = 0; depth < numValidPatches; ++depth)
 				{
 					for (index_t patchRow = 0; patchRow < patchTemplate.height; ++patchRow)
@@ -119,10 +124,10 @@ namespace Denoise
 						{
 							m_buffer.addValueNumerator(channel, m_matchedBlocks[i][depth].row + patchRow,
 								m_matchedBlocks[i][depth].col + patchCol,
-								rawImageBlock[depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol] * weight);
+								rawImageBlock[channel * sizePerChannel + depth * patchTemplate.width * patchTemplate.height + patchRow * patchTemplate.width + patchCol] * weights[channel]);
 
 							m_buffer.addValueDenominator(channel, m_matchedBlocks[i][depth].row + patchRow,
-								m_matchedBlocks[i][depth].col + patchCol, weight);
+								m_matchedBlocks[i][depth].col + patchCol, weights[channel]);
 						}
 					}
 				}
@@ -146,6 +151,8 @@ namespace Denoise
 		}
 
 		delete[] rawImageBlock;
+
+		m_imageResult->clamp(0.0f, 1.0f);
 	}
 
 	void BM3DImageBlockProcessor::processCollaborativeFilter()
