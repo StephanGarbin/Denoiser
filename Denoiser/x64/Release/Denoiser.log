@@ -1,11 +1,28 @@
-﻿Build started 08/10/2015 23:31:59.
-     1>Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
+﻿Build started 15/10/2015 14:52:13.
+     1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt main.cpp
-         main.cpp
-     1>main.cpp(49): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt ImageBlockProcessor.cpp
+         ImageBlockProcessor.cpp
+     1>ImageBlockProcessor.cpp(64): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(72): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(93): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(100): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(105): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(112): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(129): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessor.cpp(137): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(144): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(149): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(166): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessor.cpp(173): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(182): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(187): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(204): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessor.cpp(214): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(219): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessor.cpp(236): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\BlockMatching.cu.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\BlockMatching.cu.obj
          x64\Release\BM3D.cu.obj
          x64\Release\Common.cu.obj
          x64\Release\Memory.cu.obj
@@ -26,9 +43,9 @@
          x64\Release\Statistics.obj
          Generating code
          Finished generating code
-         Denoiser.vcxproj -> S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe
-     1>Done Building Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
+         Denoiser.vcxproj -> C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe
+     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.32
+Time Elapsed 00:00:02.47

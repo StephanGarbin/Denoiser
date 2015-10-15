@@ -32,12 +32,11 @@ namespace Denoise
 		std::vector<SortedPatchCollection> matchedBlocksSorted;
 
 		//we only allocate as many blocks as we need
-		for (index_t i = 0; i < (imageBlock.width() / stepSizeCols) * (imageBlock.height() / stepSizeRows); ++i)
+		for (index_t i = 0; i < (imageBlock.width() / stepSizeCols + 1) * (imageBlock.height() / stepSizeRows + 1) + 1; ++i)
 		{
 			matchedBlocksSorted.push_back(SortedPatchCollection(maxSimilar));
 
 		}
-		//matchedBlocksSorted.resize((imageBlock.width() / stepSizeCols) * (imageBlock.height() / stepSizeRows));
 
 		//do block matching
 		int halfWindowSizeRows = windowSizeRows / 2;
@@ -126,29 +125,128 @@ namespace Denoise
 
 						if (distance <= (double)maxDistance)
 						{
-							matchedBlocksSorted[((row - imageBlock.bottom) / stepSizeRows) * (imageBlock.width() / stepSizeCols) + (col - imageBlock.left) / stepSizeCols].insertPatch(
+							matchedBlocksSorted[((row - imageBlock.bottom) / stepSizeRows) * (imageBlock.width() / stepSizeCols + 1) + (col - imageBlock.left) / stepSizeCols].insertPatch(
 								IDX2(row + shiftRows, col + shiftCols, distance));
 						}
 					}
 				}
 
-				//Evaluate right and top borders (to avoid any black seams in the image)
-				
+				if (stepSizeRows > 1)
+				{
+					int row = imageBlock.top - templatePatch.height;
+					for (int col = imageBlock.left; col <= imageBlock.right - templatePatch.width; col += stepSizeCols)
+					{
+						if (col + shiftCols < 0)
+						{
+							continue;
+						}
+
+						if (row + shiftRows > m_image.height() - templatePatch.height)
+						{
+							continue;
+						}
+
+						if (col + shiftCols > m_image.width() - templatePatch.width)
+						{
+							continue;
+						}
+
+						double distance = 0.0;
+						for (index_t c = 0; c < numChannelsToUse; ++c)
+						{
+							distance += patchDistanceIntegralImage(integralImage[c],
+								templatePatch, imageBlock, IDX2(row - imageBlock.bottom, col - imageBlock.left));
+						}
+
+						distance /= (double)numChannelsToUse;
+
+						if (distance <= (double)maxDistance)
+						{
+							matchedBlocksSorted[(imageBlock.height() / stepSizeRows) * (imageBlock.width() / stepSizeCols + 1) + (col - imageBlock.left) / stepSizeCols].insertPatch(
+								IDX2(row + shiftRows, col + shiftCols, distance));
+						}
+					}
+				}
+
+				if (stepSizeCols > 1)
+				{
+					for (int row = imageBlock.bottom; row <= imageBlock.top - templatePatch.height; row += stepSizeRows)
+					{
+						if (row + shiftRows < 0)
+						{
+							continue;
+						}
+
+						int col = imageBlock.right - templatePatch.width;
+
+						if (row + shiftRows > m_image.height() - templatePatch.height)
+						{
+							continue;
+						}
+
+						if (col + shiftCols > m_image.width() - templatePatch.width)
+						{
+							continue;
+						}
+
+						double distance = 0.0;
+						for (index_t c = 0; c < numChannelsToUse; ++c)
+						{
+							distance += patchDistanceIntegralImage(integralImage[c],
+								templatePatch, imageBlock, IDX2(row - imageBlock.bottom, col - imageBlock.left));
+						}
+
+						distance /= (double)numChannelsToUse;
+
+						if (distance <= (double)maxDistance)
+						{
+							matchedBlocksSorted[((row - imageBlock.bottom) / stepSizeRows) * (imageBlock.width() / stepSizeCols + 1) + (imageBlock.width() / stepSizeCols + 1)].insertPatch(
+								IDX2(row + shiftRows, col + shiftCols, distance));
+						}
+					}
+				}
+
+				if (stepSizeCols > 1 || stepSizeRows > 1)
+				{
+					int row = imageBlock.top - templatePatch.height;
+					int col = imageBlock.right - templatePatch.width;
+
+					if (row + shiftRows > m_image.height() - templatePatch.height)
+					{
+						continue;
+					}
+
+					if (col + shiftCols > m_image.width() - templatePatch.width)
+					{
+						continue;
+					}
+
+					double distance = 0.0;
+					for (index_t c = 0; c < numChannelsToUse; ++c)
+					{
+						distance += patchDistanceIntegralImage(integralImage[c],
+							templatePatch, imageBlock, IDX2(row - imageBlock.bottom, col - imageBlock.left));
+					}
+
+					distance /= (double)numChannelsToUse;
+
+					if (distance <= (double)maxDistance)
+					{
+						matchedBlocksSorted[matchedBlocksSorted.size() - 1].insertPatch(
+							IDX2(row + shiftRows, col + shiftCols, distance));
+					}
+				}
 			}
 		}
 
 		distanceImage.clear();
 		integralImage.clear();
 
-		matchedBlocks.resize((m_image.width() / stepSizeCols) * (m_image.height() / stepSizeRows));
+		matchedBlocks.resize(matchedBlocksSorted.size());
 
-		for (int row = imageBlock.bottom + 1; row < imageBlock.top - templatePatch.height; row += stepSizeRows)
+		for (index_t i = 0; i < matchedBlocks.size(); ++i)
 		{
-			for (int col = imageBlock.left + 1; col < imageBlock.right - templatePatch.width; col += stepSizeCols)
-			{
-				matchedBlocks[(row / stepSizeRows) * (m_image.width() / stepSizeCols) + (col / stepSizeCols)] =
-					matchedBlocksSorted[((row - imageBlock.bottom) / stepSizeRows) * (imageBlock.width() / stepSizeCols) + (col - imageBlock.left) / stepSizeCols].getPatches();
-			}
+			matchedBlocks[i] = matchedBlocksSorted[i].getPatches();
 		}
 
 		matchedBlocksSorted.clear();

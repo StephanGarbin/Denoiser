@@ -137,8 +137,8 @@ int main(int argc, char* argv[])
 	bm3dFilterSettings.numPatchesPerBlock = 16;
 	bm3dFilterSettings.patchSize = 8;
 	bm3dFilterSettings.searchWindowSize = 32;
-	bm3dFilterSettings.stepSizeCols = 1;
-	bm3dFilterSettings.stepSizeRows = 1;
+	bm3dFilterSettings.stepSizeCols = 3;
+	bm3dFilterSettings.stepSizeRows = 3;
 	bm3dFilterSettings.usePatchWeighting = false;
 	bm3dFilterSettings.stdDeviation = stdDeviation;
 	bm3dFilterSettings.averageBlocksBasedOnStd = true;
