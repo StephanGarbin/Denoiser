@@ -25,10 +25,21 @@ void saveImage(Denoise::Image* image, const std::string& fileName);
 
 int main(int argc, char* argv[])
 {
-	if (argc != 2)
+	float stdDeviation;
+	index_t numThreadsBM;
+
+	if (argc != 3)
 	{
-		std::cout << "Error: Please provide standard deviation!" << std::endl;
-		return 0;
+		std::cout << "Error: Please provide standard deviation & numThreads (BM)!" << std::endl;
+		std::cout << "Value used (stdDeviation): 1" << std::endl;
+		stdDeviation = 1.0f;
+		std::cout << "Value used (numThreads BM): 1";
+		numThreadsBM = 1;
+	}
+	else
+	{
+		stdDeviation = std::atof(argv[1]);
+		numThreadsBM = std::atoi(argv[2]);
 	}
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
@@ -37,8 +48,8 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees2.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew2b.png";
 
-	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
+	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
+	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/computerNoisy.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/computerNew.png";
@@ -46,109 +57,48 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
 
-	float stdDeviation = std::atof(argv[1]);
+	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger_high.png";
+	//std::string outputFile = "C:/Users/Stephan/Desktop/tiger_high_denoised.png";
+
+	std::string inputFile = "C:/Users/Stephan/Desktop/tiger_1K.png";
+	std::string outputFile = "C:/Users/Stephan/Desktop/tiger_1K_denoised_b.png";
 
 	Denoise::Image* image = nullptr;
 
 	loadImage(&image, inputFile);
 	image->checkImageIntegrity(true);
 	image->normalise();
-	/*Padding pad;
-	pad.bottom = 10;
-	pad.top = 20;
-	pad.left = 20;
-	pad.right = 10;
-	image->padImage(pad, false);
-	//image->accessFullImage();*/
-	/*int idx = 150;
-	std::vector<std::vector<Denoise::IDX2> > similarPatches;
-	std::vector<Denoise::IDX2> similarPatchesComparison;
-	ImagePatch templatePatch;
-	templatePatch.height = 6;
-	templatePatch.width = 6;
-	templatePatch.col = 0;
-	templatePatch.row = 0;
-	Denoise::IDX2 singlePosition(idx, idx);
-	Denoise::ImageBlockProcessor blockProcess(*image);
-	Denoise::Rectangle block;
-	block.left = 0;
-	block.bottom = 0;
-	block.right = image->width();
-	block.top = image->height();
-	std::cout << "Processing Integral Method..." << std::endl;
-	tbb::tick_count start = tbb::tick_count::now();
-	blockProcess.computeNMostSimilar(templatePatch, block, 1, 1, 30, 30, 32, 0.1f, 2, similarPatches);
-	tbb::tick_count end = tbb::tick_count::now();
-	std::cout << "Time: " << (end - start).seconds() << "s." << std::endl;
-	std::vector<std::vector<Denoise::IDX2> > similarPatchesComparisonArray;
-	similarPatchesComparisonArray.resize(block.size() * 2);
-	for (int i = 0; i < similarPatchesComparisonArray.size(); ++i)
-	{
-		similarPatchesComparisonArray[i].reserve(45);
-	}
-	std::cout << "Processing Naive Method..." << std::endl;
-	tbb::tick_count start2 = tbb::tick_count::now();
-	for (int row = 20; row < block.height() - 20; ++row)
-	{
-		for (int col = 20; col < block.width() - 20; ++col)
-		{
-			Denoise::IDX2 position(row, col);
-			blockProcess.computeNMostSimilarNaive(similarPatchesComparisonArray[row * (block.width()) + col], position, templatePatch, 30, 30, 32, 0.1f, 2);
-		}
-	}
-	tbb::tick_count end2 = tbb::tick_count::now();
-	std::cout << "Time: " << (end2 - start2).seconds() << "s." << std::endl;
-	blockProcess.computeNMostSimilarNaive(similarPatchesComparison, singlePosition, templatePatch, 30, 30, 32, 10000.0f, 2);
-	std::cout << "Reference: " << std::endl;
-	for (int i = 0; i < similarPatchesComparison.size(); ++i)
-	{
-		std::cout << "(" << similarPatchesComparison[i].col << ", " << similarPatchesComparison[i].row
-			<< ", " << similarPatchesComparison[i].distance << ");  ";
-	}
-	std::cout << std::endl << "New: " << std::endl;
-	for (int i = 0; i < similarPatches[image->width() * idx + idx].size(); ++i)
-	{
-		std::cout << "(" << similarPatches[image->width() * idx + idx][i].col << ", "
-			<< similarPatches[image->width() * idx + idx][i].row << ", "
-			<< similarPatches[image->width() * idx + idx][i].distance << ");  ";
-	}*/
 
-	//Denoise::Image result(image->actualDimension(), image->format());
 	Denoise::Image result(*image);
+	Denoise::Image basic(*image);
 
-	//Denoise::ImageNLMeansProcessor nlMeansFilter(image, &result);
-
-	//Denoise::NLMeansSettings nlMeansFilterSettings;
-	//nlMeansFilterSettings.maxAllowedPatchDistance = 10.8f;
-	//nlMeansFilterSettings.numPatchesPerBlock = 32;
-	//nlMeansFilterSettings.patchSize = 3;
-	//nlMeansFilterSettings.searchWindowSize = 20;
-	//nlMeansFilterSettings.stepSizeCols = 1;
-	//nlMeansFilterSettings.stepSizeRows = 1;
-	//nlMeansFilterSettings.usePatchWeighting = true;
-	//nlMeansFilterSettings.stdDeviation = stdDeviation;
-	//nlMeansFilterSettings.filteringParameter = 0.55f;
-	//nlMeansFilter.process(nlMeansFilterSettings, true);
-
-	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &result);
+	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &basic, &result);
 
 	Denoise::BM3DSettings bm3dFilterSettings;
-	bm3dFilterSettings.maxAllowedPatchDistance = 1.81f;
-	bm3dFilterSettings.numPatchesPerBlock = 16;
+	bm3dFilterSettings.templateMatchingMaxAllowedPatchDistance = 2.50001f;
+	bm3dFilterSettings.templateMatchingNorm = 2;
+	bm3dFilterSettings.templateMatchingNumChannels = 1;
+
+	bm3dFilterSettings.numPatchesPerBlockCollaborative = 16;
 	bm3dFilterSettings.patchSize = 8;
 	bm3dFilterSettings.searchWindowSize = 32;
 	bm3dFilterSettings.stepSizeCols = 3;
 	bm3dFilterSettings.stepSizeRows = 3;
 	bm3dFilterSettings.usePatchWeighting = false;
 	bm3dFilterSettings.stdDeviation = stdDeviation;
-	bm3dFilterSettings.averageBlocksBasedOnStd = true;
+	bm3dFilterSettings.averageBlocksBasedOnStd = false;
 	bm3dFilterSettings.averageBlocksBasedOnStdFactor = 0.001f;
+	bm3dFilterSettings.numThreadsBlockMatching = numThreadsBM;
+	bm3dFilterSettings.numPatchesPerBlockWiener = 32;
+	bm3dFilterSettings.disableWienerFilter = false;
 
 	bm3dFilter.process(bm3dFilterSettings, true);
 
 	image->undoNormalise();
 	result.undoNormalise();
+	basic.undoNormalise();
 
+	basic.setAlphaToOne();
 	result.setAlphaToOne();
 
 	saveImage(&result, outputFile);

@@ -5,6 +5,8 @@ namespace Denoise
 {
 	struct BM3DSettings
 	{
+		bool disableWienerFilter;
+
 		float stdDeviation;
 
 		index_t stepSizeCols;
@@ -12,9 +14,13 @@ namespace Denoise
 
 		index_t searchWindowSize;
 
-		index_t numPatchesPerBlock;
+		index_t numPatchesPerBlockCollaborative;
+		index_t numPatchesPerBlockWiener;
 
-		float maxAllowedPatchDistance;
+		//Block Matching
+		float templateMatchingMaxAllowedPatchDistance;
+		int templateMatchingNorm;
+		index_t templateMatchingNumChannels;
 
 		int patchSize;
 
@@ -23,5 +29,8 @@ namespace Denoise
 		//Statistical Extensions
 		bool averageBlocksBasedOnStd;
 		float averageBlocksBasedOnStdFactor;
+
+		//Multi-Threading
+		index_t numThreadsBlockMatching;
 	};
 }

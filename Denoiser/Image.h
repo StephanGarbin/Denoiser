@@ -59,6 +59,9 @@ namespace Denoise
 		void cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, int channel, index_t& numValidPatches) const;
 		void cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, index_t channel, index_t numValidPatches);
 
+		//Statistics
+		float pixelMean(index_t channel, bool ignoreZeroPixelValues);
+
 		//Misceallaneous Functions
 		float maxPixelValue(index_t channel) const;
 		float minPixelValue(index_t channel) const;

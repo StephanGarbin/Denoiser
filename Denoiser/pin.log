@@ -1,0 +1,5 @@
+Pin 2.12 kit 61147
+E:  DBG_TRACE: Unexpected debugging event: EXCEPTION_DEBUG_EVENT: ExceptionCode  = 0xc0000005, ExceptionAddress = 0x606e1243, Instruction = 418b01a9f8fffeff0f85a40000002501
+E:  Incompatible operating system or incompatible software installed on the system
+E:  Failed to initialize pin common boot record
+E: Pin is exiting due to fatal error

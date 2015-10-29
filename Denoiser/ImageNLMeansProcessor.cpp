@@ -45,15 +45,15 @@ namespace Denoise
 		}
 		else
 		{
-			ImageBlockProcessor blockProcessor(*m_image);
+			//ImageBlockProcessor blockProcessor(*m_image);
 
-			blockProcessor.computeNMostSimilar(patchTemplate, matchRegion,
-				m_settings.stepSizeRows, m_settings.stepSizeCols,
-				m_settings.searchWindowSize, m_settings.searchWindowSize,
-				settings.numPatchesPerBlock, settings.maxAllowedPatchDistance,
-				2, m_matchedBlocks, 3);
+			//blockProcessor.computeNMostSimilar(patchTemplate, matchRegion,
+			//	m_settings.stepSizeRows, m_settings.stepSizeCols,
+			//	m_settings.searchWindowSize, m_settings.searchWindowSize,
+			//	settings.numPatchesPerBlock, settings.maxAllowedPatchDistance,
+			//	2, m_matchedBlocks, 3);
 
-			std::cout << "Finished Block Matching..." << std::endl;
+			std::cout << "Block Matching not implemented here..." << std::endl;
 		}
 
 		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock];

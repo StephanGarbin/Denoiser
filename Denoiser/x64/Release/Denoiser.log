@@ -1,42 +1,181 @@
-﻿Build started 15/10/2015 14:52:13.
+﻿Build started 29/10/2015 16:20:21.
      1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt ImageBlockProcessor.cpp
+     1>CudaBuild:
+         Compiling CUDA source file BlockMatching.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp5ea17a659bd14743986e4c236b366d64.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\BlockMatching.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BlockMatching.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\BlockMatching.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BlockMatching.cu" 
+         BlockMatching.cu
+       CudaBuild:
+         Compiling CUDA source file BM3D.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp56451ac644ae4505a33a527642988a6e.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\BM3D.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BM3D.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\BM3D.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\BM3D.cu" 
+         BM3D.cu
+       CudaBuild:
+         Compiling CUDA source file Common.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp2cb26f137f0d44378bfa59a6093347a7.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\Common.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Common.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\Common.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Common.cu" 
+         Common.cu
+       CudaBuild:
+         Compiling CUDA source file Memory.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp72b74fc2c47f42cc9588b7e6c6de6052.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\Memory.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Memory.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\Memory.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Memory.cu" 
+         Memory.cu
+       CudaBuild:
+         Compiling CUDA source file NLMeans.cu...
+         cmd.exe /C "C:\Users\Stephan\AppData\Local\Temp\tmp823aad7e927141de95f8aa36b830c2cd.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\NLMeans.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\NLMeans.cu"
+         
+         C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env --cl-version 2013 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64"  -I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ -I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Ox /Zi  /MD  " -o x64\Release\NLMeans.cu.obj "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\NLMeans.cu" 
+         NLMeans.cu
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt BlockMatchingComputerTBB.cpp BM3DCollaborativeFilterKernel.cpp BM3DImageBlockProcessor.cpp BM3DImageBlockProcessorFunctions.cpp BM3DParallelFunctions.cpp BM3DWienerFilterKernel.cpp BufferAggregator.cpp DEBUG_HELPER.cpp Image.cpp ImageBlockProcessor.cpp ImageBlockProcessorFunctions.cpp ImageNLMeansProcessor.cpp ImagePartitioner.cpp ImagePatch.h IntergralImageComputerTBB.cpp lodepng.cpp main.cpp SortedPatchCollection.cpp Statistics.cpp
+         BlockMatchingComputerTBB.cpp
+         BM3DCollaborativeFilterKernel.cpp
+     1>BM3DCollaborativeFilterKernel.cpp(119): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(121): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(191): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(193): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(202): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(210): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(221): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(235): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFilterKernel.cpp(237): warning C4018: '<' : signed/unsigned mismatch
+         BM3DImageBlockProcessor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImagePartitioner.h(20): warning C4267: 'return' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>BM3DImageBlockProcessor.cpp(84): warning C4101: 'totalNumBlocks' : unreferenced local variable
+         BM3DImageBlockProcessorFunctions.cpp
+         BM3DParallelFunctions.cpp
+         BM3DWienerFilterKernel.cpp
+     1>BM3DWienerFilterKernel.cpp(118): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(120): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(188): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(190): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(199): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(210): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(212): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(221): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(231): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(244): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(258): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFilterKernel.cpp(260): warning C4018: '<' : signed/unsigned mismatch
+         BufferAggregator.cpp
+         DEBUG_HELPER.cpp
+     1>DEBUG_HELPER.cpp(74): warning C4018: '<' : signed/unsigned mismatch
+     1>DEBUG_HELPER.cpp(179): warning C4018: '<' : signed/unsigned mismatch
+     1>DEBUG_HELPER.cpp(182): warning C4018: '<' : signed/unsigned mismatch
+     1>DEBUG_HELPER.cpp(184): warning C4018: '<' : signed/unsigned mismatch
+     1>DEBUG_HELPER.cpp(345): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>DEBUG_HELPER.cpp(346): warning C4305: '=' : truncation from 'double' to 'float'
+         Image.cpp
+     1>Image.cpp(466): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(518): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(520): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(522): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(536): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(539): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(541): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(543): warning C4018: '<' : signed/unsigned mismatch
          ImageBlockProcessor.cpp
-     1>ImageBlockProcessor.cpp(64): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(72): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(93): warning C4018: '<=' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(100): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(105): warning C4018: '<=' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(112): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(129): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>ImageBlockProcessor.cpp(137): warning C4018: '<=' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(144): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(149): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(166): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>ImageBlockProcessor.cpp(173): warning C4018: '<=' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(182): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(187): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(204): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>ImageBlockProcessor.cpp(214): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(219): warning C4018: '>' : signed/unsigned mismatch
-     1>ImageBlockProcessor.cpp(236): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImagePartitioner.h(20): warning C4267: 'return' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>ImageBlockProcessor.cpp(197): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         ImageBlockProcessorFunctions.cpp
+     1>ImageBlockProcessorFunctions.cpp(26): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(34): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(56): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(63): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(68): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(75): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(95): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(105): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(112): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(117): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(137): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(144): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(153): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(158): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(176): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(186): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(191): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(209): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(227): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(234): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(239): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(246): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(266): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(276): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(283): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(288): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(308): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(315): warning C4018: '<=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(324): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(329): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(347): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(357): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(362): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(380): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(411): warning C4018: '>=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(422): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(431): warning C4018: '>=' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(441): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(456): warning C4244: 'initializing' : conversion from 'float' to 'unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(457): warning C4244: 'initializing' : conversion from 'float' to 'unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(459): warning C4244: 'initializing' : conversion from 'float' to 'unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(464): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(487): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(495): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(539): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(547): warning C4018: '>' : signed/unsigned mismatch
+         ImageNLMeansProcessor.cpp
+     1>ImageNLMeansProcessor.cpp(91): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+         ImagePartitioner.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImagePartitioner.h(20): warning C4267: 'return' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>ImagePartitioner.cpp(32): warning C4244: 'initializing' : conversion from 'float' to 'unsigned int', possible loss of data
+         ImagePatch.h
+         IntergralImageComputerTBB.cpp
+         lodepng.cpp
+     1>lodepng.cpp(773): warning C4334: '<<' : result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+     1>lodepng.cpp(1439): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>lodepng.cpp(1443): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>lodepng.cpp(1515): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(3443): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(4246): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(4294): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(4374): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(5314): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         main.cpp
+     1>main.cpp(41): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         SortedPatchCollection.cpp
+     1>SortedPatchCollection.cpp(44): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         Statistics.cpp
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\BlockMatching.cu.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-12.0\release\address-model-64\link-static\threading-multi\\" /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" "libboost_thread-vc120-mt-1_57.lib" "libboost_timer-vc120-mt-1_57.lib" "libboost_system-vc120-mt-1_57.lib" "libboost_date_time-vc120-mt-1_57.lib" "libboost_chrono-vc120-mt-1_57.lib" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\BlockMatching.cu.obj
          x64\Release\BM3D.cu.obj
          x64\Release\Common.cu.obj
          x64\Release\Memory.cu.obj
          x64\Release\NLMeans.cu.obj
+         x64\Release\BlockMatchingComputerTBB.obj
          x64\Release\BM3DCollaborativeFilterKernel.obj
          x64\Release\BM3DImageBlockProcessor.obj
+         x64\Release\BM3DImageBlockProcessorFunctions.obj
          x64\Release\BM3DParallelFunctions.obj
+         x64\Release\BM3DWienerFilterKernel.obj
          x64\Release\BufferAggregator.obj
          x64\Release\DEBUG_HELPER.obj
          x64\Release\Image.obj
          x64\Release\ImageBlockProcessor.obj
+         x64\Release\ImageBlockProcessorFunctions.obj
          x64\Release\ImageNLMeansProcessor.obj
          x64\Release\ImagePartitioner.obj
          x64\Release\ImagePatch.obj
+         x64\Release\IntergralImageComputerTBB.obj
          x64\Release\lodepng.obj
          x64\Release\main.obj
          x64\Release\SortedPatchCollection.obj
@@ -48,4 +187,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.47
+Time Elapsed 00:00:36.70

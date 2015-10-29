@@ -42,6 +42,8 @@ namespace Denoise
 
 		inline index_t IDX2_2_1(const index_t row, const index_t col);
 
+		void clear();
+
 	private:
 		Dimension m_dim;
 		index_t m_numChannels;

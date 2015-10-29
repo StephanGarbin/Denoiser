@@ -12,7 +12,7 @@ namespace Denoise
 	class BM3DImageBlockProcessor
 	{
 	public:
-		BM3DImageBlockProcessor(Image* image, Image* imageResult);
+		BM3DImageBlockProcessor(Image* image, Image* imageBasic, Image* imageResult);
 		~BM3DImageBlockProcessor();
 
 		void process(const BM3DSettings& settings, bool processMatching = true);
@@ -25,7 +25,10 @@ namespace Denoise
 		void processCollaborativeFilter();
 		void processWienerFilter();
 
+		void processBlockMatching(Image* image, bool collaborative);
+
 		Image* m_image;
+		Image* m_imageBasic;
 		Image* m_imageResult;
 		BM3DSettings m_settings;
 		BufferAggregator m_buffer;

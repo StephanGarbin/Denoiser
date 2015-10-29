@@ -145,7 +145,7 @@
       <SDLCheck>true</SDLCheck>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\;..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
     </ClCompile>
     <Link>
@@ -153,34 +153,42 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64;..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64;%(AdditionalLibraryDirectories);$(CudaToolkitLibDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfftw3-3.lib;libfftw3f-3.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-12.0\release\address-model-64\link-static\threading-multi\;..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64;..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64;%(AdditionalLibraryDirectories);$(CudaToolkitLibDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libboost_thread-vc120-mt-1_57.lib;libboost_timer-vc120-mt-1_57.lib;libboost_system-vc120-mt-1_57.lib;libboost_date_time-vc120-mt-1_57.lib;libboost_chrono-vc120-mt-1_57.lib;libfftw3-3.lib;libfftw3f-3.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CudaCompile>
       <CodeGeneration>compute_30,sm_30</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlockMatchingComputerTBB.cpp" />
     <ClCompile Include="BM3DCollaborativeFilterKernel.cpp" />
     <ClCompile Include="BM3DImageBlockProcessor.cpp" />
+    <ClCompile Include="BM3DImageBlockProcessorFunctions.cpp" />
     <ClCompile Include="BM3DParallelFunctions.cpp" />
+    <ClCompile Include="BM3DWienerFilterKernel.cpp" />
     <ClCompile Include="BufferAggregator.cpp" />
     <ClCompile Include="DEBUG_HELPER.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageBlockProcessor.cpp" />
+    <ClCompile Include="ImageBlockProcessorFunctions.cpp" />
     <ClCompile Include="ImageNLMeansProcessor.cpp" />
     <ClCompile Include="ImagePartitioner.cpp" />
     <ClCompile Include="ImagePatch.h" />
+    <ClCompile Include="IntergralImageComputerTBB.cpp" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SortedPatchCollection.cpp" />
     <ClCompile Include="Statistics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlockMatchingComputerTBB.h" />
     <ClInclude Include="BM3DCollaborativeFilterKernel.h" />
     <ClInclude Include="BM3DImageBlockProcessor.h" />
+    <ClInclude Include="BM3DImageBlockProcessorFunctions.h" />
     <ClInclude Include="BM3DParallelFunctions.h" />
     <ClInclude Include="BM3DSettings.h" />
+    <ClInclude Include="BM3DWienerFilterKernel.h" />
     <ClInclude Include="BufferAggregator.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="CUDA_WRAPPER.h" />
@@ -189,8 +197,12 @@
     <ClInclude Include="IDX2.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageBlockProcessor.h" />
+    <ClInclude Include="ImageBlockProcessorFunctions.h" />
+    <ClInclude Include="ImageBlockProcessorSettings.h" />
+    <ClInclude Include="ImageBlockProcessorSettingsInternal.h" />
     <ClInclude Include="ImageNLMeansProcessor.h" />
     <ClInclude Include="ImagePartitioner.h" />
+    <ClInclude Include="IntergralImageComputerTBB.h" />
     <ClInclude Include="lodepng.h" />
     <ClInclude Include="NLMeansSettings.h" />
     <ClInclude Include="Rectangle.h" />

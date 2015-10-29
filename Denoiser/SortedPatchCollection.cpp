@@ -28,7 +28,6 @@ namespace Denoise
 
 	SortedPatchCollection::~SortedPatchCollection()
 	{
-		m_patches.clear();
 	}
 
 	void SortedPatchCollection::insertPatch(const IDX2& patch)

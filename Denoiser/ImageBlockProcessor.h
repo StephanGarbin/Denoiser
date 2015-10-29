@@ -10,6 +10,9 @@
 #include "Rectangle.h"
 #include "common.h"
 
+#include "ImageBlockProcessorSettings.h"
+#include "BM3DSettings.h"
+
 namespace Denoise
 {
 	class ImageBlockProcessor
@@ -18,13 +21,16 @@ namespace Denoise
 		ImageBlockProcessor(Image& image);
 		~ImageBlockProcessor();
 
-		void computeNMostSimilar(const ImagePatch& templatePatch, const Rectangle& imageBlock,
-			index_t stepSizeRows, index_t stepSizeCols,
-			index_t windowSizeRows, index_t windowSizeCols,
-			index_t maxSimilar, float maxDistance,
-			int norm,
-			std::vector<std::vector<IDX2> >& matchedBlocks,
-			index_t numChannelsToUse);
+		void computeNMostSimilar(const ImageBlockProcessorSettings& settings,
+			std::vector<std::vector<IDX2> >& matchedBlocks);
+
+		void computeNMostSimilar_PARALLEL(const ImageBlockProcessorSettings& settings,
+			const BM3DSettings& bm3dSettings,
+			std::vector<std::vector<IDX2> >& matchedBlocks);
+
+		void computeNMostSimilar_PARALLEL_TBB(const ImageBlockProcessorSettings& settings,
+			const BM3DSettings& bm3dSettings,
+			std::vector<std::vector<IDX2> >& matchedBlocks);
 
 		void computeNMostSimilarNaive(std::vector<IDX2>& matchedBlocks, const IDX2& position, const ImagePatch& templatePatch,
 			index_t windowSizeRows, index_t windowSizeCols,
@@ -32,38 +38,5 @@ namespace Denoise
 
 	private:
 		Image& m_image;
-
-		inline double patchDistanceIntegralImage(const std::vector<double>& integralImage, const ImagePatch& templatePatch,
-			const Rectangle& imageBlock, const IDX2& position);
-
-		void computeIntegralImage(const std::vector<float>& pixels, const Rectangle& imageBlock,
-			std::vector<double>& integralImage);
 	};
-
-	double ImageBlockProcessor::patchDistanceIntegralImage(const std::vector<double>& integralImage, const ImagePatch& templatePatch,
-		const Rectangle& imageBlock, const IDX2& position)
-	{
-		double result = integralImage[(position.row + templatePatch.height - 1) * imageBlock.width()
-			+ position.col + templatePatch.width - 1];
-
-		if (position.col > 0)
-		{
-			result -= integralImage[(position.row + templatePatch.height - 1) * imageBlock.width()
-				+ position.col - 1];
-		}
-
-		if (position.row > 0)
-		{
-			result -= integralImage[(position.row - 1) * imageBlock.width()
-				+ position.col + templatePatch.width - 1];
-		}
-
-		if (position.col * position.row > 0)
-		{
-			result += integralImage[(position.row - 1) * imageBlock.width()
-				+ position.col - 1];
-		}
-
-		return result;
-	}
 }

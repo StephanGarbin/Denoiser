@@ -13,12 +13,12 @@ namespace Denoise
 		m_transformLevels.push_back(1);
 
 		//Initialise plans for powers of 2 (block depths)
-		for (index_t level = 2; level < m_settings.numPatchesPerBlock; level*= 2)
+		for (index_t level = 2; level < m_settings.numPatchesPerBlockCollaborative; level*= 2)
 		{
 			m_transformLevels.push_back(level);
 		}
 
-		m_transformLevels.push_back(m_settings.numPatchesPerBlock);
+		m_transformLevels.push_back(m_settings.numPatchesPerBlockCollaborative);
 
 		initForwardTransforms();
 		initBackwardTransforms();
@@ -79,7 +79,7 @@ namespace Denoise
 	{
 		m_backwardPlans = new fftwf_plan[m_transformLevels.size()];
 
-		float* in = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlock];
+		float* in = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockCollaborative];
 
 		int n[2];
 		n[0] = m_settings.patchSize;

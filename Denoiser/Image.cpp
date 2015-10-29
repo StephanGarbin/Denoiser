@@ -456,6 +456,10 @@ namespace Denoise
 				}
 			}
 		}
+		else
+		{
+			numValidPatches = 32;
+		}
 
 		if (channel < 0)
 		{
@@ -569,7 +573,6 @@ namespace Denoise
 		}
 	}
 
-
 	void Image::clamp(float minValue, float maxValue)
 	{
 		for (index_t c = 0; c < m_pixelData.size(); ++c)
@@ -587,5 +590,30 @@ namespace Denoise
 				}
 			}
 		}
+	}
+
+	float Image::pixelMean(index_t channel, bool ignoreZeroPixelValues)
+	{
+		index_t counter = 0;
+		long double accumulator = 0.0;
+		for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
+		{
+			if (ignoreZeroPixelValues)
+			{
+				if (m_pixelData[channel][i] != 0.0f)
+				{
+					accumulator += m_pixelData[channel][i];
+					++counter;
+				}
+			}
+			else
+			{
+				accumulator += m_pixelData[channel][i];
+				++counter;
+			}
+				
+		}
+
+		return (float)(accumulator / (long double)counter);
 	}
 }
