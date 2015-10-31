@@ -1,6 +1,7 @@
 #include "BM3DWienerFilterKernel.h"
 
 #include "Transforms.h"
+#include "Statistics.h"
 #include <iostream>
 
 namespace Denoise
@@ -232,6 +233,160 @@ namespace Denoise
 				{
 					float coeff = factor * sqr(blockEstimate[colourOffset + patch * sqr(m_settings.patchSize) + i]);
 					float mult = coeff / (sqr(m_settings.stdDeviation) + coeff);
+
+					blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] =
+						blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] * mult * factor;
+
+					blockWeight[c] += mult;
+				}
+			}
+
+			//WHT for NOISY
+			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+			{
+				cfwht(blockNoisy, 0, numPatches, numPatches, colourOffset + i, m_fwhtMem, sqr(m_settings.patchSize));
+			}
+
+			//Normalise WHT for NOISY
+			//for (index_t i = 0; i < totalSize; ++i)
+			//{
+			//	blockNoisy[colourOffset + i] /= (float)numPatches;
+			//}
+
+			//Normalise DCT for NOISY
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t row = 0; row < m_settings.patchSize; ++row)
+				{
+					for (index_t col = 0; col < m_settings.patchSize; ++col)
+					{
+						blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
+							m_backwardCoefficients[row * m_settings.patchSize + col];
+					}
+				}
+			}
+
+			//Inverse DCT for NOISY
+			fftwf_execute_r2r(m_backwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
+
+			//normalise again
+			for (index_t i = 0; i < totalSize; ++i)
+			{
+				blockNoisy[colourOffset + i] /= (float)(m_settings.patchSize * 2);
+			}
+
+			if (blockWeight[c] > 1.0f)
+			{
+				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation, 2) * blockWeight[c]);
+			}
+			else
+			{
+				blockWeight[c] = 1.0f;
+			}
+		}
+	}
+
+	void BM3DWienerFilterKernel::processWienerFilterMeanAdaptive(float* blockNoisy, float* blockEstimate, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight,
+		float stdDeviation)
+	{
+		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
+
+		index_t planIdx;
+		switch (numPatches)
+		{
+		case 1:
+			planIdx = 0;
+			break;
+		case 2:
+			planIdx = 1;
+			break;
+		case 4:
+			planIdx = 2;
+			break;
+		case 8:
+			planIdx = 3;
+			break;
+		case 16:
+			planIdx = 4;
+			break;
+		case 32:
+			planIdx = 5;
+			break;
+		default:
+			std::cout << "ERROR: No DCT plan available for numBlocks = " << numPatches << std::endl;
+			return;
+			break;
+		}
+
+		//Compute Mean for Adaptive Measure ----------------
+		std::vector<float> patchMeans(numChannels * sqr(m_settings.patchSize));
+		calculateBlockMeans(blockNoisy, numPatches, m_settings.patchSize, numChannels, &patchMeans[0]);
+		//--------------------------------------------------
+
+
+		for (index_t c = 0; c < numChannels; ++c)
+		{
+			//reset weight
+			blockWeight[c] = 0.0f;
+
+			index_t colourOffset = c * totalSize;
+
+			//DCT for ESTIMATE
+			fftwf_execute_r2r(m_forwardPlans[planIdx], blockEstimate + colourOffset, blockEstimate + colourOffset);
+
+			//Normalise DCT for ESTIMATE
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t row = 0; row < m_settings.patchSize; ++row)
+				{
+					for (index_t col = 0; col < m_settings.patchSize; ++col)
+					{
+						blockEstimate[colourOffset + patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
+							m_forwardCoefficients[row * m_settings.patchSize + col];
+					}
+				}
+			}
+
+			//WHT for ESTIMATE
+			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+			{
+				cfwht(blockEstimate, 0, numPatches, numPatches, colourOffset + i, m_fwhtMem, sqr(m_settings.patchSize));
+			}
+
+			//DCT for NOISY
+			fftwf_execute_r2r(m_forwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
+
+			//Normalise DCT for NOISY
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t row = 0; row < m_settings.patchSize; ++row)
+				{
+					for (index_t col = 0; col < m_settings.patchSize; ++col)
+					{
+						blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
+							m_forwardCoefficients[row * m_settings.patchSize + col];
+					}
+				}
+			}
+
+			//WHT for NOISY
+			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+			{
+				cfwht(blockNoisy, 0, numPatches, numPatches, colourOffset + i, m_fwhtMem, sqr(m_settings.patchSize));
+			}
+
+			//Apply Wiener Filter
+			float factor = 1.0f / (float)numPatches;
+
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+				{
+					float adaptiveFactor = calculateMeanAdaptiveFactor(stdDeviation, patchMeans[c * sqr(m_settings.patchSize) + i],
+						m_settings.meanAdaptiveThresholdingFactor);
+
+					float coeff = factor * sqr(blockEstimate[colourOffset + patch * sqr(m_settings.patchSize) + i]);
+					float mult = coeff / (sqr(m_settings.stdDeviation * adaptiveFactor) + coeff);
 
 					blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] =
 						blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] * mult * factor;

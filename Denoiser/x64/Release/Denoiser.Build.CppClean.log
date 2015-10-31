@@ -3,6 +3,7 @@ c:\users\stephan\documents\github\denoiser\denoiser\x64\release\statistics.obj
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\sortedpatchcollection.obj
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\main.obj
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\lodepng.obj
+c:\users\stephan\documents\github\denoiser\denoiser\x64\release\intergralimagecomputertbb.obj
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\imagepatch.obj
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\imagepartitioner.obj
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\imagenlmeansprocessor.obj
@@ -16,7 +17,6 @@ c:\users\stephan\documents\github\denoiser\denoiser\x64\release\bm3dparallelfunc
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\bm3dimageblockprocessorfunctions.obj
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\bm3dimageblockprocessor.obj
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\bm3dcollaborativefilterkernel.obj
-c:\users\stephan\documents\github\denoiser\denoiser\x64\release\intergralimagecomputertbb.obj
 c:\users\stephan\documents\github\denoiser\denoiser\x64\release\blockmatchingcomputertbb.obj
 c:\users\stephan\documents\github\denoiser\x64\release\denoiser.exe
 c:\users\stephan\documents\github\denoiser\x64\release\denoiser.pdb

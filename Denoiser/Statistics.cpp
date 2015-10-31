@@ -2,80 +2,128 @@
 
 #include <cmath>
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
 
 namespace Denoise
 {
-	float calculateBlockVariance(float* block, index_t numPatches, index_t patchSize)
+	float calculateBlockVariance(float* block, index_t numPatches, index_t patchSize, index_t numChannels)
 	{
-		//float std = 0.0f;
-		//float mean = 0.0f;
+		index_t totalSize = sqr(patchSize) * numPatches;
 
-		//for (index_t patch = 0; patch < numPatches; ++patch)
-		//{
-		//	for (index_t i = 0; i < std::pow(patchSize, 2); ++i)
-		//	{
-		//		std += std::pow(block[patch * sqr(patchSize) + i], 2);
-		//		mean += block[patch * sqr(patchSize) + i];
+		std::vector<float> variances(numChannels);
 
-		//	}
-		//}
-		//std::cout << "Std: " << std << "Mean: " << mean << "; ";
-		//return (std - mean * mean / (float)(patchSize * numPatches)) / (float)(patchSize * numPatches - 1);
-
-		float mean = 0.0f;
-
-		for (index_t patch = 0; patch < numPatches; ++patch)
+		for (index_t c = 0; c < numChannels; ++c)
 		{
-			for (index_t i = 0; i < std::pow(patchSize, 2); ++i)
+			index_t colourOffset = c * totalSize;
+
+			float mean = 0.0f;
+
+			for (index_t patch = 0; patch < numPatches; ++patch)
 			{
-				mean += block[patch * sqr(patchSize) + i];
+				for (index_t i = 0; i < std::pow(patchSize, 2); ++i)
+				{
+					mean += block[colourOffset + patch * sqr(patchSize) + i];
+				}
 			}
-		}
 
-		mean /= (float)(sqr(patchSize) * numPatches);
+			mean /= (float)(sqr(patchSize) * numPatches);
 
-		float std = 0.0f;
 
-		for (index_t patch = 0; patch < numPatches; ++patch)
-		{
-			for (index_t i = 0; i < std::pow(patchSize, 2); ++i)
+			for (index_t patch = 0; patch < numPatches; ++patch)
 			{
-				std += std::pow(block[patch * sqr(patchSize) + i] - mean, 2);
+				for (index_t i = 0; i < std::pow(patchSize, 2); ++i)
+				{
+					variances[c] += std::pow(block[colourOffset + patch * sqr(patchSize) + i] - mean, 2);
+				}
 			}
+
+			variances[c] /= (float)totalSize;
 		}
 		
-		return std / (float)(sqr(patchSize) * numPatches);
+		return std::accumulate(variances.begin(), variances.end(), 0.0f) / (float)variances.size();
 	}
 
-	void setBlockToAveragePatch(float* block, index_t numPatches, index_t patchSize)
+	void setBlockToAveragePatch(float* block, index_t numPatches, index_t patchSize, index_t numChannels)
 	{
+		index_t totalSize = sqr(patchSize) * numPatches;
 		float* averagePatch = new float[sqr(patchSize)];
-		for (index_t i = 0; i < sqr(patchSize); ++i)
-		{
-			averagePatch[i] = 0.0f;
-		}
 
-		for (index_t patch = 0; patch < numPatches; ++patch)
+		for (index_t c = 0; c < numChannels; ++c)
 		{
+			index_t colourOffset = c * totalSize;
+
 			for (index_t i = 0; i < sqr(patchSize); ++i)
 			{
-				averagePatch[i] += block[patch * sqr(patchSize) + i];
+				averagePatch[i] = 0.0f;
 			}
-		}
 
-		for (index_t i = 0; i < sqr(patchSize); ++i)
-		{
-			averagePatch[i] /= (float)numPatches;
-		}
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t i = 0; i < sqr(patchSize); ++i)
+				{
+					averagePatch[i] += block[colourOffset + patch * sqr(patchSize) + i];
+				}
+			}
 
-		for (index_t patch = 0; patch < numPatches; ++patch)
-		{
 			for (index_t i = 0; i < sqr(patchSize); ++i)
 			{
-				block[patch * sqr(patchSize) + i] = averagePatch[i];
+				averagePatch[i] /= (float)numPatches;
 			}
-		}
 
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t i = 0; i < sqr(patchSize); ++i)
+				{
+					block[colourOffset + patch * sqr(patchSize) + i] = averagePatch[i];
+				}
+			}
+
+		}
 		delete[] averagePatch;
+	}
+
+	void calculateBlockMeans(float* block, index_t numPatches, index_t patchSize, index_t numChannels,
+		float* means)
+	{
+		index_t totalSize = sqr(patchSize) * numPatches;
+		float* averagePatch = new float[sqr(patchSize)];
+
+		for (index_t c = 0; c < numChannels; ++c)
+		{
+			index_t colourOffset = c * totalSize;
+
+			for (index_t i = 0; i < sqr(patchSize); ++i)
+			{
+				averagePatch[i] = 0.0f;
+			}
+
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t i = 0; i < sqr(patchSize); ++i)
+				{
+					averagePatch[i] += block[colourOffset + patch * sqr(patchSize) + i];
+				}
+			}
+
+			for (index_t i = 0; i < sqr(patchSize); ++i)
+			{
+				averagePatch[i] /= (float)numPatches;
+			}
+
+
+			for (index_t i = 0; i < sqr(patchSize); ++i)
+			{
+				means[c * sqr(patchSize) + i] = averagePatch[i];
+			}
+
+		}
+		delete[] averagePatch;
+	}
+
+	float calculateMeanAdaptiveFactor(float stdDeviaton, float mean, float scaling)
+	{
+		return 1.0f / 3.0f + (mean / 3.0f) * scaling;
 	}
 }

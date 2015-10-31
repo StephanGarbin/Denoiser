@@ -419,6 +419,7 @@ namespace Denoise
 					continue;
 				}
 
+
 				if (row + shiftRows > image.height() - settings.templatePatch.height + 0)
 				{
 					continue;
@@ -438,9 +439,19 @@ namespace Denoise
 						continue;
 					}
 
-					if (col + shiftCols > image.width() - settings.templatePatch.width + 0)
+					if (shiftRows == 0 || shiftCols == 0)
 					{
-						continue;
+						if (col + shiftCols > image.width() - settings.templatePatch.width + 1)
+						{
+							continue;
+						}
+					}
+					else
+					{
+						if (col + shiftCols > image.width() - settings.templatePatch.width + 0)
+						{
+							continue;
+						}
 					}
 
 					double distance = 0.0;

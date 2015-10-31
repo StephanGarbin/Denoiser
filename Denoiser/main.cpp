@@ -48,8 +48,8 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees2.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew2b.png";
 
-	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
-	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew.png";
+	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
+	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_smoothness.png";
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/computerNoisy.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/computerNew.png";
@@ -60,9 +60,9 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger_high.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/tiger_high_denoised.png";
 
-	std::string inputFile = "C:/Users/Stephan/Desktop/tiger_1K.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/tiger_1K_denoised_b.png";
-
+	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger_1K.png";
+	//std::string outputFile = "C:/Users/Stephan/Desktop/tiger_1K_denoised_b.png";
+	
 	Denoise::Image* image = nullptr;
 
 	loadImage(&image, inputFile);
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
 	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &basic, &result);
 
 	Denoise::BM3DSettings bm3dFilterSettings;
-	bm3dFilterSettings.templateMatchingMaxAllowedPatchDistance = 2.50001f;
+	bm3dFilterSettings.templateMatchingMaxAllowedPatchDistance = 2.5f;
 	bm3dFilterSettings.templateMatchingNorm = 2;
 	bm3dFilterSettings.templateMatchingNumChannels = 1;
 
@@ -86,8 +86,14 @@ int main(int argc, char* argv[])
 	bm3dFilterSettings.stepSizeRows = 3;
 	bm3dFilterSettings.usePatchWeighting = false;
 	bm3dFilterSettings.stdDeviation = stdDeviation;
-	bm3dFilterSettings.averageBlocksBasedOnStd = false;
-	bm3dFilterSettings.averageBlocksBasedOnStdFactor = 0.001f;
+
+	bm3dFilterSettings.averageBlocksBasedOnStdCollaborative = false;
+	bm3dFilterSettings.averageBlocksBasedOnStdWiener = true;
+	bm3dFilterSettings.averageBlocksBasedOnStdFactor = 0.75f;
+
+	bm3dFilterSettings.meanAdaptiveThresholding = true;
+	bm3dFilterSettings.meanAdaptiveThresholdingFactor = 1.0f;
+
 	bm3dFilterSettings.numThreadsBlockMatching = numThreadsBM;
 	bm3dFilterSettings.numPatchesPerBlockWiener = 32;
 	bm3dFilterSettings.disableWienerFilter = false;

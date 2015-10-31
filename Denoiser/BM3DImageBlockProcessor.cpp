@@ -123,7 +123,7 @@ namespace Denoise
 			blockMatchSettings.numChannelsToUse = m_settings.templateMatchingNumChannels;
 			blockMatchSettings.matchedBlocksAlreadyComputed = 0;
 			blockMatchSettings.numThreadsIntegralImageComputation = m_settings.numThreadsBlockMatching;
-			blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching;
+			blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching * 4;
 
 			//processor.computeNMostSimilar_PARALLEL(blockMatchSettings, m_settings, m_matchedBlocks);
 			processor.computeNMostSimilar_PARALLEL_TBB(blockMatchSettings, m_settings, m_matchedBlocks);
@@ -161,7 +161,6 @@ namespace Denoise
 		{
 			float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockCollaborative * 3];
 
-
 			for (index_t i = 0; i < m_matchedBlocks.size(); ++i)
 			{
 				index_t numValidPatches;
@@ -174,13 +173,13 @@ namespace Denoise
 					continue;
 				}
 
-				if (m_settings.averageBlocksBasedOnStd)
+				if (m_settings.averageBlocksBasedOnStdCollaborative)
 				{
-					float blockStd = calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlockCollaborative, m_settings.patchSize);
+					float blockStd = std::sqrt(calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlockCollaborative, m_settings.patchSize, m_image->numChannels()));
 
 					if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
 					{
-						setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlockCollaborative, m_settings.patchSize);
+						setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlockCollaborative, m_settings.patchSize, m_image->numChannels());
 
 						for (index_t channel = 0; channel < weights.size(); ++channel)
 						{
@@ -189,12 +188,26 @@ namespace Denoise
 					}
 					else
 					{
-						collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+						if (m_settings.meanAdaptiveThresholding)
+						{
+							collaborativeKernel.processCollaborativeFilterMeanAdaptive(rawImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+						}
+						else
+						{
+							collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+						}
 					}
 				}
 				else
 				{
-					collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+					if (m_settings.meanAdaptiveThresholding)
+					{
+						collaborativeKernel.processCollaborativeFilterMeanAdaptive(rawImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+					}
+					else
+					{
+						collaborativeKernel.processCollaborativeFilter(rawImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+					}
 				}
 
 				index_t sizePerChannel = numValidPatches * patchTemplate.width * patchTemplate.height;
@@ -267,13 +280,13 @@ namespace Denoise
 					continue;
 				}
 
-				if (m_settings.averageBlocksBasedOnStd)
+				if (m_settings.averageBlocksBasedOnStdWiener)
 				{
-					float blockStd = calculateBlockVariance(estimateImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize);
+					float blockStd = std::sqrt(calculateBlockVariance(estimateImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels()));
 
 					if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
 					{
-						setBlockToAveragePatch(estimateImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize);
+						setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels());
 
 						for (index_t channel = 0; channel < weights.size(); ++channel)
 						{
@@ -282,12 +295,26 @@ namespace Denoise
 					}
 					else
 					{
-						wienerKernel.processWienerFilter(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+						if (m_settings.meanAdaptiveThresholding)
+						{
+							wienerKernel.processWienerFilterMeanAdaptive(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+						}
+						else
+						{
+							wienerKernel.processWienerFilter(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+						}
 					}
 				}
 				else
 				{
-					wienerKernel.processWienerFilter(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+					if (m_settings.meanAdaptiveThresholding)
+					{
+						wienerKernel.processWienerFilterMeanAdaptive(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+					}
+					else
+					{
+						wienerKernel.processWienerFilter(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
+					}
 				}
 
 				index_t sizePerChannel = numValidPatches * patchTemplate.width * patchTemplate.height;

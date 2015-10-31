@@ -18,6 +18,9 @@ namespace Denoise
 
 		void processCollaborativeFilter(float* block, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight, float stdDeviation);
 
+		void processCollaborativeFilterMeanAdaptive(float* block, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight, float stdDeviation);
+
+
 	private:
 		void initForwardTransforms();
 		void initBackwardTransforms();

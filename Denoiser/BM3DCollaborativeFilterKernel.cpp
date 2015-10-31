@@ -1,6 +1,7 @@
 #include "BM3DCollaborativeFilterKernel.h"
 
 #include "Transforms.h"
+#include "Statistics.h"
 #include <iostream>
 
 namespace Denoise
@@ -210,6 +211,135 @@ namespace Denoise
 				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 				{
 					if (std::fabs(block[colourOffset + i + patch * sqr(m_settings.patchSize)]) <= stdDeviation * 2.7f * sqrtf((float)numPatches))
+					{
+						block[colourOffset + i + patch * sqr(m_settings.patchSize)] = 0.0f;
+						numRetainedCoefficients[c] -= 1.0f;
+					}
+				}
+			}
+
+			//WHT
+			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+			{
+				cfwht(block, 0, numPatches, numPatches, colourOffset + i, m_fwhtMem, sqr(m_settings.patchSize));
+			}
+
+			//Normalise WHT
+			for (index_t i = 0; i < totalSize; ++i)
+			{
+				block[colourOffset + i] /= (float)numPatches;
+			}
+
+			//Normalise DCT
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t row = 0; row < m_settings.patchSize; ++row)
+				{
+					for (index_t col = 0; col < m_settings.patchSize; ++col)
+					{
+						block[colourOffset + patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
+							m_backwardCoefficients[row * m_settings.patchSize + col];
+					}
+				}
+			}
+
+			//Inverse DCT
+			fftwf_execute_r2r(m_backwardPlans[planIdx], block + colourOffset, block + colourOffset);
+
+			//normalise again
+			for (index_t i = 0; i < totalSize; ++i)
+			{
+				block[colourOffset + i] /= (float)(m_settings.patchSize * 2);
+			}
+
+			if (numRetainedCoefficients[c] > 1.0f)
+			{
+				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation, 2) * numRetainedCoefficients[c]);
+			}
+			else
+			{
+				blockWeight[c] = 1.0f;
+			}
+		}
+	}
+
+	void BM3DCollaborativeFilterKernel::processCollaborativeFilterMeanAdaptive(float* block, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight,
+		float stdDeviation)
+	{
+		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
+
+		index_t planIdx;
+		switch (numPatches)
+		{
+		case 1:
+			planIdx = 0;
+			break;
+		case 2:
+			planIdx = 1;
+			break;
+		case 4:
+			planIdx = 2;
+			break;
+		case 8:
+			planIdx = 3;
+			break;
+		case 16:
+			planIdx = 4;
+			break;
+		case 32:
+			planIdx = 5;
+			break;
+		default:
+			std::cout << "ERROR: No DCT plan available for numBlocks = " << numPatches << std::endl;
+			return;
+			break;
+		}
+
+		//Compute Mean for Adaptive Measure ----------------
+		std::vector<float> patchMeans(numChannels * sqr(m_settings.patchSize));
+		calculateBlockMeans(block, numPatches, m_settings.patchSize, numChannels, &patchMeans[0]);
+		//--------------------------------------------------
+
+		std::vector<float> numRetainedCoefficients(numChannels);
+		for (index_t i = 0; i < numRetainedCoefficients.size(); ++i)
+		{
+			numRetainedCoefficients[i] = (float)(totalSize);
+		}
+
+		for (index_t c = 0; c < numChannels; ++c)
+		{
+			index_t colourOffset = c * totalSize;
+			//DCT
+			fftwf_execute_r2r(m_forwardPlans[planIdx], block + colourOffset, block + colourOffset);
+
+			//Normalise DCT
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t row = 0; row < m_settings.patchSize; ++row)
+				{
+					for (index_t col = 0; col < m_settings.patchSize; ++col)
+					{
+						block[colourOffset + patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
+							m_forwardCoefficients[row * m_settings.patchSize + col];
+					}
+				}
+			}
+
+			//WHT
+			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+			{
+				cfwht(block, 0, numPatches, numPatches, colourOffset + i, m_fwhtMem, sqr(m_settings.patchSize));
+			}
+
+			//Thresholding
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+				{
+					float adaptiveFactor = calculateMeanAdaptiveFactor(stdDeviation, patchMeans[c * sqr(m_settings.patchSize) + i],
+						m_settings.meanAdaptiveThresholdingFactor);
+
+					if (std::fabs(block[colourOffset + i + patch * sqr(m_settings.patchSize)]) <= stdDeviation * 2.7f * sqrtf((float)numPatches) * adaptiveFactor)
 					{
 						block[colourOffset + i + patch * sqr(m_settings.patchSize)] = 0.0f;
 						numRetainedCoefficients[c] -= 1.0f;

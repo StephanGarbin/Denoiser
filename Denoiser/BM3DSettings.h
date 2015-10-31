@@ -22,13 +22,18 @@ namespace Denoise
 		int templateMatchingNorm;
 		index_t templateMatchingNumChannels;
 
-		int patchSize;
+		index_t patchSize;
 
 		bool usePatchWeighting;
 
 		//Statistical Extensions
-		bool averageBlocksBasedOnStd;
+		bool averageBlocksBasedOnStdCollaborative;
+		bool averageBlocksBasedOnStdWiener;
 		float averageBlocksBasedOnStdFactor;
+
+		//Adaptivity
+		bool meanAdaptiveThresholding;
+		float meanAdaptiveThresholdingFactor;
 
 		//Multi-Threading
 		index_t numThreadsBlockMatching;
