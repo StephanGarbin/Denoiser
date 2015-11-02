@@ -177,6 +177,12 @@ namespace Denoise
 				{
 					float blockStd = std::sqrt(calculateBlockVariance(rawImageBlock, m_settings.numPatchesPerBlockCollaborative, m_settings.patchSize, m_image->numChannels()));
 
+					if (m_settings.meanAdaptiveThresholding)
+					{
+						float mean = calculateBlockMean(rawImageBlock, m_settings.numPatchesPerBlockCollaborative, m_settings.patchSize, m_image->numChannels());
+						blockStd *= calculateMeanAdaptiveFactor(blockStd, mean, m_settings.meanAdaptiveThresholdingFactor);
+					}
+
 					if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
 					{
 						setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlockCollaborative, m_settings.patchSize, m_image->numChannels());
@@ -283,6 +289,12 @@ namespace Denoise
 				if (m_settings.averageBlocksBasedOnStdWiener)
 				{
 					float blockStd = std::sqrt(calculateBlockVariance(estimateImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels()));
+
+					if (m_settings.meanAdaptiveThresholding)
+					{
+						float mean = calculateBlockMean(rawImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels());
+						blockStd *= calculateMeanAdaptiveFactor(blockStd, mean, m_settings.meanAdaptiveThresholdingFactor);
+					}
 
 					if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
 					{

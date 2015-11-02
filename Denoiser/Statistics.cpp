@@ -122,8 +122,49 @@ namespace Denoise
 		delete[] averagePatch;
 	}
 
+	float calculateBlockMean(float* block, index_t numPatches, index_t patchSize, index_t numChannels)
+	{
+		float mean = 0.0f;
+		index_t totalSize = sqr(patchSize) * numPatches;
+		float* averagePatch = new float[sqr(patchSize)];
+
+		for (index_t c = 0; c < numChannels; ++c)
+		{
+			index_t colourOffset = c * totalSize;
+
+			for (index_t i = 0; i < sqr(patchSize); ++i)
+			{
+				averagePatch[i] = 0.0f;
+			}
+
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t i = 0; i < sqr(patchSize); ++i)
+				{
+					averagePatch[i] += block[colourOffset + patch * sqr(patchSize) + i];
+				}
+			}
+
+			for (index_t i = 0; i < sqr(patchSize); ++i)
+			{
+				averagePatch[i] /= (float)numPatches;
+			}
+
+
+			for (index_t i = 0; i < sqr(patchSize); ++i)
+			{
+				mean += averagePatch[i];
+			}
+
+		}
+		delete[] averagePatch;
+
+		return mean / (numChannels * sqr(patchSize));
+	}
+
 	float calculateMeanAdaptiveFactor(float stdDeviaton, float mean, float scaling)
 	{
-		return 1.0f / 3.0f + (mean / 3.0f) * scaling;
+		return 1.0f + std::pow(mean, 3) * scaling;
+		//return 1.0f / 3.0f + (mean / 3.0f) * scaling;
 	}
 }

@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
 {
 	float stdDeviation;
 	index_t numThreadsBM;
+	float adaptiveFactor = 0.0f;
 
 	if (argc != 3)
 	{
@@ -39,7 +40,9 @@ int main(int argc, char* argv[])
 	else
 	{
 		stdDeviation = std::atof(argv[1]);
-		numThreadsBM = std::atoi(argv[2]);
+		//numThreadsBM = std::atoi(argv[2]);
+		numThreadsBM = 8;
+		adaptiveFactor = std::atof(argv[2]);
 	}
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
@@ -88,11 +91,11 @@ int main(int argc, char* argv[])
 	bm3dFilterSettings.stdDeviation = stdDeviation;
 
 	bm3dFilterSettings.averageBlocksBasedOnStdCollaborative = false;
-	bm3dFilterSettings.averageBlocksBasedOnStdWiener = true;
+	bm3dFilterSettings.averageBlocksBasedOnStdWiener = false; // turn only this to true if enabling the mode
 	bm3dFilterSettings.averageBlocksBasedOnStdFactor = 0.75f;
 
 	bm3dFilterSettings.meanAdaptiveThresholding = true;
-	bm3dFilterSettings.meanAdaptiveThresholdingFactor = 1.0f;
+	bm3dFilterSettings.meanAdaptiveThresholdingFactor = adaptiveFactor;
 
 	bm3dFilterSettings.numThreadsBlockMatching = numThreadsBM;
 	bm3dFilterSettings.numPatchesPerBlockWiener = 32;
