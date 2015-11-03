@@ -51,8 +51,8 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees2.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew2b.png";
 
-	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_smoothness.png";
+	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
+	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_smoothness.png";
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/computerNoisy.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/computerNew.png";
@@ -65,6 +65,9 @@ int main(int argc, char* argv[])
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger_1K.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/tiger_1K_denoised_b.png";
+
+	std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
+	std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
 	
 	Denoise::Image* image = nullptr;
 
@@ -78,7 +81,7 @@ int main(int argc, char* argv[])
 	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &basic, &result);
 
 	Denoise::BM3DSettings bm3dFilterSettings;
-	bm3dFilterSettings.templateMatchingMaxAllowedPatchDistance = 2.5f;
+	bm3dFilterSettings.templateMatchingMaxAllowedPatchDistance = 0.0000000001f;
 	bm3dFilterSettings.templateMatchingNorm = 2;
 	bm3dFilterSettings.templateMatchingNumChannels = 1;
 

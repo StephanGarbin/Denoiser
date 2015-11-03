@@ -8,7 +8,7 @@ namespace Denoise
 	BlockMatchingComputerTBB::BlockMatchingComputerTBB(const ImageBlockProcessorSettings& settings,
 		const ImageBlockProcessorSettingsInternal& settingsInternal,
 		const std::vector<std::pair<int, int> >& shifts,
-		std::vector<std::vector<std::vector<float> > >& distanceImage,
+		std::vector<std::vector<std::vector<double> > >& distanceImage,
 		std::vector<std::vector<std::vector<double> > >& integralImage,
 		const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,

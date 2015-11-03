@@ -170,8 +170,16 @@ namespace Denoise
 
 				if (numValidPatches < 1)
 				{
+					//std::cout << "Continuing..." << std::endl;
 					continue;
 				}
+
+				//if (m_matchedBlocks[i][0].distance != 0.0f)
+				//{
+				//	std::cout << "Error: " << m_matchedBlocks[i][0].distance << ";; " << m_matchedBlocks[i][0].row << "; " << m_matchedBlocks[i][0].col << std::endl;
+				//	std::cout << "ENext: " << m_matchedBlocks[i][1].distance << ";; " << m_matchedBlocks[i][1].row << "; " << m_matchedBlocks[i][1].col << std::endl;
+				//	std::cout << "Size: " << m_matchedBlocks[i].size() << std::endl;
+				//}
 
 				if (m_settings.averageBlocksBasedOnStdCollaborative)
 				{

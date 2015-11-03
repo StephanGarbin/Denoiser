@@ -9,7 +9,7 @@ namespace Denoise
 {
 	void computeBlockMatchingForSpecificShifts(const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,
-		std::vector<std::vector<float> >& distanceImage,
+		std::vector<std::vector<double> >& distanceImage,
 		std::vector<std::vector<double> >& integralImage,
 		const ImageBlockProcessorSettings& settings,
 		const ImageBlockProcessorSettingsInternal& settingsInternal)
@@ -87,6 +87,11 @@ namespace Denoise
 
 				distance /= (double)settings.numChannelsToUse;
 
+				if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+				{
+					distance = -100.0f;
+				}
+
 				if (distance <= (double)settings.maxDistance)
 				{
 					matchedBlocksSorted[((row - settings.imageBlock.bottom) / settings.stepSizeRows)
@@ -129,6 +134,11 @@ namespace Denoise
 
 					distance /= (double)settings.numChannelsToUse;
 
+					if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+					{
+						distance = -100.0f;
+					}
+
 					if (distance <= (double)settings.maxDistance)
 					{
 						matchedBlocksSorted[(settings.imageBlock.height() / settings.stepSizeRows)
@@ -170,6 +180,11 @@ namespace Denoise
 
 					distance /= (double)settings.numChannelsToUse;
 
+					if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+					{
+						distance = -100.0f;
+					}
+
 					if (distance <= (double)settings.maxDistance)
 					{
 						matchedBlocksSorted[((row - settings.imageBlock.bottom) / settings.stepSizeRows) * (settings.imageBlock.width() / settings.stepSizeCols + 1) + (settings.imageBlock.width() / settings.stepSizeCols + 1)].insertPatch(
@@ -203,6 +218,11 @@ namespace Denoise
 
 				distance /= (double)settings.numChannelsToUse;
 
+				if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+				{
+					distance = -100.0f;
+				}
+
 				if (distance <= (double)settings.maxDistance)
 				{
 					matchedBlocksSorted[matchedBlocksSorted.size() - 1].insertPatch(
@@ -214,7 +234,7 @@ namespace Denoise
 
 	void computeBlockMatchingForSpecificShifts_doNotComputeIntegralImage(const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,
-		std::vector<std::vector<float> >& distanceImage,
+		std::vector<std::vector<double> >& distanceImage,
 		std::vector<std::vector<double> >& integralImage,
 		const ImageBlockProcessorSettings& settings,
 		const ImageBlockProcessorSettingsInternal& settingsInternal)
@@ -258,6 +278,11 @@ namespace Denoise
 
 				distance /= (double)settings.numChannelsToUse;
 
+				if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+				{
+					distance = -100.0f;
+				}
+
 				if (distance <= (double)settings.maxDistance)
 				{
 					matchedBlocksSorted[((row - settings.imageBlock.bottom) / settings.stepSizeRows)
@@ -300,6 +325,11 @@ namespace Denoise
 
 					distance /= (double)settings.numChannelsToUse;
 
+					if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+					{
+						distance = -100.0f;
+					}
+
 					if (distance <= (double)settings.maxDistance)
 					{
 						matchedBlocksSorted[(settings.imageBlock.height() / settings.stepSizeRows)
@@ -341,6 +371,11 @@ namespace Denoise
 
 					distance /= (double)settings.numChannelsToUse;
 
+					if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+					{
+						distance = -100.0f;
+					}
+
 					if (distance <= (double)settings.maxDistance)
 					{
 						matchedBlocksSorted[((row - settings.imageBlock.bottom) / settings.stepSizeRows) * (settings.imageBlock.width() / settings.stepSizeCols + 1) + (settings.imageBlock.width() / settings.stepSizeCols + 1)].insertPatch(
@@ -374,6 +409,11 @@ namespace Denoise
 
 				distance /= (double)settings.numChannelsToUse;
 
+				if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+				{
+					distance = -100.0f;
+				}
+
 				if (distance <= (double)settings.maxDistance)
 				{
 					matchedBlocksSorted[matchedBlocksSorted.size() - 1].insertPatch(
@@ -385,7 +425,7 @@ namespace Denoise
 
 	void computeBlockMatchingForSpecificShifts_doNotComputeIntegralImageBlock(const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,
-		std::vector<std::vector<std::vector<float> > >& distanceImage,
+		std::vector<std::vector<std::vector<double> > >& distanceImage,
 		std::vector<std::vector<std::vector<double> > >& integralImage,
 		const std::vector<std::pair<int, int> >& shifts,
 		index_t startIdx,
@@ -464,10 +504,15 @@ namespace Denoise
 
 					distance /= (double)settings.numChannelsToUse;
 
+					if (shiftCols == 0 && shiftRows == 0)
+					{
+						distance = -100.0f;
+					}
+
 					index_t blockRow = std::round((float)row / (float)settings.stepSizeRows);
 					index_t blockCol = std::round((float)col / (float)settings.stepSizeCols);
 
-					index_t blockWidth = std::floor((float)settings.imageBlock.width() / (float)settings.stepSizeCols);
+					index_t blockWidth = std::ceil((float)settings.imageBlock.width() / (float)settings.stepSizeCols);
 
 					if (distance <= (double)settings.maxDistance)
 					{
@@ -481,7 +526,7 @@ namespace Denoise
 
 	void computeIntegralImageForSpecificShifts(const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,
-		std::vector<std::vector<float> >& distanceImage,
+		std::vector<std::vector<double> >& distanceImage,
 		std::vector<std::vector<double> >& integralImage,
 		const ImageBlockProcessorSettings& settings,
 		const ImageBlockProcessorSettingsInternal& settingsInternal)
@@ -526,7 +571,7 @@ namespace Denoise
 	}
 
 	void computeIntegralImageForSpecificShiftsBlock(const Image& image,
-		std::vector<std::vector<std::vector<float> > >& distanceImage,
+		std::vector<std::vector<std::vector<double> > >& distanceImage,
 		std::vector<std::vector<std::vector<double> > >& integralImage,
 		const std::vector<std::pair<int, int> >& shifts,
 		index_t startIdx,
@@ -579,15 +624,15 @@ namespace Denoise
 	}
 
 
-	void computeIntegralImage(const std::vector<float>& pixels, const Rectangle& imageBlock,
+	void computeIntegralImage(const std::vector<double>& pixels, const Rectangle& imageBlock,
 		std::vector<double>& integralImage)
 	{
 		//see e.g. http://www.ipol.im/pub/art/2014/57/article.pdf for details on this recurrence-relation
-		integralImage[0] = (double)pixels[0];
+		integralImage[0] = pixels[0];
 
 		for (int col = std::max(imageBlock.left - 1, 1); col < imageBlock.width(); ++col)
 		{
-			integralImage[col] = integralImage[col - 1] + (double)pixels[col];
+			integralImage[col] = integralImage[col - 1] + pixels[col];
 		}
 
 		for (int row = std::max(imageBlock.bottom - 1, 1); row < imageBlock.height(); ++row)

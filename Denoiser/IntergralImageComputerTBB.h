@@ -19,7 +19,7 @@ namespace Denoise
 		IntergralImageComputerTBB(const ImageBlockProcessorSettings& settings,
 			const ImageBlockProcessorSettingsInternal& settingsInternal,
 			const std::vector<std::pair<int, int> >& shifts,
-			std::vector<std::vector<std::vector<float> > >& distanceImage,
+			std::vector<std::vector<std::vector<double> > >& distanceImage,
 			std::vector<std::vector<std::vector<double> > >& integralImage,
 			const Image& image);
 
@@ -32,7 +32,7 @@ namespace Denoise
 		ImageBlockProcessorSettings m_settings;
 		ImageBlockProcessorSettingsInternal m_settingsInternal;
 
-		std::vector<std::vector<std::vector<float> > >& m_distanceImage;
+		std::vector<std::vector<std::vector<double> > >& m_distanceImage;
 		std::vector<std::vector<std::vector<double> > >& m_integralImage;
 
 		const Image& m_image;

@@ -76,7 +76,7 @@ namespace Denoise
 		//	accessibleImageBlock.bottom, accessibleImageBlock.top, accessibleImageBlock.left, accessibleImageBlock.right);
 
 		//Compute in double precision to avoid round-off errors for large images
-		std::vector<std::vector<float> > distanceImage(settings.numChannelsToUse);
+		std::vector<std::vector<double> > distanceImage(settings.numChannelsToUse);
 		std::vector<std::vector<double> > integralImage(settings.numChannelsToUse);
 
 		for (index_t c = 0; c < settings.numChannelsToUse; ++c)
@@ -146,7 +146,7 @@ namespace Denoise
 
 		//First determine all necessary shifts
 		//Compute in double precision to avoid round-off errors for large images
-		std::vector<std::vector<std::vector<float> > > distanceImage((settings.windowSizeCols + 1) * 3);
+		std::vector<std::vector<std::vector<double> > > distanceImage((settings.windowSizeCols + 1) * 3);
 		std::vector<std::vector<std::vector<double> > > integralImage((settings.windowSizeCols + 1) * 3);
 
 		for (index_t i = 0; i < distanceImage.size(); ++i)
@@ -360,7 +360,7 @@ namespace Denoise
 
 		//First determine all necessary shifts
 		//Compute in double precision to avoid round-off errors for large images
-		std::vector<std::vector<std::vector<float> > > distanceImage((settings.windowSizeCols + 1) * 3);
+		std::vector<std::vector<std::vector<double> > > distanceImage((settings.windowSizeCols + 1) * 3);
 		std::vector<std::vector<std::vector<double> > > integralImage((settings.windowSizeCols + 1) * 3);
 
 		for (index_t i = 0; i < distanceImage.size(); ++i)

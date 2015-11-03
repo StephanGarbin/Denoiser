@@ -19,21 +19,21 @@ namespace Denoise
 {
 	void computeBlockMatchingForSpecificShifts(const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,
-		std::vector<std::vector<float> >& distanceImage,
+		std::vector<std::vector<double> >& distanceImage,
 		std::vector<std::vector<double> >& integralImage,
 		const ImageBlockProcessorSettings& settings,
 		const ImageBlockProcessorSettingsInternal& settingsInternal);
 
 	void computeBlockMatchingForSpecificShifts_doNotComputeIntegralImage(const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,
-		std::vector<std::vector<float> >& distanceImage,
+		std::vector<std::vector<double> >& distanceImage,
 		std::vector<std::vector<double> >& integralImage,
 		const ImageBlockProcessorSettings& settings,
 		const ImageBlockProcessorSettingsInternal& settingsInternal);
 
 	void computeBlockMatchingForSpecificShifts_doNotComputeIntegralImageBlock(const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,
-		std::vector<std::vector<std::vector<float> > >& distanceImage,
+		std::vector<std::vector<std::vector<double> > >& distanceImage,
 		std::vector<std::vector<std::vector<double> > >& integralImage,
 		const std::vector<std::pair<int, int> >& shifts,
 		index_t startIdx,
@@ -42,13 +42,13 @@ namespace Denoise
 
 	void computeIntegralImageForSpecificShifts(const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,
-		std::vector<std::vector<float> >& distanceImage,
+		std::vector<std::vector<double> >& distanceImage,
 		std::vector<std::vector<double> >& integralImage,
 		const ImageBlockProcessorSettings& settings,
 		const ImageBlockProcessorSettingsInternal& settingsInternal);
 
 	void computeIntegralImageForSpecificShiftsBlock(const Image& image,
-		std::vector<std::vector<std::vector<float> > >& distanceImage,
+		std::vector<std::vector<std::vector<double> > >& distanceImage,
 		std::vector<std::vector<std::vector<double> > >& integralImage,
 		const std::vector<std::pair<int, int> >& shifts,
 		index_t startIdx,
@@ -82,6 +82,6 @@ namespace Denoise
 		return result;
 	}
 
-	void computeIntegralImage(const std::vector<float>& pixels, const Rectangle& imageBlock,
+	void computeIntegralImage(const std::vector<double>& pixels, const Rectangle& imageBlock,
 		std::vector<double>& integralImage);
 }
