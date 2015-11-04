@@ -40,9 +40,9 @@ int main(int argc, char* argv[])
 	else
 	{
 		stdDeviation = std::atof(argv[1]);
-		//numThreadsBM = std::atoi(argv[2]);
-		numThreadsBM = 8;
-		adaptiveFactor = std::atof(argv[2]);
+		numThreadsBM = std::atoi(argv[2]);
+		//numThreadsBM = 1;
+		//adaptiveFactor = std::atof(argv[2]);
 	}
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
@@ -51,8 +51,8 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees2.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew2b.png";
 
-	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
-	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_smoothness.png";
+	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
+	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_smoothness2.png";
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/computerNoisy.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/computerNew.png";
@@ -66,8 +66,8 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger_1K.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/tiger_1K_denoised_b.png";
 
-	std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
+	//std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
+	//std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
 	
 	Denoise::Image* image = nullptr;
 
@@ -81,8 +81,8 @@ int main(int argc, char* argv[])
 	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &basic, &result);
 
 	Denoise::BM3DSettings bm3dFilterSettings;
-	bm3dFilterSettings.templateMatchingMaxAllowedPatchDistance = 0.0000000001f;
-	bm3dFilterSettings.templateMatchingNorm = 2;
+	bm3dFilterSettings.templateMatchingMaxAllowedPatchDistance = 5.0000001f;
+	bm3dFilterSettings.templateMatchingNorm = 3;
 	bm3dFilterSettings.templateMatchingNumChannels = 1;
 
 	bm3dFilterSettings.numPatchesPerBlockCollaborative = 16;
@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
 	bm3dFilterSettings.averageBlocksBasedOnStdWiener = false; // turn only this to true if enabling the mode
 	bm3dFilterSettings.averageBlocksBasedOnStdFactor = 0.75f;
 
-	bm3dFilterSettings.meanAdaptiveThresholding = true;
+	bm3dFilterSettings.meanAdaptiveThresholding = false;
 	bm3dFilterSettings.meanAdaptiveThresholdingFactor = adaptiveFactor;
 
 	bm3dFilterSettings.numThreadsBlockMatching = numThreadsBM;

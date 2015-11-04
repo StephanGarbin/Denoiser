@@ -473,7 +473,13 @@ namespace Denoise
 						{
 							index_t valuesPerChannel = (patchTemplate.width * patchTemplate.height) * numValidPatches;
 							index_t blockIdx = c * valuesPerChannel + (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
-							block[blockIdx] = m_pixelData[c][IDX2_2_1(patches[p].row + row, patches[p].col + col)];
+							index_t imageIdx = IDX2_2_1(patches[p].row + row, patches[p].col + col);
+							//if (imageIdx > m_fullImageDim.height * m_fullImageDim.height)
+							//{
+							//	std::cout << "Patch Error; row = " << patches[p].row << ", col = " << patches[p].col << std::endl;
+							//	continue;
+							//}
+							block[blockIdx] = m_pixelData[c][imageIdx];
 						}
 					}
 				}

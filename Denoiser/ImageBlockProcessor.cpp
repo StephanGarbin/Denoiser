@@ -330,7 +330,6 @@ namespace Denoise
 		m_image.accessFullImage();
 
 		std::vector<SortedPatchCollection> matchedBlocksSorted;
-		matchedBlocksSorted.reserve((settings.imageBlock.width() / settings.stepSizeCols + 1) * (settings.imageBlock.height() / settings.stepSizeRows + 1) + 1);
 
 		//we only allocate as many blocks as we need
 		for (index_t i = 0; i < (settings.imageBlock.width() / settings.stepSizeCols + 1) * (settings.imageBlock.height() / settings.stepSizeRows + 1) + 1; ++i)
@@ -360,8 +359,8 @@ namespace Denoise
 
 		//First determine all necessary shifts
 		//Compute in double precision to avoid round-off errors for large images
-		std::vector<std::vector<std::vector<double> > > distanceImage((settings.windowSizeCols + 1) * 3);
-		std::vector<std::vector<std::vector<double> > > integralImage((settings.windowSizeCols + 1) * 3);
+		std::vector<std::vector<std::vector<double> > > distanceImage((settings.windowSizeCols + 1) * 1);
+		std::vector<std::vector<std::vector<double> > > integralImage((settings.windowSizeCols + 1) * 1);
 
 		for (index_t i = 0; i < distanceImage.size(); ++i)
 		{
@@ -388,22 +387,22 @@ namespace Denoise
 				shifts.push_back(temp);
 			}
 
-			for (index_t z = 0; z < 2; ++z)
-			{
-				if (shiftRows > halfWindowSizeRows)
-				{
-					break;
-				}
+			//for (index_t z = 0; z < 2; ++z)
+			//{
+			//	if (shiftRows > halfWindowSizeRows)
+			//	{
+			//		break;
+			//	}
 
-				++shiftRows;
-				for (int shiftCols = -halfWindowSizeCols; shiftCols <= halfWindowSizeCols; ++shiftCols)
-				{
-					std::pair<int, int> temp;
-					temp.first = shiftRows;
-					temp.second = shiftCols;
-					shifts.push_back(temp);
-				}
-			}
+			//	++shiftRows;
+			//	for (int shiftCols = -halfWindowSizeCols; shiftCols <= halfWindowSizeCols; ++shiftCols)
+			//	{
+			//		std::pair<int, int> temp;
+			//		temp.first = shiftRows;
+			//		temp.second = shiftCols;
+			//		shifts.push_back(temp);
+			//	}
+			//}
 
 			IntergralImageComputerTBB integralImageFunctor(settings, internalSettings, shifts, distanceImage, integralImage, m_image);
 
@@ -414,6 +413,7 @@ namespace Denoise
 			index_t totalNumBlocks;
 			partitioner.createPartitionScanlines(settings.numThreadsBlockMatching, totalNumBlocks);
 
+
 			BlockMatchingComputerTBB blockMatchingFunctor(settings, internalSettings, shifts, distanceImage, integralImage, m_image,
 				matchedBlocksSorted, partitioner.getSegments());
 
@@ -423,10 +423,8 @@ namespace Denoise
 		
 		for (index_t i = 0; i < matchedBlocks.size(); ++i)
 		{
-			matchedBlocks[settings.matchedBlocksAlreadyComputed + i] = matchedBlocksSorted[i].getPatches();
+			matchedBlocks[i] = matchedBlocksSorted[i].getPatches();
 		}
-
-		std::cout << "Finished BM" << std::endl;
 	}
 
 }

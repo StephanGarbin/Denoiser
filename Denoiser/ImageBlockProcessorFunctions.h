@@ -84,4 +84,65 @@ namespace Denoise
 
 	void computeIntegralImage(const std::vector<double>& pixels, const Rectangle& imageBlock,
 		std::vector<double>& integralImage);
+
+	inline double computeDistanceForShift(std::vector<std::vector<double> >& integralImage,
+		const ImageBlockProcessorSettings& settings,
+		const ImageBlockProcessorSettingsInternal& settingsInternal,
+		int row, int col)
+	{
+		double distance = 0.0;
+		for (index_t c = 0; c < settings.numChannelsToUse; ++c)
+		{
+			distance += patchDistanceIntegralImage(integralImage[c],
+				settings.templatePatch, settingsInternal.accessibleImageBlock,
+				IDX2(row - settings.imageBlock.bottom + settingsInternal.offsetRows, col - settings.imageBlock.left + settingsInternal.offsetCols));
+		}
+
+		distance = std::abs(distance);
+
+		distance /= (double)settings.numChannelsToUse;
+
+		if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+		{
+			distance = 0.0;
+		}
+
+		return distance;
+	}
+
+	inline bool checkRow(const Image& image,
+		const ImageBlockProcessorSettings& settings,
+		const ImageBlockProcessorSettingsInternal& settingsInternal,
+		int row)
+	{
+		if (row + settingsInternal.offsetRows + settingsInternal.shiftRows < 0)
+		{
+			return false;
+		}
+
+		if (row + settingsInternal.shiftRows > image.height() - settings.templatePatch.height)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	inline bool checkCol(const Image& image, 
+		const ImageBlockProcessorSettings& settings,
+		const ImageBlockProcessorSettingsInternal& settingsInternal,
+		int col)
+	{
+		if (col + settingsInternal.shiftCols + settingsInternal.offsetCols < 0)
+		{
+			return false;
+		}
+
+		if (col + settingsInternal.shiftCols > image.width() - settings.templatePatch.width)
+		{
+			return false;
+		}
+
+		return true;
+	}
 }

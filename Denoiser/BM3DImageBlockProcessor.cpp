@@ -123,7 +123,7 @@ namespace Denoise
 			blockMatchSettings.numChannelsToUse = m_settings.templateMatchingNumChannels;
 			blockMatchSettings.matchedBlocksAlreadyComputed = 0;
 			blockMatchSettings.numThreadsIntegralImageComputation = m_settings.numThreadsBlockMatching;
-			blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching * 4;
+			blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching;
 
 			//processor.computeNMostSimilar_PARALLEL(blockMatchSettings, m_settings, m_matchedBlocks);
 			processor.computeNMostSimilar_PARALLEL_TBB(blockMatchSettings, m_settings, m_matchedBlocks);
@@ -173,6 +173,14 @@ namespace Denoise
 					//std::cout << "Continuing..." << std::endl;
 					continue;
 				}
+				//else
+				//{
+				//	for (index_t z = 0; z < numValidPatches; ++z)
+				//	{
+				//		std::cout << " [ " << m_matchedBlocks[i][z].row << ", " << m_matchedBlocks[i][z].col << ", " << m_matchedBlocks[i][z].distance << " ]; ";
+				//	}
+				//	std::cout << std::endl;
+				//}
 
 				//if (m_matchedBlocks[i][0].distance != 0.0f)
 				//{

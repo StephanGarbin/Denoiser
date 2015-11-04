@@ -52,180 +52,113 @@ namespace Denoise
 			computeIntegralImage(distanceImage[c], settingsInternal.accessibleImageBlockShifted, integralImage[c]);
 		}
 
+		int blockRow = 0;
+		int blockCol = 0;
+
 		//C. Evaluate Patch Distances
-		for (int row = settings.imageBlock.bottom; row <= settings.imageBlock.top - settings.templatePatch.height; row += settings.stepSizeRows)
+		int row;
+		for (row = settings.imageBlock.bottom; row <= settings.imageBlock.top - settings.templatePatch.height; row += settings.stepSizeRows)
 		{
-			if (row + settingsInternal.offsetRows + settingsInternal.shiftRows < 0)
+			if (!checkRow(image, settings, settingsInternal, row))
 			{
+				++blockRow;
 				continue;
 			}
 
-			if (row + settingsInternal.shiftRows > image.height() - settings.templatePatch.height)
+			int col;
+			for (col = settings.imageBlock.left; col <= settings.imageBlock.right - settings.templatePatch.width; col += settings.stepSizeCols)
 			{
-				continue;
-			}
-
-			for (int col = settings.imageBlock.left; col <= settings.imageBlock.right - settings.templatePatch.width; col += settings.stepSizeCols)
-			{
-				if (col + settingsInternal.shiftCols + settingsInternal.offsetCols < 0)
+				if (!checkCol(image, settings, settingsInternal, col))
 				{
+					++blockCol;
 					continue;
 				}
 
-				if (col + settingsInternal.shiftCols > image.width() - settings.templatePatch.width)
-				{
-					continue;
-				}
-
-				double distance = 0.0;
-				for (index_t c = 0; c < settings.numChannelsToUse; ++c)
-				{
-					distance += patchDistanceIntegralImage(integralImage[c],
-						settings.templatePatch, settingsInternal.accessibleImageBlock,
-						IDX2(row - settings.imageBlock.bottom + settingsInternal.offsetRows, col - settings.imageBlock.left + settingsInternal.offsetCols));
-				}
-
-				distance /= (double)settings.numChannelsToUse;
-
-				if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
-				{
-					distance = -100.0f;
-				}
+				double distance = computeDistanceForShift(integralImage, settings, settingsInternal, row, col);
 
 				if (distance <= (double)settings.maxDistance)
 				{
-					matchedBlocksSorted[((row - settings.imageBlock.bottom) / settings.stepSizeRows)
+					matchedBlocksSorted[blockRow
 						* (settings.imageBlock.width() / settings.stepSizeCols + 1)
-						+ (col - settings.imageBlock.left) / settings.stepSizeCols].insertPatch(
+						+ blockCol].insertPatch(
+						IDX2(row + settingsInternal.shiftRows, col + settingsInternal.shiftCols, distance));
+				}
+				++blockCol;
+			}
+			if (col != settings.imageBlock.right - settings.templatePatch.width)
+			{
+				col = settings.imageBlock.right - settings.templatePatch.width;
+
+				if (!checkCol(image, settings, settingsInternal, col))
+				{
+					continue;
+				}
+
+				double distance = computeDistanceForShift(integralImage, settings, settingsInternal, row, col);
+
+				if (distance <= (double)settings.maxDistance)
+				{
+					matchedBlocksSorted[blockRow
+						* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+						+ blockCol].insertPatch(
 						IDX2(row + settingsInternal.shiftRows, col + settingsInternal.shiftCols, distance));
 				}
 			}
+
+			blockCol = 0;
+			++blockRow;
 		}
-
-		if (true)
+		if (row != settings.imageBlock.top - settings.templatePatch.height)
 		{
-			if (settings.stepSizeRows > 1)
+			row = settings.imageBlock.top - settings.templatePatch.height;
+
+			if (!checkRow(image, settings, settingsInternal, row))
 			{
-				int row = settings.imageBlock.top - settings.templatePatch.height;
-				for (int col = settings.imageBlock.left; col <= settings.imageBlock.right - settings.templatePatch.width; col += settings.stepSizeCols)
-				{
-					if (col + settingsInternal.shiftCols + settingsInternal.offsetCols < 0)
-					{
-						continue;
-					}
-
-					if (row + settingsInternal.shiftRows > image.height() - settings.templatePatch.height)
-					{
-						continue;
-					}
-
-					if (col + settingsInternal.shiftCols > image.width() - settings.templatePatch.width)
-					{
-						continue;
-					}
-
-					double distance = 0.0;
-					for (index_t c = 0; c < settings.numChannelsToUse; ++c)
-					{
-						distance += patchDistanceIntegralImage(integralImage[c],
-							settings.templatePatch, settingsInternal.accessibleImageBlock,
-							IDX2(row - settings.imageBlock.bottom + settingsInternal.offsetRows, col - settings.imageBlock.left + settingsInternal.offsetCols));
-					}
-
-					distance /= (double)settings.numChannelsToUse;
-
-					if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
-					{
-						distance = -100.0f;
-					}
-
-					if (distance <= (double)settings.maxDistance)
-					{
-						matchedBlocksSorted[(settings.imageBlock.height() / settings.stepSizeRows)
-							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
-							+ (col - settings.imageBlock.left) / settings.stepSizeCols].insertPatch(
-							IDX2(row + settingsInternal.shiftRows, col + settingsInternal.shiftCols, distance));
-					}
-				}
+				return;
 			}
 
-			if (settings.stepSizeCols > 1)
+			int col;
+			for (col = settings.imageBlock.left; col <= settings.imageBlock.right - settings.templatePatch.width; col += settings.stepSizeCols)
 			{
-				for (int row = settings.imageBlock.bottom; row <= settings.imageBlock.top - settings.templatePatch.height; row += settings.stepSizeRows)
+				if (col + settingsInternal.shiftCols + settingsInternal.offsetCols < 0)
 				{
-					if (row + settingsInternal.shiftRows + settingsInternal.offsetRows < 0)
-					{
-						continue;
-					}
-
-					int col = settings.imageBlock.right - settings.templatePatch.width;
-
-					if (row + settingsInternal.shiftRows > image.height() - settings.templatePatch.height)
-					{
-						continue;
-					}
-
-					if (col + settingsInternal.shiftCols > image.width() - settings.templatePatch.width)
-					{
-						continue;
-					}
-
-					double distance = 0.0;
-					for (index_t c = 0; c < settings.numChannelsToUse; ++c)
-					{
-						distance += patchDistanceIntegralImage(integralImage[c],
-							settings.templatePatch, settingsInternal.accessibleImageBlock,
-							IDX2(row - settings.imageBlock.bottom + settingsInternal.offsetRows, col - settings.imageBlock.left + settingsInternal.offsetCols));
-					}
-
-					distance /= (double)settings.numChannelsToUse;
-
-					if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
-					{
-						distance = -100.0f;
-					}
-
-					if (distance <= (double)settings.maxDistance)
-					{
-						matchedBlocksSorted[((row - settings.imageBlock.bottom) / settings.stepSizeRows) * (settings.imageBlock.width() / settings.stepSizeCols + 1) + (settings.imageBlock.width() / settings.stepSizeCols + 1)].insertPatch(
-							IDX2(row + settingsInternal.shiftRows, col + settingsInternal.shiftCols, distance));
-					}
-				}
-			}
-
-			if (settings.stepSizeCols > 1 || settings.stepSizeRows > 1)
-			{
-				int row = settings.imageBlock.top - settings.templatePatch.height;
-				int col = settings.imageBlock.right - settings.templatePatch.width;
-
-				if (row + settingsInternal.shiftRows > image.height() - settings.templatePatch.height)
-				{
-					return;
+					++blockCol;
+					continue;
 				}
 
 				if (col + settingsInternal.shiftCols > image.width() - settings.templatePatch.width)
 				{
-					return;
+					++blockCol;
+					continue;
 				}
 
-				double distance = 0.0;
-				for (index_t c = 0; c < settings.numChannelsToUse; ++c)
-				{
-					distance += patchDistanceIntegralImage(integralImage[c],
-						settings.templatePatch, settingsInternal.accessibleImageBlock,
-						IDX2(row - settings.imageBlock.bottom + settingsInternal.offsetRows, col - settings.imageBlock.left + settingsInternal.offsetCols));
-				}
-
-				distance /= (double)settings.numChannelsToUse;
-
-				if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
-				{
-					distance = -100.0f;
-				}
+				double distance = computeDistanceForShift(integralImage, settings, settingsInternal, row, col);
 
 				if (distance <= (double)settings.maxDistance)
 				{
-					matchedBlocksSorted[matchedBlocksSorted.size() - 1].insertPatch(
+					matchedBlocksSorted[blockRow
+						* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+						+ blockCol].insertPatch(
+						IDX2(row + settingsInternal.shiftRows, col + settingsInternal.shiftCols, distance));
+				}
+				++blockCol;
+			}
+			if (col != settings.imageBlock.right - settings.templatePatch.width)
+			{
+				col = settings.imageBlock.right - settings.templatePatch.width;
+
+				if (!checkCol(image, settings, settingsInternal, col))
+				{
+					return;
+				}
+
+				double distance = computeDistanceForShift(integralImage, settings, settingsInternal, row, col);
+
+				if (distance <= (double)settings.maxDistance)
+				{
+					matchedBlocksSorted[blockRow
+						* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+						+ blockCol].insertPatch(
 						IDX2(row + settingsInternal.shiftRows, col + settingsInternal.shiftCols, distance));
 				}
 			}
@@ -432,92 +365,132 @@ namespace Denoise
 		const ImageBlockProcessorSettings& settings,
 		const ImageBlockProcessorSettingsInternal& settingsInternal)
 	{
+		ImageBlockProcessorSettings globalSettings = settings;
+		globalSettings.imageBlock = Rectangle(0, image.width(), image.height(), 0);
+
 		//do block matching
 		int halfWindowSizeRows = settings.windowSizeRows / 2;
 		int halfWindowSizeCols = settings.windowSizeCols / 2;
 		for (index_t i = 0; i < shifts.size(); ++i)
 		{
-			int shiftRows = shifts[i].first;
-			int shiftCols = shifts[i].second;
+			ImageBlockProcessorSettingsInternal localSettings = settingsInternal;
+			localSettings.shiftRows = shifts[i].first;
+			localSettings.shiftCols = shifts[i].second;
 
-			index_t localStepSizeRows = settings.stepSizeRows;
-			index_t localStepSizeCols = settings.stepSizeCols;
+			int blockRow = settings.imageBlock.bottom / settings.stepSizeRows;
+			int blockCol = 0;
 
 			//C. Evaluate Patch Distances
-			for (int row = settings.imageBlock.bottom; row < settings.imageBlock.top; row += localStepSizeRows)
+			int row;
+			for (row = settings.imageBlock.bottom; row <= settings.imageBlock.top - 0; row += settings.stepSizeRows)
 			{
-				if (settingsInternal.iterateAtBorders)
+				if (!checkRow(image, settings, localSettings, row))
 				{
-					if (row + localStepSizeRows * 2 >= settings.imageBlock.top)
-					{
-						localStepSizeRows = 1;
-					}
-				}
-
-				if (row + settingsInternal.offsetRows + shiftRows < 0)
-				{
+					++blockRow;
 					continue;
 				}
 
-
-				if (row + shiftRows > image.height() - settings.templatePatch.height + 0)
+				int col;
+				for (col = settings.imageBlock.left; col <= settings.imageBlock.right - 0; col += settings.stepSizeCols)
 				{
-					continue;
-				}
-
-				localStepSizeCols = settings.stepSizeCols;
-
-				for (int col = settings.imageBlock.left; col < settings.imageBlock.right; col += localStepSizeCols)
-				{
-					if (col + settings.stepSizeCols * 2 >= settings.imageBlock.right)
+					if (!checkCol(image, settings, localSettings, col))
 					{
-						localStepSizeCols = 1;
+						++blockCol;
+						continue;
 					}
 
-					if (col + shiftCols + settingsInternal.offsetCols < 0)
+					double distance = computeDistanceForShift(integralImage[i], globalSettings, localSettings, row, col);
+
+					if (distance <= (double)settings.maxDistance)
+					{
+						matchedBlocksSorted[blockRow
+							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+							+ blockCol].insertPatch(
+							IDX2(row + localSettings.shiftRows, col + localSettings.shiftCols, distance));
+					}
+					++blockCol;
+				}
+				if (col != settings.imageBlock.right - settings.templatePatch.width)
+				{
+					col = settings.imageBlock.right - settings.templatePatch.width;
+
+					if (!checkCol(image, settings, localSettings, col))
 					{
 						continue;
 					}
 
-					if (shiftRows == 0 || shiftCols == 0)
-					{
-						if (col + shiftCols > image.width() - settings.templatePatch.width + 1)
-						{
-							continue;
-						}
-					}
-					else
-					{
-						if (col + shiftCols > image.width() - settings.templatePatch.width + 0)
-						{
-							continue;
-						}
-					}
-
-					double distance = 0.0;
-					for (index_t c = 0; c < settings.numChannelsToUse; ++c)
-					{
-						distance += patchDistanceIntegralImage(integralImage[startIdx + i][c],
-							settings.templatePatch, settingsInternal.accessibleImageBlock,
-							IDX2(row  + settingsInternal.offsetRows, col + settingsInternal.offsetCols));
-					}
-
-					distance /= (double)settings.numChannelsToUse;
-
-					if (shiftCols == 0 && shiftRows == 0)
-					{
-						distance = -100.0f;
-					}
-
-					index_t blockRow = std::round((float)row / (float)settings.stepSizeRows);
-					index_t blockCol = std::round((float)col / (float)settings.stepSizeCols);
-
-					index_t blockWidth = std::ceil((float)settings.imageBlock.width() / (float)settings.stepSizeCols);
+					double distance = computeDistanceForShift(integralImage[i], globalSettings, localSettings, row, col);
 
 					if (distance <= (double)settings.maxDistance)
 					{
-						matchedBlocksSorted[blockRow * blockWidth + blockCol].insertPatch(
-							IDX2(row + shiftRows, col + shiftCols, distance));
+						matchedBlocksSorted[blockRow
+							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+							+ blockCol].insertPatch(
+							IDX2(row + localSettings.shiftRows, col + localSettings.shiftCols, distance));
+					}
+				}
+
+				blockCol = 0;
+				++blockRow;
+			}
+
+			if (!settingsInternal.iterateAtBorders)
+			{
+				continue;
+			}
+
+			if (row != settings.imageBlock.top - settings.templatePatch.height)
+			{
+				row = settings.imageBlock.top - settings.templatePatch.height;
+
+				if (!checkRow(image, settings, localSettings, row))
+				{
+					return;
+				}
+
+				int col;
+				for (col = settings.imageBlock.left; col <= settings.imageBlock.right - settings.templatePatch.width; col += settings.stepSizeCols)
+				{
+					if (col + localSettings.shiftCols + localSettings.offsetCols < 0)
+					{
+						++blockCol;
+						continue;
+					}
+
+					if (col + localSettings.shiftCols > image.width() - settings.templatePatch.width)
+					{
+						++blockCol;
+						continue;
+					}
+
+					double distance = computeDistanceForShift(integralImage[i], globalSettings, localSettings, row, col);
+
+					if (distance <= (double)settings.maxDistance)
+					{
+						matchedBlocksSorted[blockRow
+							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+							+ blockCol].insertPatch(
+							IDX2(row + localSettings.shiftRows, col + localSettings.shiftCols, distance));
+					}
+					++blockCol;
+				}
+				if (col != settings.imageBlock.right - settings.templatePatch.width)
+				{
+					col = settings.imageBlock.right - settings.templatePatch.width;
+
+					if (!checkCol(image, settings, localSettings, col))
+					{
+						return;
+					}
+
+					double distance = computeDistanceForShift(integralImage[i], globalSettings, localSettings, row, col);
+
+					if (distance <= (double)settings.maxDistance)
+					{
+						matchedBlocksSorted[blockRow
+							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+							+ blockCol].insertPatch(
+							IDX2(row + localSettings.shiftRows, col + localSettings.shiftCols, distance));
 					}
 				}
 			}

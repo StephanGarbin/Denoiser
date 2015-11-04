@@ -4,7 +4,7 @@
 
 struct ImagePatch
 {
-	ImagePatch(index_t Col, index_t Row, index_t Width, index_t Height)
+	ImagePatch(int Col, int Row, int Width, int Height)
 	{
 		col = Col;
 		row = Row;
@@ -22,10 +22,10 @@ struct ImagePatch
 		data = nullptr;
 	}
 
-	index_t col;
-	index_t row;
-	index_t width;
-	index_t height;
+	int col;
+	int row;
+	int width;
+	int height;
 
 	float * data;
 };

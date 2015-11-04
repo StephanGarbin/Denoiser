@@ -45,6 +45,8 @@ namespace Denoise
 				localInternalSettings.iterateAtBorders = false;
 			}
 
+			localInternalSettings.offsetCols = 0; localInternalSettings.offsetRows = 0;
+
 			computeBlockMatchingForSpecificShifts_doNotComputeIntegralImageBlock(m_image,
 				m_matchedBlocksSorted, m_distanceImage, m_integralImage,
 				m_shifts, 0, localSettings, localInternalSettings);

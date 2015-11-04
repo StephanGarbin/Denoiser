@@ -32,18 +32,18 @@ namespace Denoise
 
 	void SortedPatchCollection::insertPatch(const IDX2& patch)
 	{
-		if (patch.distance >= (--m_patches.end())->distance)
-		{
-			return;
-		}
+		//if (patch.distance >= (--m_patches.end())->distance)
+		//{
+		//	return;
+		//}
 
 		//1. Find Insertion Place
 		std::vector<IDX2>::iterator insertLocation = std::upper_bound<std::vector<IDX2>::iterator>(m_patches.begin(), m_patches.end(), patch);
 
-		//if (insertLocation == m_patches.end())
-		//{
-		//	return;
-		//}
+		if (insertLocation == m_patches.end())
+		{
+			return;
+		}
 
 		//2. Shift Vector
 		for (index_t i = m_patches.size() - 1; i > std::distance<std::vector<IDX2>::iterator>(m_patches.begin(), insertLocation); --i)
