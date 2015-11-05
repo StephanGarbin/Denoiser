@@ -48,13 +48,44 @@ namespace Denoise
 
 		ImagePatch patchTemplate(0, 0, m_settings.patchSize, m_settings.patchSize);
 
-		if (m_settings.numThreadsBlockMatching == 1)
+		Rectangle matchRegion(0, image->width(), image->height(), 0);
+
+		m_matchedBlocks.resize((matchRegion.width() / m_settings.stepSizeCols + 1)
+			* (matchRegion.height() / m_settings.stepSizeRows + 1));
+
+		ImageBlockProcessor processor(*m_image);
+
+		ImageBlockProcessorSettings blockMatchSettings;
+		blockMatchSettings.templatePatch = patchTemplate;
+		blockMatchSettings.imageBlock = matchRegion;
+		blockMatchSettings.stepSizeRows = m_settings.stepSizeRows;
+		blockMatchSettings.stepSizeCols = m_settings.stepSizeCols;
+		blockMatchSettings.windowSizeRows = m_settings.searchWindowSize;
+		blockMatchSettings.windowSizeCols = m_settings.searchWindowSize;
+		if (collaborative)
+		{
+			blockMatchSettings.maxSimilar = m_settings.numPatchesPerBlockCollaborative;
+		}
+		else
+		{
+			blockMatchSettings.maxSimilar = m_settings.numPatchesPerBlockWiener;
+		}
+		blockMatchSettings.maxDistance = m_settings.templateMatchingMaxAllowedPatchDistance;
+		blockMatchSettings.norm = m_settings.templateMatchingNorm;
+		blockMatchSettings.numChannelsToUse = m_settings.templateMatchingNumChannels;
+		blockMatchSettings.matchedBlocksAlreadyComputed = 0;
+		blockMatchSettings.numThreadsIntegralImageComputation = m_settings.numThreadsBlockMatching;
+		blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching;
+
+		processor.computeNMostSimilar_PARALLEL_TBB(blockMatchSettings, m_settings, m_matchedBlocks);
+		/*std::cout << "Computing Sequential Comparison..." << std::endl;
+		std::vector<std::vector<IDX2> > matchedBlocks2;
 		{
 			Rectangle matchRegion(0, image->width(), image->height(), 0);
 
 			ImageBlockProcessor blockProcessor(*image);
 
-			m_matchedBlocks.resize((matchRegion.width() / m_settings.stepSizeCols + 1)
+			matchedBlocks2.resize((matchRegion.width() / m_settings.stepSizeCols + 1)
 				* (matchRegion.height() / m_settings.stepSizeRows + 1));
 
 			ImageBlockProcessorSettings blockMatchSettings;
@@ -77,97 +108,29 @@ namespace Denoise
 			blockMatchSettings.numChannelsToUse = m_settings.templateMatchingNumChannels;
 			blockMatchSettings.matchedBlocksAlreadyComputed = 0;
 
-			blockProcessor.computeNMostSimilar(blockMatchSettings, m_matchedBlocks);
+			blockProcessor.computeNMostSimilar(blockMatchSettings, matchedBlocks2);
 		}
-		else
+
+		std::cout << "Comparing..." << std::endl;
+		size_t counter = 0;
+		for (index_t i = 0; i < m_matchedBlocks.size(); ++i)
 		{
-			Rectangle matchRegion(0, image->width(), image->height(), 0);
-
-			m_matchedBlocks.resize((matchRegion.width() / m_settings.stepSizeCols + 1)
-				* (matchRegion.height() / m_settings.stepSizeRows + 1));
-
-			ImageBlockProcessor processor(*m_image);
-
-			ImageBlockProcessorSettings blockMatchSettings;
-			blockMatchSettings.templatePatch = patchTemplate;
-			blockMatchSettings.imageBlock = matchRegion;
-			blockMatchSettings.stepSizeRows = m_settings.stepSizeRows;
-			blockMatchSettings.stepSizeCols = m_settings.stepSizeCols;
-			blockMatchSettings.windowSizeRows = m_settings.searchWindowSize;
-			blockMatchSettings.windowSizeCols = m_settings.searchWindowSize;
-			if (collaborative)
+			bool matches = true;
+			for (index_t b = 0; b < m_matchedBlocks[i].size(); ++b)
 			{
-				blockMatchSettings.maxSimilar = m_settings.numPatchesPerBlockCollaborative;
+				if (m_matchedBlocks[i][b].col != matchedBlocks2[i][b].col || m_matchedBlocks[i][b].row != matchedBlocks2[i][b].row)
+				{
+					matches = false;
+					break;
+				}
 			}
-			else
+			if (!matches)
 			{
-				blockMatchSettings.maxSimilar = m_settings.numPatchesPerBlockWiener;
+				++counter;
 			}
-			blockMatchSettings.maxDistance = m_settings.templateMatchingMaxAllowedPatchDistance;
-			blockMatchSettings.norm = m_settings.templateMatchingNorm;
-			blockMatchSettings.numChannelsToUse = m_settings.templateMatchingNumChannels;
-			blockMatchSettings.matchedBlocksAlreadyComputed = 0;
-			blockMatchSettings.numThreadsIntegralImageComputation = m_settings.numThreadsBlockMatching;
-			blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching;
-
-			processor.computeNMostSimilar_PARALLEL_TBB(blockMatchSettings, m_settings, m_matchedBlocks);
 		}
-			/*std::cout << "Computing Sequential Comparison..." << std::endl;
-			std::vector<std::vector<IDX2> > matchedBlocks2;
-			{
-				Rectangle matchRegion(0, image->width(), image->height(), 0);
 
-				ImageBlockProcessor blockProcessor(*image);
-
-				matchedBlocks2.resize((matchRegion.width() / m_settings.stepSizeCols + 1)
-					* (matchRegion.height() / m_settings.stepSizeRows + 1));
-
-				ImageBlockProcessorSettings blockMatchSettings;
-				blockMatchSettings.templatePatch = patchTemplate;
-				blockMatchSettings.imageBlock = matchRegion;
-				blockMatchSettings.stepSizeRows = m_settings.stepSizeRows;
-				blockMatchSettings.stepSizeCols = m_settings.stepSizeCols;
-				blockMatchSettings.windowSizeRows = m_settings.searchWindowSize;
-				blockMatchSettings.windowSizeCols = m_settings.searchWindowSize;
-				if (collaborative)
-				{
-					blockMatchSettings.maxSimilar = m_settings.numPatchesPerBlockCollaborative;
-				}
-				else
-				{
-					blockMatchSettings.maxSimilar = m_settings.numPatchesPerBlockWiener;
-				}
-				blockMatchSettings.maxDistance = m_settings.templateMatchingMaxAllowedPatchDistance;
-				blockMatchSettings.norm = m_settings.templateMatchingNorm;
-				blockMatchSettings.numChannelsToUse = m_settings.templateMatchingNumChannels;
-				blockMatchSettings.matchedBlocksAlreadyComputed = 0;
-
-				blockProcessor.computeNMostSimilar(blockMatchSettings, matchedBlocks2);
-			}
-
-			std::cout << "Comparing..." << std::endl;
-			size_t counter = 0;
-			for (index_t i = 0; i < m_matchedBlocks.size(); ++i)
-			{
-				bool matches = true;
-				for (index_t b = 0; b < m_matchedBlocks[i].size(); ++b)
-				{
-					if (m_matchedBlocks[i][b].col != matchedBlocks2[i][b].col || m_matchedBlocks[i][b].row != matchedBlocks2[i][b].row)
-					{
-						matches = false;
-						break;
-					}
-				}
-				if (!matches)
-				{
-					++counter;
-				}
-			}
-
-			std::cout << ((float)counter / (float)m_matchedBlocks.size()) * 100.0f << "% blocks are different" << std::endl;
-
-
-		}*/
+		std::cout << ((float)counter / (float)m_matchedBlocks.size()) * 100.0f << "% blocks are different" << std::endl;*/
 
 		std::cout << "Finished Block Matching..." << std::endl;
 		tbb::tick_count end = tbb::tick_count::now();

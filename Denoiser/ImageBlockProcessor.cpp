@@ -376,6 +376,7 @@ namespace Denoise
 		tbb::task_scheduler_init init(settings.numThreadsIntegralImageComputation);
 		//tbb::task_scheduler_init init(1);
 
+
 		for (int shiftRows = -halfWindowSizeRows; shiftRows <= halfWindowSizeRows; ++shiftRows)
 		{
 
@@ -388,23 +389,6 @@ namespace Denoise
 				shifts.push_back(temp);
 			}
 
-			//for (index_t z = 0; z < 2; ++z)
-			//{
-			//	if (shiftRows > halfWindowSizeRows)
-			//	{
-			//		break;
-			//	}
-
-			//	++shiftRows;
-			//	for (int shiftCols = -halfWindowSizeCols; shiftCols <= halfWindowSizeCols; ++shiftCols)
-			//	{
-			//		std::pair<int, int> temp;
-			//		temp.first = shiftRows;
-			//		temp.second = shiftCols;
-			//		shifts.push_back(temp);
-			//	}
-			//}
-
 			IntergralImageComputerTBB integralImageFunctor(settings, internalSettings, shifts, distanceImage, integralImage, m_image);
 
 			tbb::parallel_for<tbb::blocked_range<index_t> >(tbb::blocked_range<index_t>((index_t)0, (index_t)shifts.size()),
@@ -413,12 +397,6 @@ namespace Denoise
 			ImagePartitioner partitioner(&m_image, bm3dSettings);
 			index_t totalNumBlocks;
 			partitioner.createPartitionScanlines(settings.numThreadsBlockMatching, totalNumBlocks);
-
-			//for (index_t i = 0; i < partitioner.numSegments(); ++i)
-			//{
-			//	std::cout << partitioner.getSegment(i).bottom << " to " << partitioner.getSegment(i).top << std::endl;
-			//}
-
 
 			BlockMatchingComputerTBB blockMatchingFunctor(settings, internalSettings, shifts, distanceImage, integralImage, m_image,
 				matchedBlocksSorted, partitioner.getSegments());

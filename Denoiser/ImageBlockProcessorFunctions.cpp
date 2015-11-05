@@ -604,7 +604,6 @@ namespace Denoise
 		}
 	}
 
-
 	void computeIntegralImage(const std::vector<double>& pixels, const Rectangle& imageBlock,
 		std::vector<double>& integralImage)
 	{

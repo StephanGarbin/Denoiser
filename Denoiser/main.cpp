@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &basic, &result);
 
 	Denoise::BM3DSettings bm3dFilterSettings;
-	bm3dFilterSettings.templateMatchingMaxAllowedPatchDistance = 0.0000001f;
+	bm3dFilterSettings.templateMatchingMaxAllowedPatchDistance = 2.5f;
 	bm3dFilterSettings.templateMatchingNorm = 2;
 	bm3dFilterSettings.templateMatchingNumChannels = 1;
 

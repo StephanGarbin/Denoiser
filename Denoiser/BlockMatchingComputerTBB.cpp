@@ -31,7 +31,6 @@ namespace Denoise
 
 	void BlockMatchingComputerTBB::operator()(const tbb::blocked_range<index_t>& r) const
 	{
-		//std::cout << r.begin() << "; " << r.end() << std::endl;
 		for (index_t i = r.begin(); i != r.end(); ++i)
 		{
 			ImageBlockProcessorSettings localSettings = m_settings;
@@ -47,7 +46,7 @@ namespace Denoise
 			{
 				localInternalSettings.iterateAtBorders = false;
 			}
-
+			
 			localInternalSettings.offsetCols = 0; localInternalSettings.offsetRows = 0;
 
 			computeBlockMatchingForSpecificShifts_doNotComputeIntegralImageBlock(m_image,

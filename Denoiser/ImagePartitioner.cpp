@@ -40,7 +40,7 @@ namespace Denoise
 			index_t scaledEnd = (t + 1) * scaledScanLineHeight;
 
 			index_t start = scaledStart * m_settings.stepSizeRows;
-			index_t end = std::min<index_t>(scaledEnd * m_settings.stepSizeRows, m_image->height() - m_settings.patchSize + 1);
+			index_t end = std::min<index_t>(scaledEnd * m_settings.stepSizeRows, m_image->height());
 
 
 			m_segments[t] = Rectangle(0, m_image->width(), end, start);

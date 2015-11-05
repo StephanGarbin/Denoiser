@@ -104,10 +104,10 @@ namespace Denoise
 
 		distance /= (double)settings.numChannelsToUse;
 
-		if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
-		{
-			distance = 0.0;
-		}
+		//if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+		//{
+		//	distance = 0.0;
+		//}
 
 		return distance;
 	}
