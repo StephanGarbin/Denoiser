@@ -296,6 +296,35 @@ namespace Denoise
 		m_normalisationValue = 1.0f;
 	}
 
+	float Image::maxPixelValue() const
+	{
+		float maxValue = std::numeric_limits<float>::min();
+		for (index_t c = 0; c < m_numChannels; ++c)
+		{
+			float cMax = maxPixelValue(c);
+			if (cMax > maxValue)
+			{
+				maxValue = cMax;
+			}
+		}
+
+		return maxValue;
+	}
+
+	float Image::minPixelValue() const
+	{
+		float minValue = std::numeric_limits<float>::max();
+		for (index_t c = 0; c < m_numChannels; ++c)
+		{
+			float cMin = minPixelValue(c);
+			if (cMin < minValue)
+			{
+				minValue = cMin;
+			}
+		}
+		return minValue;
+	}
+
 	float Image::maxPixelValue(index_t channel) const
 	{
 		float maxValue = std::numeric_limits<float>::min();

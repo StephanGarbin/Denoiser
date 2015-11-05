@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="BlockMatchingComputerTBB.cpp" />
     <ClCompile Include="BM3DCollaborativeFilterKernel.cpp" />
+    <ClCompile Include="BM3DCollaborativeTBB.cpp" />
     <ClCompile Include="BM3DImageBlockProcessor.cpp" />
     <ClCompile Include="BM3DImageBlockProcessorFunctions.cpp" />
     <ClCompile Include="BM3DParallelFunctions.cpp" />
@@ -184,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="BlockMatchingComputerTBB.h" />
     <ClInclude Include="BM3DCollaborativeFilterKernel.h" />
+    <ClInclude Include="BM3DCollaborativeTBB.h" />
     <ClInclude Include="BM3DImageBlockProcessor.h" />
     <ClInclude Include="BM3DImageBlockProcessorFunctions.h" />
     <ClInclude Include="BM3DParallelFunctions.h" />
@@ -208,6 +210,7 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="SortedPatchCollection.h" />
     <ClInclude Include="Statistics.h" />
+    <ClInclude Include="TBBDefs.h" />
     <ClInclude Include="Transforms.h" />
   </ItemGroup>
   <ItemGroup>

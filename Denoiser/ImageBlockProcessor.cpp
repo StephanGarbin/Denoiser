@@ -373,10 +373,6 @@ namespace Denoise
 			}
 		}
 
-		tbb::task_scheduler_init init(settings.numThreadsIntegralImageComputation);
-		//tbb::task_scheduler_init init(1);
-
-
 		for (int shiftRows = -halfWindowSizeRows; shiftRows <= halfWindowSizeRows; ++shiftRows)
 		{
 

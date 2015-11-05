@@ -6,6 +6,7 @@
 #include "BufferAggregator.h"
 #include "Rectangle.h"
 #include "common.h"
+#include "TBBDefs.h"
 
 namespace Denoise
 {
@@ -34,6 +35,10 @@ namespace Denoise
 		BufferAggregator m_buffer;
 		std::vector<std::vector<IDX2> > m_matchedBlocks;
 		bool m_blockMatchingProcessed;
+
+		ImagePatch m_patchTemplate;
+
+		TBB_MUTEX_TYPE m_mutex;
 	};
 }
 

@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 
 	bm3dFilterSettings.numThreadsBlockMatching = numThreadsBM;
 	bm3dFilterSettings.numPatchesPerBlockWiener = 32;
-	bm3dFilterSettings.disableWienerFilter = false;
+	bm3dFilterSettings.disableWienerFilter = true;
 
 	bm3dFilter.process(bm3dFilterSettings, true);
 
@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
 	basic.setAlphaToOne();
 	result.setAlphaToOne();
 
-	saveImage(&result, outputFile);
+	saveImage(&basic, outputFile);
 
 	delete image;
 }

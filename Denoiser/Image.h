@@ -63,6 +63,9 @@ namespace Denoise
 		float pixelMean(index_t channel, bool ignoreZeroPixelValues);
 
 		//Misceallaneous Functions
+		float maxPixelValue() const;
+		float minPixelValue() const;
+
 		float maxPixelValue(index_t channel) const;
 		float minPixelValue(index_t channel) const;
 		float averagePixelValue(index_t channel);
