@@ -81,26 +81,11 @@ namespace Denoise
 		}
 		else
 		{
-			index_t totalNumBlocks;
 			Rectangle matchRegion(0, image->width(), image->height(), 0);
 
 			m_matchedBlocks.resize((matchRegion.width() / m_settings.stepSizeCols + 1)
 				* (matchRegion.height() / m_settings.stepSizeRows + 1));
 
-			//ImagePartitioner partitioner(image, m_settings);
-			//partitioner.createPartitionScanlines(m_settings.numThreadsBlockMatching, totalNumBlocks);
-
-			////2. Create Threads
-			//boost::thread_group threads;
-
-			//for (index_t t = 0; t < partitioner.numSegments(); ++t)
-			//{
-			//	threads.create_thread(boost::bind(computeBlockMatching,
-			//		image, m_settings, boost::ref(patchTemplate),
-			//		boost::ref(partitioner.getSegment(t)), boost::ref(m_matchedBlocks), partitioner.getStartIdx(t), collaborative));
-			//}
-
-			//threads.join_all();
 			ImageBlockProcessor processor(*m_image);
 
 			ImageBlockProcessorSettings blockMatchSettings;
@@ -125,7 +110,6 @@ namespace Denoise
 			blockMatchSettings.numThreadsIntegralImageComputation = m_settings.numThreadsBlockMatching;
 			blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching;
 
-			//processor.computeNMostSimilar_PARALLEL(blockMatchSettings, m_settings, m_matchedBlocks);
 			processor.computeNMostSimilar_PARALLEL_TBB(blockMatchSettings, m_settings, m_matchedBlocks);
 		}
 			/*std::cout << "Computing Sequential Comparison..." << std::endl;

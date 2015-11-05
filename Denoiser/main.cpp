@@ -52,8 +52,15 @@ int main(int argc, char* argv[])
 	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew2b.png";
 
 	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_smoothness2.png";
-
+	std::string outputFile;
+	if (numThreadsBM == 1)
+	{
+		outputFile  = "C:/Users/Stephan/Desktop/noisyTreesNew_sequential.png";
+	}
+	else
+	{
+		outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_parallel.png";
+	}
 	//std::string inputFile = "C:/Users/Stephan/Desktop/computerNoisy.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/computerNew.png";
 

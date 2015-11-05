@@ -389,7 +389,7 @@ namespace Denoise
 
 			//C. Evaluate Patch Distances
 			int row;
-			for (row = settings.imageBlock.bottom; row <= settings.imageBlock.top - 0; row += settings.stepSizeRows)
+			for (row = settings.imageBlock.bottom; row < settings.imageBlock.top - 0; row += settings.stepSizeRows)
 			{
 				if (!checkRow(image, settings, localSettings, row))
 				{
@@ -398,7 +398,7 @@ namespace Denoise
 				}
 
 				int col;
-				for (col = settings.imageBlock.left; col <= settings.imageBlock.right - 0; col += settings.stepSizeCols)
+				for (col = settings.imageBlock.left; col < settings.imageBlock.right - 0; col += settings.stepSizeCols)
 				{
 					if (!checkCol(image, settings, localSettings, col))
 					{
