@@ -414,6 +414,11 @@ namespace Denoise
 			index_t totalNumBlocks;
 			partitioner.createPartitionScanlines(settings.numThreadsBlockMatching, totalNumBlocks);
 
+			//for (index_t i = 0; i < partitioner.numSegments(); ++i)
+			//{
+			//	std::cout << partitioner.getSegment(i).bottom << " to " << partitioner.getSegment(i).top << std::endl;
+			//}
+
 
 			BlockMatchingComputerTBB blockMatchingFunctor(settings, internalSettings, shifts, distanceImage, integralImage, m_image,
 				matchedBlocksSorted, partitioner.getSegments());
