@@ -2,6 +2,8 @@
 
 #include "ImageBlockProcessorFunctions.h"
 
+#include <iostream>
+
 namespace Denoise
 {
 

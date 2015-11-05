@@ -1,7 +1,42 @@
-﻿Build started 04/11/2015 12:06:30.
+﻿Build started 05/11/2015 16:42:36.
      1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt ImageBlockProcessorFunctions.cpp main.cpp
+         ImageBlockProcessorFunctions.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(200): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(202): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(125): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(143): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(28): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(36): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(91): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(111): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(136): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(149): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(169): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(194): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(206): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(231): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(248): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(253): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(278): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(294): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(299): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(322): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(332): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(337): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(360): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(416): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(436): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(467): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(480): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(500): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(523): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(531): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(576): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(584): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(655): warning C4018: '<' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(657): warning C4018: '<' : signed/unsigned mismatch
          main.cpp
      1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(200): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(202): warning C4018: '<' : signed/unsigned mismatch
@@ -38,4 +73,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:05.33
+Time Elapsed 00:00:05.87

@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include "lodepng.h"
+
 namespace Denoise
 {
 	void computeBlockMatchingForSpecificShifts(const Image& image,
@@ -50,6 +52,11 @@ namespace Denoise
 		for (index_t c = 0; c < settings.numChannelsToUse; ++c)
 		{
 			computeIntegralImage(distanceImage[c], settingsInternal.accessibleImageBlockShifted, integralImage[c]);
+		}
+
+		if (settingsInternal.shiftCols == 1 && settingsInternal.shiftRows == 0)
+		{
+			printBuffer(integralImage[0], image.height(), image.width(), "SequentialIntegral.png");
 		}
 
 		int blockRow = 0;
@@ -434,7 +441,7 @@ namespace Denoise
 				++blockRow;
 			}
 
-			if (!settingsInternal.iterateAtBorders)
+			if (!localSettings.iterateAtBorders)
 			{
 				continue;
 			}
@@ -445,7 +452,7 @@ namespace Denoise
 
 				if (!checkRow(image, settings, localSettings, row))
 				{
-					return;
+					continue;
 				}
 
 				int col;
@@ -480,7 +487,7 @@ namespace Denoise
 
 					if (!checkCol(image, settings, localSettings, col))
 					{
-						return;
+						continue;
 					}
 
 					double distance = computeDistanceForShift(integralImage[i], globalSettings, localSettings, row, col);
@@ -560,6 +567,7 @@ namespace Denoise
 			int shiftRows = shifts[i].first;
 			int shiftCols = shifts[i].second;
 			
+			//A. Compute Integral Image
 			for (index_t c = 0; c < settings.numChannelsToUse; ++c)
 			{
 				//A. Compute Pixel Differences
@@ -618,5 +626,56 @@ namespace Denoise
 				integralImage[row * imageBlock.width() + col] = integralImage[(row - 1) * imageBlock.width() + col] + s;
 			}
 		}
+	}
+
+
+	void printBuffer(const std::vector<double>& pixels, int height, int width, const std::string& fileName)
+	{
+		std::vector<double> normalisedPixels(height * width);
+		double maxValue = -10000000.0;
+
+		for (int i = 0; i < width * height; ++i)
+		{
+			if (pixels[i] > maxValue)
+			{
+				maxValue = pixels[i];
+			}
+		}
+
+		for (int i = 0; i < width * height; ++i)
+		{
+			normalisedPixels[i] = (pixels[i] / maxValue) * 255.0;
+		}
+
+		std::vector<unsigned char> png;
+
+		std::vector<unsigned char> rawImage;
+		rawImage.resize(width * height * 4);
+
+		for (index_t row = 0; row < height; ++row)
+		{
+			for (index_t col = 0; col < width; ++col)
+			{
+				for (index_t c = 0; c < 4; ++c)
+				{
+					index_t i = (row * width + col) * 4;
+					if (c == 3)
+					{
+						rawImage[i + c] = (unsigned char)255;
+					}
+					else
+					{
+						rawImage[i + c] = (unsigned char)normalisedPixels[row * width + col];
+					}
+				}
+			}
+		}
+
+		unsigned error = lodepng::encode(png, rawImage, width, height);
+		if (!error) lodepng::save_file(png, fileName);
+
+		//if there's an error, display it
+		if (error) std::cout << "encoder error " << error << ": " << lodepng_error_text(error) << std::endl;
+
 	}
 }

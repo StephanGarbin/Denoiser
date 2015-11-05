@@ -374,6 +374,7 @@ namespace Denoise
 		}
 
 		tbb::task_scheduler_init init(settings.numThreadsIntegralImageComputation);
+		//tbb::task_scheduler_init init(1);
 
 		for (int shiftRows = -halfWindowSizeRows; shiftRows <= halfWindowSizeRows; ++shiftRows)
 		{
@@ -382,8 +383,8 @@ namespace Denoise
 			for (int shiftCols = -halfWindowSizeCols; shiftCols <= halfWindowSizeCols; ++shiftCols)
 			{
 				std::pair<int, int> temp;
-				temp.first = shiftRows;
-				temp.second = shiftCols;
+				temp.first = shiftCols;
+				temp.second = shiftRows;
 				shifts.push_back(temp);
 			}
 

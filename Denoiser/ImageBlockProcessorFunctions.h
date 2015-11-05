@@ -17,6 +17,8 @@
 
 namespace Denoise
 {
+	void printBuffer(const std::vector<double>& pixels, int height, int width, const std::string& fileName);
+
 	void computeBlockMatchingForSpecificShifts(const Image& image,
 		std::vector<SortedPatchCollection>& matchedBlocksSorted,
 		std::vector<std::vector<double> >& distanceImage,
@@ -145,4 +147,5 @@ namespace Denoise
 
 		return true;
 	}
+
 }
