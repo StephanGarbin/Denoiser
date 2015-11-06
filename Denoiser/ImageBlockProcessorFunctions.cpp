@@ -389,7 +389,7 @@ namespace Denoise
 
 			//C. Evaluate Patch Distances
 			int row;
-			for (row = settings.imageBlock.bottom; row < settings.imageBlock.top - 0; row += settings.stepSizeRows)
+			for (row = settings.imageBlock.bottom; row < settings.imageBlock.top; row += settings.stepSizeRows)
 			{
 				if (!checkRow(image, settings, localSettings, row))
 				{
@@ -398,7 +398,7 @@ namespace Denoise
 				}
 
 				int col;
-				for (col = settings.imageBlock.left; col < settings.imageBlock.right - 0; col += settings.stepSizeCols)
+				for (col = settings.imageBlock.left; col < settings.imageBlock.right; col += settings.stepSizeCols)
 				{
 					if (!checkCol(image, settings, localSettings, col))
 					{
@@ -411,7 +411,7 @@ namespace Denoise
 					if (distance <= (double)settings.maxDistance)
 					{
 						matchedBlocksSorted[blockRow
-							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+							* settingsInternal.blockWidth
 							+ blockCol].insertPatch(
 							IDX2(row + localSettings.shiftRows, col + localSettings.shiftCols, distance));
 					}
@@ -423,6 +423,7 @@ namespace Denoise
 
 					if (!checkCol(image, settings, localSettings, col))
 					{
+						++blockCol;
 						continue;
 					}
 
@@ -431,7 +432,7 @@ namespace Denoise
 					if (distance <= (double)settings.maxDistance)
 					{
 						matchedBlocksSorted[blockRow
-							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+							* settingsInternal.blockWidth
 							+ blockCol].insertPatch(
 							IDX2(row + localSettings.shiftRows, col + localSettings.shiftCols, distance));
 					}

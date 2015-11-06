@@ -40,18 +40,22 @@ namespace Denoise
 	void ImageBlockProcessor::computeNMostSimilar(const ImageBlockProcessorSettings& settings,
 		std::vector<std::vector<IDX2> >& matchedBlocks)
 	{
+		ImageBlockProcessorSettingsInternal internalSettings;
 		//make sure we are accessing the full image
 		m_image.accessFullImage();
 
 		std::vector<SortedPatchCollection> matchedBlocksSorted;
 
+		internalSettings.blockWidth = (int)std::ceil((float)settings.imageBlock.width() / (float)settings.stepSizeCols) + 1;
+		internalSettings.blockHeight = (int)std::ceil((float)settings.imageBlock.height() / (float)settings.stepSizeRows) + 1;
+
 		//we only allocate as many blocks as we need
-		for (index_t i = 0; i < (settings.imageBlock.width() / settings.stepSizeCols + 1) * (settings.imageBlock.height() / settings.stepSizeRows + 1) + 1; ++i)
+		for (index_t i = 0; i < internalSettings.blockWidth * internalSettings.blockHeight; ++i)
 		{
 			matchedBlocksSorted.push_back(SortedPatchCollection(settings.maxSimilar));
 		}
 
-		ImageBlockProcessorSettingsInternal internalSettings;
+
 
 		//do block matching
 		int halfWindowSizeRows = settings.windowSizeRows / 2;
@@ -329,15 +333,17 @@ namespace Denoise
 		//make sure we are accessing the full image
 		m_image.accessFullImage();
 
+		ImageBlockProcessorSettingsInternal internalSettings;
+		internalSettings.blockWidth = (int)std::ceil((float)settings.imageBlock.width() / (float)settings.stepSizeCols) + 1;
+		internalSettings.blockHeight = (int)std::ceil((float)settings.imageBlock.height() / (float)settings.stepSizeRows) + 1;
+
 		std::vector<SortedPatchCollection> matchedBlocksSorted;
 
 		//we only allocate as many blocks as we need
-		for (index_t i = 0; i < (settings.imageBlock.width() / settings.stepSizeCols + 1) * (settings.imageBlock.height() / settings.stepSizeRows + 1) + 1; ++i)
+		for (index_t i = 0; i < internalSettings.blockWidth * internalSettings.blockHeight; ++i)
 		{
 			matchedBlocksSorted.push_back(SortedPatchCollection(settings.maxSimilar));
 		}
-
-		ImageBlockProcessorSettingsInternal internalSettings;
 
 		//do block matching
 		int halfWindowSizeRows = settings.windowSizeRows / 2;
@@ -393,6 +399,8 @@ namespace Denoise
 			ImagePartitioner partitioner(&m_image, bm3dSettings);
 			index_t totalNumBlocks;
 			partitioner.createPartitionScanlines(settings.numThreadsBlockMatching, totalNumBlocks);
+
+			//std::cout << internalSettings.blockWidth << std::endl;
 
 			BlockMatchingComputerTBB blockMatchingFunctor(settings, internalSettings, shifts, distanceImage, integralImage, m_image,
 				matchedBlocksSorted, partitioner.getSegments());

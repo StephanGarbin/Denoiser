@@ -14,6 +14,9 @@
 
 #include <vector>
 #include <utility>
+#include <iostream>
+#include <numeric>
+#include <algorithm>
 
 namespace Denoise
 {
@@ -109,6 +112,7 @@ namespace Denoise
 		//	distance = 0.0;
 		//}
 
+		//std::cout << "Computed ;;";
 		return distance;
 	}
 
@@ -117,16 +121,19 @@ namespace Denoise
 		const ImageBlockProcessorSettingsInternal& settingsInternal,
 		int row)
 	{
-		if (row + settingsInternal.offsetRows + settingsInternal.shiftRows < 0)
+		if (row + (int)settingsInternal.offsetRows + settingsInternal.shiftRows < 0)
 		{
+			//std::cout << "Refused (low): " << row + settingsInternal.shiftRows << "; ";
 			return false;
 		}
 
-		if (row + settingsInternal.shiftRows > image.height() - settings.templatePatch.height)
+		if (std::max<int>(row + settingsInternal.shiftRows, row) > image.height() - settings.templatePatch.height)
 		{
+			//std::cout << "Refused (high): " << row + settingsInternal.shiftRows  << "; ";
 			return false;
 		}
 
+		//std::cout << row + settingsInternal.shiftRows << ", ";
 		return true;
 	}
 
@@ -135,12 +142,12 @@ namespace Denoise
 		const ImageBlockProcessorSettingsInternal& settingsInternal,
 		int col)
 	{
-		if (col + settingsInternal.shiftCols + settingsInternal.offsetCols < 0)
+		if (col + settingsInternal.shiftCols + (int)settingsInternal.offsetCols < 0)
 		{
 			return false;
 		}
 
-		if (col + settingsInternal.shiftCols > image.width() - settings.templatePatch.width)
+		if (std::max<int>(col + settingsInternal.shiftCols, col) > image.width() - settings.templatePatch.width)
 		{
 			return false;
 		}

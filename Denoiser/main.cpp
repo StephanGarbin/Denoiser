@@ -51,16 +51,16 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees2.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew2b.png";
 
-	std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
-	std::string outputFile;
-	if (numThreadsBM == 1)
-	{
-		outputFile  = "C:/Users/Stephan/Desktop/noisyTreesNew_sequential.png";
-	}
-	else
-	{
-		outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_parallel.png";
-	}
+	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
+	//std::string outputFile;
+	//if (numThreadsBM == 1)
+	//{
+	//	outputFile  = "C:/Users/Stephan/Desktop/noisyTreesNew_sequential.png";
+	//}
+	//else
+	//{
+	//	outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_parallel.png";
+	//}
 	//std::string inputFile = "C:/Users/Stephan/Desktop/computerNoisy.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/computerNew.png";
 
@@ -70,8 +70,8 @@ int main(int argc, char* argv[])
 	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger_high.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/tiger_high_denoised.png";
 
-	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger_1K.png";
-	//std::string outputFile = "C:/Users/Stephan/Desktop/tiger_1K_denoised_b.png";
+	std::string inputFile = "C:/Users/Stephan/Desktop/tiger_1K.png";
+	std::string outputFile = "C:/Users/Stephan/Desktop/tiger_1K_denoised_b.png";
 
 	//std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
 	//std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
@@ -94,9 +94,9 @@ int main(int argc, char* argv[])
 
 	bm3dFilterSettings.numPatchesPerBlockCollaborative = 16;
 	bm3dFilterSettings.patchSize = 8;
-	bm3dFilterSettings.searchWindowSize = 32;
-	bm3dFilterSettings.stepSizeCols = 3;
-	bm3dFilterSettings.stepSizeRows = 3;
+	bm3dFilterSettings.searchWindowSize = 16;
+	bm3dFilterSettings.stepSizeCols = 7;
+	bm3dFilterSettings.stepSizeRows = 7;
 	bm3dFilterSettings.usePatchWeighting = false;
 	bm3dFilterSettings.stdDeviation = stdDeviation;
 
@@ -108,8 +108,8 @@ int main(int argc, char* argv[])
 	bm3dFilterSettings.meanAdaptiveThresholdingFactor = adaptiveFactor;
 
 	bm3dFilterSettings.numThreadsBlockMatching = numThreadsBM;
-	bm3dFilterSettings.numPatchesPerBlockWiener = 32;
-	bm3dFilterSettings.disableWienerFilter = true;
+	bm3dFilterSettings.numPatchesPerBlockWiener = 16;
+	bm3dFilterSettings.disableWienerFilter = false;
 
 	bm3dFilter.process(bm3dFilterSettings, true);
 
@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
 	basic.setAlphaToOne();
 	result.setAlphaToOne();
 
-	saveImage(&basic, outputFile);
+	saveImage(&result, outputFile);
 
 	delete image;
 }

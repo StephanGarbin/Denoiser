@@ -10,6 +10,9 @@ namespace Denoise
 		int shiftRows;
 		int shiftCols;
 
+		int blockWidth;
+		int blockHeight;
+
 		index_t offsetRows;
 		index_t offsetCols;
 

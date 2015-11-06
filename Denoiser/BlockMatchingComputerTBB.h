@@ -27,14 +27,16 @@ namespace Denoise
 			std::vector<SortedPatchCollection>& matchedBlocksSorted,
 			const std::vector<Rectangle>& scanlines);
 
+		BlockMatchingComputerTBB(const BlockMatchingComputerTBB& other);
+
 		~BlockMatchingComputerTBB();
 
 		void operator()(const tbb::blocked_range<index_t>& r) const;
 
 	private:
 		const std::vector<std::pair<int, int> >& m_shifts;
-		ImageBlockProcessorSettings m_settings;
-		ImageBlockProcessorSettingsInternal m_settingsInternal;
+		const ImageBlockProcessorSettings& m_settings;
+		const ImageBlockProcessorSettingsInternal& m_settingsInternal;
 
 		std::vector<std::vector<std::vector<double> > >& m_distanceImage;
 		std::vector<std::vector<std::vector<double> > >& m_integralImage;

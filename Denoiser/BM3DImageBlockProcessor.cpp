@@ -6,6 +6,7 @@
 #include "BM3DWienerFilterKernel.h"
 #include "BM3DImageBlockProcessorFunctions.h"
 #include "BM3DCollaborativeTBB.h"
+#include "BM3DWienerTBB.h"
 
 #include "ImagePartitioner.h"
 #include "ImagePatch.h"
@@ -184,7 +185,7 @@ namespace Denoise
 			}
 		}
 
-		m_imageBasic->clamp(m_image->minPixelValue(), m_image->maxPixelValue());
+		//m_imageBasic->clamp(m_image->minPixelValue(), m_image->maxPixelValue());
 
 		if (!m_settings.disableWienerFilter)
 		{
@@ -215,15 +216,13 @@ namespace Denoise
 
 	void BM3DImageBlockProcessor::processCollaborativeFilter()
 	{
-		BM3DCollaborativeFilterKernel collaborativeKernel(m_settings);
-
 		BM3DCollaborativeTBB collaborativeFunctor(m_image,
 			m_buffer, m_settings, m_matchedBlocks, m_patchTemplate,
-			m_mutex,
-			collaborativeKernel);
+			m_mutex);
 
-		//tbb::parallel_for<tbb::blocked_range<size_t> >(tbb::blocked_range<size_t>((size_t)0, m_matchedBlocks.size()),
-		//	collaborativeFunctor);
+		std::cout << m_matchedBlocks.size() << std::endl;
+		tbb::parallel_for<tbb::blocked_range<size_t> >(tbb::blocked_range<size_t>((size_t)0, m_matchedBlocks.size()),
+			collaborativeFunctor);
 	}
 
 	void BM3DImageBlockProcessor::processWienerFilter()
@@ -233,95 +232,12 @@ namespace Denoise
 
 		processBlockMatching(m_imageBasic, false);
 
-		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockWiener * 3];
+		BM3DWienerTBB wienerFunctor(m_image, m_imageBasic,
+			m_buffer, m_settings, m_matchedBlocks, m_patchTemplate, m_mutex);
 
-		float* estimateImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockWiener * 3];
-
-		BM3DWienerFilterKernel wienerKernel(m_settings);
-
-		//2. Process Blocks
-		for (index_t i = 0; i < m_matchedBlocks.size(); ++i)
-		{
-			index_t numValidPatches;
-			std::vector<float> weights(3);
-
-			//cpy BOTH blocks
-			m_image->cpy2Block3d(m_matchedBlocks[i], rawImageBlock, m_patchTemplate, -3, numValidPatches);
-			m_imageBasic->cpy2Block3d(m_matchedBlocks[i], estimateImageBlock, m_patchTemplate, -3, numValidPatches);
-
-			if (numValidPatches < 1)
-			{
-				continue;
-			}
-
-			if (m_settings.averageBlocksBasedOnStdWiener)
-			{
-				float blockStd = std::sqrt(calculateBlockVariance(estimateImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels()));
-
-				if (m_settings.meanAdaptiveThresholding)
-				{
-					float mean = calculateBlockMean(rawImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels());
-					blockStd *= calculateMeanAdaptiveFactor(blockStd, mean, m_settings.meanAdaptiveThresholdingFactor);
-				}
-
-				if (blockStd < m_settings.stdDeviation * m_settings.averageBlocksBasedOnStdFactor)
-				{
-					setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels());
-
-					for (index_t channel = 0; channel < weights.size(); ++channel)
-					{
-						weights[channel] = 1.0f;
-					}
-				}
-				else
-				{
-					if (m_settings.meanAdaptiveThresholding)
-					{
-						wienerKernel.processWienerFilterMeanAdaptive(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
-					}
-					else
-					{
-						wienerKernel.processWienerFilter(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
-					}
-				}
-			}
-			else
-			{
-				if (m_settings.meanAdaptiveThresholding)
-				{
-					wienerKernel.processWienerFilterMeanAdaptive(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
-				}
-				else
-				{
-					wienerKernel.processWienerFilter(rawImageBlock, estimateImageBlock, numValidPatches, 3, weights, m_settings.stdDeviation);
-				}
-			}
-
-			index_t sizePerChannel = numValidPatches * m_patchTemplate.width * m_patchTemplate.height;
-
-			for (index_t channel = 0; channel < 3; ++channel)
-			{
-				for (index_t depth = 0; depth < numValidPatches; ++depth)
-				{
-					for (index_t patchRow = 0; patchRow < m_patchTemplate.height; ++patchRow)
-					{
-						for (index_t patchCol = 0; patchCol < m_patchTemplate.width; ++patchCol)
-						{
-							m_buffer.addValueNumerator(channel, m_matchedBlocks[i][depth].row + patchRow,
-								m_matchedBlocks[i][depth].col + patchCol,
-								rawImageBlock[channel * sizePerChannel + depth * m_patchTemplate.width
-								* m_patchTemplate.height + patchRow * m_patchTemplate.width + patchCol] * weights[channel]);
-
-							m_buffer.addValueDenominator(channel, m_matchedBlocks[i][depth].row + patchRow,
-								m_matchedBlocks[i][depth].col + patchCol, weights[channel]);
-						}
-					}
-				}
-			}
-		}
-
-		delete[] estimateImageBlock;
-		delete[] rawImageBlock;
+		std::cout << m_matchedBlocks.size() << std::endl;
+		tbb::parallel_for<tbb::blocked_range<size_t> >(tbb::blocked_range <size_t>((size_t)0, m_matchedBlocks.size()),
+			wienerFunctor);
 	}
 }
 

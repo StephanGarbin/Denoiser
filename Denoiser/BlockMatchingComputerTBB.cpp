@@ -23,6 +23,17 @@ namespace Denoise
 
 	}
 
+	BlockMatchingComputerTBB::BlockMatchingComputerTBB(const BlockMatchingComputerTBB& other) :
+		m_settings(other.m_settings), m_settingsInternal(other.m_settingsInternal),
+		m_shifts(other.m_shifts),
+		m_distanceImage(other.m_distanceImage), m_integralImage(other.m_integralImage),
+		m_image(other.m_image),
+		m_matchedBlocksSorted(other.m_matchedBlocksSorted),
+		m_scanlines(other.m_scanlines)
+	{
+
+	}
+
 
 	BlockMatchingComputerTBB::~BlockMatchingComputerTBB()
 	{
