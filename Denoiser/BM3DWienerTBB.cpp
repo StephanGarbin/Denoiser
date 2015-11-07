@@ -103,23 +103,25 @@ namespace Denoise
 
 			index_t sizePerChannel = numValidPatches * m_patchTemplate.width * m_patchTemplate.height;
 
-			for (index_t channel = 0; channel < 3; ++channel)
 			{
 				TBB_MUTEX_TYPE::scoped_lock lock;
 				lock.acquire(m_mutex);
-				for (index_t depth = 0; depth < numValidPatches; ++depth)
+				for (index_t channel = 0; channel < 3; ++channel)
 				{
-					for (index_t patchRow = 0; patchRow < m_patchTemplate.height; ++patchRow)
+					for (index_t depth = 0; depth < numValidPatches; ++depth)
 					{
-						for (index_t patchCol = 0; patchCol < m_patchTemplate.width; ++patchCol)
+						for (index_t patchRow = 0; patchRow < m_patchTemplate.height; ++patchRow)
 						{
-							m_buffer.addValueNumerator(channel, m_matchedBlocks[i][depth].row + patchRow,
-								m_matchedBlocks[i][depth].col + patchCol,
-								rawImageBlock[channel * sizePerChannel + depth * m_patchTemplate.width
-								* m_patchTemplate.height + patchRow * m_patchTemplate.width + patchCol] * weights[channel]);
+							for (index_t patchCol = 0; patchCol < m_patchTemplate.width; ++patchCol)
+							{
+								m_buffer.addValueNumerator(channel, m_matchedBlocks[i][depth].row + patchRow,
+									m_matchedBlocks[i][depth].col + patchCol,
+									rawImageBlock[channel * sizePerChannel + depth * m_patchTemplate.width
+									* m_patchTemplate.height + patchRow * m_patchTemplate.width + patchCol] * weights[channel]);
 
-							m_buffer.addValueDenominator(channel, m_matchedBlocks[i][depth].row + patchRow,
-								m_matchedBlocks[i][depth].col + patchCol, weights[channel]);
+								m_buffer.addValueDenominator(channel, m_matchedBlocks[i][depth].row + patchRow,
+									m_matchedBlocks[i][depth].col + patchCol, weights[channel]);
+							}
 						}
 					}
 				}

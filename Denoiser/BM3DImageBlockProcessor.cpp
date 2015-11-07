@@ -221,7 +221,8 @@ namespace Denoise
 			m_mutex);
 
 		std::cout << m_matchedBlocks.size() << std::endl;
-		tbb::parallel_for<tbb::blocked_range<size_t> >(tbb::blocked_range<size_t>((size_t)0, m_matchedBlocks.size()),
+		tbb::parallel_for<tbb::blocked_range<size_t> >(tbb::blocked_range<size_t>((size_t)0, m_matchedBlocks.size()
+			),
 			collaborativeFunctor);
 	}
 
@@ -236,7 +237,8 @@ namespace Denoise
 			m_buffer, m_settings, m_matchedBlocks, m_patchTemplate, m_mutex);
 
 		std::cout << m_matchedBlocks.size() << std::endl;
-		tbb::parallel_for<tbb::blocked_range<size_t> >(tbb::blocked_range <size_t>((size_t)0, m_matchedBlocks.size()),
+		tbb::parallel_for<tbb::blocked_range<size_t> >(tbb::blocked_range <size_t>((size_t)0, m_matchedBlocks.size()
+			),
 			wienerFunctor);
 	}
 }

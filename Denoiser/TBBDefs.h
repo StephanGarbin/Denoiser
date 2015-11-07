@@ -1,10 +1,11 @@
 #pragma once
 
-#include <tbb\queuing_mutex.h>
+//#include <tbb\queuing_mutex.h>
+#include <tbb\spin_mutex.h>
 
 namespace Denoise
 {
 
-	typedef tbb::queuing_mutex TBB_MUTEX_TYPE;
+	typedef tbb::spin_mutex TBB_MUTEX_TYPE;
 
 }
