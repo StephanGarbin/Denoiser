@@ -107,10 +107,10 @@ namespace Denoise
 
 		distance /= (double)settings.numChannelsToUse;
 
-		//if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
-		//{
-		//	distance = 0.0;
-		//}
+		if (settingsInternal.shiftCols == 0 && settingsInternal.shiftRows == 0)
+		{
+			distance = -111111.0;
+		}
 
 		//std::cout << "Computed ;;";
 		return distance;

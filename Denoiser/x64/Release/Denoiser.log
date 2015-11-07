@@ -1,13 +1,13 @@
-﻿Build started 06/11/2015 23:38:29.
-     1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
+﻿Build started 07/11/2015 00:26:45.
+     1>Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /I"S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include" /Zi /nologo /W3 /WX- /sdl /Ox /Ob2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt main.cpp
          main.cpp
-     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(203): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(205): warning C4018: '<' : signed/unsigned mismatch
+     1>s:\users\stephan\documents\github\denoiser\denoiser\Image.h(203): warning C4018: '<' : signed/unsigned mismatch
+     1>s:\users\stephan\documents\github\denoiser\denoiser\Image.h(205): warning C4018: '<' : signed/unsigned mismatch
      1>main.cpp(42): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-12.0\release\address-model-64\link-static\threading-multi\\" /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" "libboost_thread-vc120-mt-1_57.lib" "libboost_timer-vc120-mt-1_57.lib" "libboost_system-vc120-mt-1_57.lib" "libboost_date_time-vc120-mt-1_57.lib" "libboost_chrono-vc120-mt-1_57.lib" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\BlockMatching.cu.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-12.0\release\address-model-64\link-static\threading-multi\\" /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" /LIBPATH:"S:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" "libboost_thread-vc120-mt-1_57.lib" "libboost_timer-vc120-mt-1_57.lib" "libboost_system-vc120-mt-1_57.lib" "libboost_date_time-vc120-mt-1_57.lib" "libboost_chrono-vc120-mt-1_57.lib" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\BlockMatching.cu.obj
          x64\Release\BM3D.cu.obj
          x64\Release\Common.cu.obj
          x64\Release\Memory.cu.obj
@@ -35,9 +35,9 @@
          x64\Release\Statistics.obj
          Generating code
          Finished generating code
-         Denoiser.vcxproj -> C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe
-     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
+         Denoiser.vcxproj -> S:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe
+     1>Done Building Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:05.54
+Time Elapsed 00:00:04.76
