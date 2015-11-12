@@ -3,8 +3,6 @@
 #include <vector>
 #include <utility>
 
-#include <tbb\blocked_range.h>
-
 #include "common.h"
 #include "Image.h"
 #include "ImageBlockProcessorSettings.h"
@@ -25,7 +23,7 @@ namespace Denoise
 
 		~IntergralImageComputerTBB();
 
-		void operator()(const tbb::blocked_range<index_t>& r) const;
+		void operator()(const std::pair<size_t, size_t>& r) const;
 
 	private:
 		const std::vector<std::pair<int, int> >& m_shifts;

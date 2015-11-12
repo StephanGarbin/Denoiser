@@ -1,17 +1,19 @@
 #pragma once
 
 #include "common.h"
+#include "TRANSFORM_DOMAIN_FORMATS.h"
+
 
 namespace Denoise
 {
-	float calculateBlockVariance(float* block, index_t numPatches, index_t patchSize, index_t numChannels);
-	void setBlockToAveragePatch(float* block, index_t numPatches, index_t patchSize, index_t numChannels);
+	DOMAIN_FORMAT calculateBlockVariance(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels);
+	void setBlockToAveragePatch(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels);
 
-	void calculateBlockMeans(float* block, index_t numPatches, index_t patchSize, index_t numChannels,
-		float* means);
+	void calculateBlockMeans(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels,
+		DOMAIN_FORMAT* means);
 
-	float calculateBlockMean(float* block, index_t numPatches, index_t patchSize, index_t numChannels);
+	DOMAIN_FORMAT calculateBlockMean(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels);
 
-	float calculateMeanAdaptiveFactor(float stdDeviaton, float mean, float scaling);
+	DOMAIN_FORMAT calculateMeanAdaptiveFactor(DOMAIN_FORMAT stdDeviaton, DOMAIN_FORMAT mean, DOMAIN_FORMAT scaling, DOMAIN_FORMAT power);
 }
 

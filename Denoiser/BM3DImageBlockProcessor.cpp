@@ -5,16 +5,17 @@
 #include "BM3DCollaborativeFilterKernel.h"
 #include "BM3DWienerFilterKernel.h"
 #include "BM3DImageBlockProcessorFunctions.h"
-#include "BM3DCollaborativeTBB.h"
-#include "BM3DWienerTBB.h"
+#include "BM3DCollaborativeFunctor.h"
+#include "BM3DWienerFunctor.h"
+#include "BM3DImageBlockProcessorBOOST.h"
 
 #include "ImagePartitioner.h"
+#include "RangePartitioner.h"
 #include "ImagePatch.h"
 #include "Rectangle.h"
 
 #include "common.h"
 
-#include "DEBUG_HELPER.h"
 #include "Statistics.h"
 
 #include <algorithm>
@@ -23,11 +24,6 @@
 #include <boost/thread.hpp>
 #include <boost/date_time.hpp>
 #include <boost/bind.hpp>
-
-#include <tbb\tick_count.h>
-#include <tbb\blocked_range.h>
-#include <tbb\parallel_for.h>
-#include <tbb\task_scheduler_init.h>
 
 namespace Denoise
 {
@@ -48,8 +44,6 @@ namespace Denoise
 	void BM3DImageBlockProcessor::processBlockMatching(Image* image, bool collaborative)
 	{
 		m_matchedBlocks.clear();
-
-		tbb::tick_count start = tbb::tick_count::now();
 
 		ImagePatch patchTemplate(0, 0, m_settings.patchSize, m_settings.patchSize);
 
@@ -82,75 +76,22 @@ namespace Denoise
 		blockMatchSettings.numThreadsIntegralImageComputation = m_settings.numThreadsBlockMatching;
 		blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching;
 
-		processor.computeNMostSimilar_PARALLEL_TBB(blockMatchSettings, m_settings, m_matchedBlocks);
-		/*std::cout << "Computing Sequential Comparison..." << std::endl;
-		std::vector<std::vector<IDX2> > matchedBlocks2;
-		{
-			Rectangle matchRegion(0, image->width(), image->height(), 0);
-
-			ImageBlockProcessor blockProcessor(*image);
-
-			matchedBlocks2.resize((matchRegion.width() / m_settings.stepSizeCols + 1)
-				* (matchRegion.height() / m_settings.stepSizeRows + 1));
-
-			ImageBlockProcessorSettings blockMatchSettings;
-			blockMatchSettings.templatePatch = patchTemplate;
-			blockMatchSettings.imageBlock = matchRegion;
-			blockMatchSettings.stepSizeRows = m_settings.stepSizeRows;
-			blockMatchSettings.stepSizeCols = m_settings.stepSizeCols;
-			blockMatchSettings.windowSizeRows = m_settings.searchWindowSize;
-			blockMatchSettings.windowSizeCols = m_settings.searchWindowSize;
-			if (collaborative)
-			{
-				blockMatchSettings.maxSimilar = m_settings.numPatchesPerBlockCollaborative;
-			}
-			else
-			{
-				blockMatchSettings.maxSimilar = m_settings.numPatchesPerBlockWiener;
-			}
-			blockMatchSettings.maxDistance = m_settings.templateMatchingMaxAllowedPatchDistance;
-			blockMatchSettings.norm = m_settings.templateMatchingNorm;
-			blockMatchSettings.numChannelsToUse = m_settings.templateMatchingNumChannels;
-			blockMatchSettings.matchedBlocksAlreadyComputed = 0;
-
-			blockProcessor.computeNMostSimilar(blockMatchSettings, matchedBlocks2);
-		}
-
-		std::cout << "Comparing..." << std::endl;
-		size_t counter = 0;
-		for (index_t i = 0; i < m_matchedBlocks.size(); ++i)
-		{
-			bool matches = true;
-			for (index_t b = 0; b < m_matchedBlocks[i].size(); ++b)
-			{
-				if (m_matchedBlocks[i][b].col != matchedBlocks2[i][b].col || m_matchedBlocks[i][b].row != matchedBlocks2[i][b].row)
-				{
-					matches = false;
-					break;
-				}
-			}
-			if (!matches)
-			{
-				++counter;
-			}
-		}
-
-		std::cout << ((float)counter / (float)m_matchedBlocks.size()) * 100.0f << "% blocks are different" << std::endl;*/
-
-		std::cout << "Finished Block Matching..." << std::endl;
-		tbb::tick_count end = tbb::tick_count::now();
-		std::cout << "Time: " << (end - start).seconds() << "s." << std::endl;
+		processor.computeNMostSimilar_PARALLEL(blockMatchSettings, m_settings, m_matchedBlocks);
 	}
 
 	void BM3DImageBlockProcessor::process(const BM3DSettings& settings, bool processMatching)
 	{
-		tbb::task_scheduler_init init(settings.numThreadsBlockMatching);
-		//tbb::task_scheduler_init init(1);
+		//m_image->toColourSpace(Image::OPP);
 
-		tbb::tick_count start = tbb::tick_count::now();
 
 		//lets remember last settings for future reference
 		m_settings = settings;
+
+		for (size_t i = 0; i < m_settings.stdDeviation.size(); ++i)
+		{
+			std::cout << m_settings.stdDeviation[i] << std::endl;
+		}
+
 
 		//1. Block Matching
 		m_patchTemplate = ImagePatch(0, 0, m_settings.patchSize, m_settings.patchSize);
@@ -170,6 +111,12 @@ namespace Denoise
 
 		processCollaborativeFilter();
 
+		std::cout << "Collaborative Done! " << std::endl;
+
+		m_imageBasic->checkImageIntegrity(true);
+
+		std::cout << "First Check..." << std::endl;
+
 		//divide buffers
 		m_buffer.divideBuffers();
 
@@ -186,6 +133,8 @@ namespace Denoise
 		}
 
 		//m_imageBasic->clamp(m_image->minPixelValue(), m_image->maxPixelValue());
+
+		m_imageBasic->checkImageIntegrity(true);
 
 		if (!m_settings.disableWienerFilter)
 		{
@@ -210,20 +159,50 @@ namespace Denoise
 		//clamp final image to ensure we don't get any illegal values (especially for quantised images)
 		m_imageResult->clamp(m_image->minPixelValue(), m_image->maxPixelValue());
 
-		tbb::tick_count end = tbb::tick_count::now();
-		std::cout << "BM3D Denoiser ran in " << (end - start).seconds() << std::endl;
+		//Mark the results as being in the same colour space as the orginal
+		//m_imageBasic->setColourSpace(m_image->colourSpace());
+		//m_imageResult->setColourSpace(m_image->colourSpace());
+
+		//Transform if necessary
+		//m_image->toColourSpace(Image::RGB);
+		//m_imageBasic->toColourSpace(Image::RGB);
+		//m_imageResult->toColourSpace(Image::RGB);
+
+		std::cout << "Done!" << std::endl;
 	}
 
 	void BM3DImageBlockProcessor::processCollaborativeFilter()
 	{
-		BM3DCollaborativeTBB collaborativeFunctor(m_image,
-			m_buffer, m_settings, m_matchedBlocks, m_patchTemplate,
-			m_mutex);
+		if (m_settings.numThreadsDenoising == 1)
+		{
+			BM3DCollaborativeFunctor kernel(m_image,
+				m_buffer, m_settings, m_matchedBlocks, m_patchTemplate,
+				m_mutex);
+			processCollaborative(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()));
+		}
+		else
+		{
+			boost::thread_group denoiseThreads;
+			RangePartitioner partitioner;
 
-		std::cout << m_matchedBlocks.size() << std::endl;
-		tbb::parallel_for<tbb::blocked_range<size_t> >(tbb::blocked_range<size_t>((size_t)0, m_matchedBlocks.size()
-			),
-			collaborativeFunctor);
+			partitioner.createPartition(m_matchedBlocks.size(), m_settings.numThreadsDenoising);
+
+			std::vector <BM3DCollaborativeFunctor*> kernels;
+
+			for (index_t t = 0; t < partitioner.numSegments(); ++t)
+			{
+				kernels.push_back(new BM3DCollaborativeFunctor(m_image,
+					m_buffer, m_settings, m_matchedBlocks, m_patchTemplate,
+					m_mutex));
+			}
+
+			for (index_t t = 0; t < partitioner.numSegments(); ++t)
+			{
+				denoiseThreads.create_thread(boost::bind(processCollaborative, boost::ref(*kernels[t]), partitioner.getSegment(t)));
+			}
+
+			denoiseThreads.join_all();
+		}
 	}
 
 	void BM3DImageBlockProcessor::processWienerFilter()
@@ -233,13 +212,35 @@ namespace Denoise
 
 		processBlockMatching(m_imageBasic, false);
 
-		BM3DWienerTBB wienerFunctor(m_image, m_imageBasic,
-			m_buffer, m_settings, m_matchedBlocks, m_patchTemplate, m_mutex);
+		if (m_settings.numThreadsDenoising == 1)
+		{
+			BM3DWienerFunctor kernel(m_image, m_imageBasic,
+				m_buffer, m_settings, m_matchedBlocks, m_patchTemplate, m_mutex);
 
-		std::cout << m_matchedBlocks.size() << std::endl;
-		tbb::parallel_for<tbb::blocked_range<size_t> >(tbb::blocked_range <size_t>((size_t)0, m_matchedBlocks.size()
-			),
-			wienerFunctor);
+			processWiener(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()));
+		}
+		else
+		{
+			boost::thread_group denoiseThreads;
+			RangePartitioner partitioner;
+
+			partitioner.createPartition(m_matchedBlocks.size(), m_settings.numThreadsDenoising);
+
+			std::vector <BM3DWienerFunctor*> kernels;
+
+			for (index_t t = 0; t < partitioner.numSegments(); ++t)
+			{
+				kernels.push_back(new BM3DWienerFunctor(m_image, m_imageBasic,
+					m_buffer, m_settings, m_matchedBlocks, m_patchTemplate, m_mutex));
+			}
+
+			for (index_t t = 0; t < partitioner.numSegments(); ++t)
+			{
+				denoiseThreads.create_thread(boost::bind(processWiener, boost::ref(*kernels[t]), partitioner.getSegment(t)));
+			}
+
+			denoiseThreads.join_all();
+		}
 	}
 }
 

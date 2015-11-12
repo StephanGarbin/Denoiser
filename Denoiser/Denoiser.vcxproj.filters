@@ -36,9 +36,6 @@
     <ClCompile Include="SortedPatchCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageNLMeansProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BufferAggregator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,9 +54,6 @@
     <ClCompile Include="BM3DCollaborativeFilterKernel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DEBUG_HELPER.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BM3DImageBlockProcessorFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,10 +69,22 @@
     <ClCompile Include="BlockMatchingComputerTBB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BM3DCollaborativeTBB.cpp">
+    <ClCompile Include="ColourSpaceTransforms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BM3DWienerTBB.cpp">
+    <ClCompile Include="BM3DImageBlockProcessorBOOST.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RangePartitioner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BM3DCollaborativeFunctor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BM3DWienerFunctor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageBlockProcessorBOOST.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,22 +110,10 @@
     <ClInclude Include="SortedPatchCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CUDA_WRAPPER.h">
-      <Filter>CUDA</Filter>
-    </ClInclude>
-    <ClInclude Include="DEBUG_HELPER.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageNLMeansProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BufferAggregator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dimension.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NLMeansSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BM3DImageBlockProcessor.h">
@@ -164,31 +158,29 @@
     <ClInclude Include="BlockMatchingComputerTBB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BM3DCollaborativeTBB.h">
+    <ClInclude Include="ColourSpaceTransforms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TBBDefs.h">
+    <ClInclude Include="BM3DImageBlockProcessorBOOST.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BM3DWienerTBB.h">
+    <ClInclude Include="RangePartitioner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CudaCompile Include="BlockMatching.cu">
-      <Filter>CUDA</Filter>
-    </CudaCompile>
-    <CudaCompile Include="BM3D.cu">
-      <Filter>CUDA</Filter>
-    </CudaCompile>
-    <CudaCompile Include="NLMeans.cu">
-      <Filter>CUDA</Filter>
-    </CudaCompile>
-    <CudaCompile Include="Memory.cu">
-      <Filter>CUDA</Filter>
-    </CudaCompile>
-    <CudaCompile Include="Common.cu">
-      <Filter>CUDA</Filter>
-    </CudaCompile>
+    <ClInclude Include="Definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BM3DCollaborativeFunctor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BM3DWienerFunctor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageBlockProcessorBOOST.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TRANSFORM_DOMAIN_FORMATS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

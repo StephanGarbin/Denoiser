@@ -3,10 +3,18 @@
 #include <limits>
 #include <algorithm>
 #include <functional>
+#include <math.h>
+
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "common.h"
 namespace Denoise
 {
+
+	Image::Image()
+	{
+
+	}
 
 	Image::Image(const Dimension& imageDimension, index_t format)
 	{
@@ -40,6 +48,9 @@ namespace Denoise
 				m_pixelData[c][i] = other.m_pixelData[c][i];
 			}
 		}
+
+		m_colourSpaceTransform = new ColourSpaceTransforms(this);
+		m_colourSpace = other.m_colourSpace;
 	}
 
 
@@ -49,6 +60,13 @@ namespace Denoise
 		{
 			delete[] m_pixelData[c];
 		}
+
+		delete m_colourSpaceTransform;
+	}
+
+	void Image::initialiseFromEmpty(const Dimension& imageDimension, index_t format)
+	{
+		initialise(imageDimension, format);
 	}
 
 	void Image::initialise(const Dimension& imageDimension, index_t format)
@@ -71,6 +89,7 @@ namespace Denoise
 			}
 
 			m_normalisationValue = 1.0f;
+			m_colourSpaceTransform = new ColourSpaceTransforms(this);
 		}
 
 	bool Image::padImage(Padding& padAmount, bool blackOutside)
@@ -368,11 +387,11 @@ namespace Denoise
 		{
 			for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 			{
-				if (std::isnan(m_pixelData[c][i]))
+				if (boost::math::isnan(m_pixelData[c][i]))
 				{
 					++containsNaNs;
 				}
-				else if (std::isinf(m_pixelData[c][i]))
+				else if (boost::math::isinf(m_pixelData[c][i]))
 				{
 					++containsInfs;
 				}
@@ -402,11 +421,11 @@ namespace Denoise
 			{
 				for (index_t i = 0; i < m_fullImageDim.height * m_fullImageDim.width; ++i)
 				{
-					if (std::isnan(m_pixelData[c][i]))
+					if (boost::math::isnan(m_pixelData[c][i]))
 					{
 						m_pixelData[c][i] = 0.0f;
 					}
-					else if (std::isinf(m_pixelData[c][i]))
+					else if (boost::math::isinf(m_pixelData[c][i]))
 					{
 						m_pixelData[c][i] = 0.0f;
 					}
@@ -530,6 +549,106 @@ namespace Denoise
 		}
 	}
 
+	void Image::cpy2Block3d(const std::vector<IDX2>& patches, double* block, const ImagePatch& patchTemplate,
+		int channel, index_t& numValidPatches) const
+	{
+		numValidPatches = 0;
+
+		for (index_t p = 0; p < patches.size(); ++p)
+		{
+			if (patches[p].distance == std::numeric_limits<float>::max())
+			{
+				break;
+			}
+
+			++numValidPatches;
+		}
+
+		if (numValidPatches < 32)
+		{
+			if (numValidPatches >= 16)
+			{
+				numValidPatches = 16;
+			}
+			else
+			{
+				if (numValidPatches >= 8)
+				{
+					numValidPatches = 8;
+				}
+				else
+				{
+					if (numValidPatches >= 4)
+					{
+						numValidPatches = 4;
+					}
+					else
+					{
+						if (numValidPatches >= 2)
+						{
+							numValidPatches = 2;
+						}
+						else
+						{
+							if (numValidPatches == 1)
+							{
+								numValidPatches = 1;
+							}
+							else
+							{
+								numValidPatches = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			numValidPatches = 32;
+		}
+
+		if (channel < 0)
+		{
+			for (index_t c = 0; c < channel * -1; ++c)
+			{
+				for (index_t p = 0; p < numValidPatches; ++p)
+				{
+					for (index_t row = 0; row < patchTemplate.height; ++row)
+					{
+						for (index_t col = 0; col < patchTemplate.width; ++col)
+						{
+							index_t valuesPerChannel = (patchTemplate.width * patchTemplate.height) * numValidPatches;
+							index_t blockIdx = c * valuesPerChannel + (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
+							index_t imageIdx = IDX2_2_1(patches[p].row + row, patches[p].col + col);
+							//if (imageIdx > m_fullImageDim.height * m_fullImageDim.height)
+							//{
+							//	std::cout << "Patch Error; row = " << patches[p].row << ", col = " << patches[p].col << std::endl;
+							//	continue;
+							//}
+							block[blockIdx] = (double)m_pixelData[c][imageIdx];
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			for (index_t p = 0; p < numValidPatches; ++p)
+			{
+				for (index_t row = 0; row < patchTemplate.height; ++row)
+				{
+					for (index_t col = 0; col < patchTemplate.width; ++col)
+					{
+						index_t blockIdx = (patchTemplate.width * patchTemplate.height) * p + row * patchTemplate.width + col;
+						block[blockIdx] = (double)m_pixelData[channel][IDX2_2_1(patches[p].row + row, patches[p].col + col)];
+					}
+				}
+			}
+		}
+	}
+
+
 	void Image::cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
 		index_t channel, index_t numValidPatches)
 	{
@@ -650,5 +769,85 @@ namespace Denoise
 		}
 
 		return (float)(accumulator / (long double)counter);
+	}
+
+	void Image::generateColourSpaceTransformationMatrices(index_t space)
+	{
+		switch (space)
+		{
+		case RGB:
+			m_colourSpaceTransform->generateIdentityTransformMatrices();
+			break;
+		case YUV:
+			m_colourSpaceTransform->generateYUVMatrices();
+			break;
+		case YCBCR:
+			m_colourSpaceTransform->generateYCbCrMatrices();
+			break;
+		case OPP:
+			m_colourSpaceTransform->generateOPPMatrices();
+			break;
+		default:
+			printError("Colour Space Transform Initialisation failed - unknown argument!");
+			break;
+		}
+	}
+
+	void Image::toColourSpace(index_t space)
+	{
+		switch (space)
+		{
+			case RGB:
+				if (m_colourSpace == RGB)
+				{
+					printNotification("Image already in RGB - transform ignored.");
+				}
+				else
+				{
+					generateColourSpaceTransformationMatrices(m_colourSpace);
+					m_colourSpaceTransform->toRGB();
+					m_colourSpace = RGB;
+				}
+				break;
+			case YUV:
+				if (m_colourSpace != RGB)
+				{
+					printError("Image not in RGB. Please transform to RGB before attempting a transform.");
+				}
+				else
+				{
+					generateColourSpaceTransformationMatrices(space);
+					m_colourSpaceTransform->fromRGB();
+					m_colourSpace = YUV;
+				}
+				break;
+			case YCBCR:
+				if (m_colourSpace != RGB)
+				{
+					printError("Image not in RGB. Please transform to RGB before attempting a transform.");
+				}
+				else
+				{
+					generateColourSpaceTransformationMatrices(space);
+					m_colourSpaceTransform->fromRGB();
+					m_colourSpace = YCBCR;
+				}
+				break;
+			case OPP:
+				if (m_colourSpace != RGB)
+				{
+					printError("Image not in RGB. Please transform to RGB before attempting a transform.");
+				}
+				else
+				{
+					generateColourSpaceTransformationMatrices(space);
+					m_colourSpaceTransform->fromRGB();
+					m_colourSpace = OPP;
+				}
+				break;
+		default:
+			printError("Colour Space Transform failed - unknown argument!");
+			break;
+		}
 	}
 }

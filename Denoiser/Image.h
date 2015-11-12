@@ -7,6 +7,7 @@
 #include "IDX2.h"
 #include "Dimension.h"
 #include "common.h"
+#include "ColourSpaceTransforms.h"
 
 namespace Denoise
 {
@@ -21,9 +22,12 @@ namespace Denoise
 	class Image
 	{
 	public:
+		Image();
 		Image(const Dimension& imageDimension, index_t format);
 		Image(const Image& other);
 		~Image();
+
+		void initialiseFromEmpty(const Dimension& imageDimension, index_t format);
 
 		inline float getPixel(const index_t channel, const index_t idx) const;
 		inline float getPixel(const index_t channel, const index_t row, const index_t col) const;
@@ -56,8 +60,13 @@ namespace Denoise
 		inline float blockMatch_Naive(const ImagePatch& patch1, const ImagePatch& patch2, index_t channel, int norm);
 
 		//Block copy from/to
-		void cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, int channel, index_t& numValidPatches) const;
-		void cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate, index_t channel, index_t numValidPatches);
+		void cpy2Block3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
+			int channel, index_t& numValidPatches) const;
+		void cpy2Block3d(const std::vector<IDX2>& patches, double* block, const ImagePatch& patchTemplate,
+			int channel, index_t& numValidPatches) const;
+
+		void cpyfromBlock3d(const std::vector<IDX2>& patches, float* block, const ImagePatch& patchTemplate,
+			index_t channel, index_t numValidPatches);
 
 		//Statistics
 		float pixelMean(index_t channel, bool ignoreZeroPixelValues);
@@ -80,6 +89,12 @@ namespace Denoise
 
 		inline index_t IDX2_2_1(const index_t row, const index_t col) const; //always uses full image
 
+		inline void setColourSpace(index_t space) { m_colourSpace = space; }
+
+		void toColourSpace(index_t space);
+
+		index_t colourSpace() { return m_colourSpace; }
+
 		enum Channels
 		{
 			R,
@@ -95,6 +110,14 @@ namespace Denoise
 			FLOAT_2,
 			FLOAT_3,
 			FLOAT_4
+		};
+
+		enum ColourSpace
+		{
+			RGB,
+			YUV,
+			YCBCR,
+			OPP
 		};
 
 	private:
@@ -122,6 +145,12 @@ namespace Denoise
 		void printNotification(const std::string& message);
 
 		int m_verbosityLevel;
+
+		//Colour
+		ColourSpaceTransforms* m_colourSpaceTransform;
+		index_t m_colourSpace;
+
+		void generateColourSpaceTransformationMatrices(index_t space);
 	};
 
 	float Image::getPixel(const index_t channel, const index_t idx) const

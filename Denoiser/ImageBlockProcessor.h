@@ -28,10 +28,6 @@ namespace Denoise
 			const BM3DSettings& bm3dSettings,
 			std::vector<std::vector<IDX2> >& matchedBlocks);
 
-		void computeNMostSimilar_PARALLEL_TBB(const ImageBlockProcessorSettings& settings,
-			const BM3DSettings& bm3dSettings,
-			std::vector<std::vector<IDX2> >& matchedBlocks);
-
 		void computeNMostSimilarNaive(std::vector<IDX2>& matchedBlocks, const IDX2& position, const ImagePatch& templatePatch,
 			index_t windowSizeRows, index_t windowSizeCols,
 			index_t maxSimilar, float maxDistance, int norm);

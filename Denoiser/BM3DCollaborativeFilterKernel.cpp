@@ -33,8 +33,8 @@ namespace Denoise
 	{
 		for (index_t i = 0; i < m_transformLevels.size(); ++i)
 		{
-			fftwf_destroy_plan(m_forwardPlans[i]);
-			fftwf_destroy_plan(m_backwardPlans[i]);
+			PLAN_DTOR(m_forwardPlans[i]);
+			PLAN_DTOR(m_backwardPlans[i]);
 		}
 
 		delete[] m_forwardTransformKind;
@@ -47,7 +47,7 @@ namespace Denoise
 	
 	void BM3DCollaborativeFilterKernel::initForwardTransforms()
 	{
-		m_forwardPlans = new fftwf_plan[m_transformLevels.size()];
+		m_forwardPlans = new PLAN_TYPE[m_transformLevels.size()];
 
 		int n[2];
 		n[0] = m_settings.patchSize;
@@ -59,16 +59,16 @@ namespace Denoise
 		int *inembed = n;
 		int *onembed = n;
 
-		m_forwardTransformKind = new fftwf_r2r_kind[2];
+		m_forwardTransformKind = new TRANSFORM_KIND[2];
 		m_forwardTransformKind[0] = FFTW_REDFT10;
 		m_forwardTransformKind[1] = FFTW_REDFT10;
 
 		for (index_t i = 0; i < m_transformLevels.size(); ++i)
 		{
-			float* in = new float[sqr(m_settings.patchSize) * m_transformLevels[i]];
-			float* out = new float[sqr(m_settings.patchSize) * m_transformLevels[i]];
+			DOMAIN_FORMAT* in = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_transformLevels[i]];
+			DOMAIN_FORMAT* out = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_transformLevels[i]];
 
-			m_forwardPlans[i] = fftwf_plan_many_r2r(2, n, m_transformLevels[i], in, inembed, istride, idist,
+			m_forwardPlans[i] = PLAN_CTOR(2, n, m_transformLevels[i], in, inembed, istride, idist,
 				out, onembed, ostride, odist, m_forwardTransformKind, FFTW_ESTIMATE);
 
 			delete[] in;
@@ -78,9 +78,9 @@ namespace Denoise
 
 	void BM3DCollaborativeFilterKernel::initBackwardTransforms()
 	{
-		m_backwardPlans = new fftwf_plan[m_transformLevels.size()];
+		m_backwardPlans = new PLAN_TYPE[m_transformLevels.size()];
 
-		float* in = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockCollaborative];
+		DOMAIN_FORMAT* in = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockCollaborative];
 
 		int n[2];
 		n[0] = m_settings.patchSize;
@@ -92,16 +92,16 @@ namespace Denoise
 		int *inembed = n;
 		int *onembed = n;
 
-		m_backwardTransformKind = new fftwf_r2r_kind[2];
+		m_backwardTransformKind = new TRANSFORM_KIND[2];
 		m_backwardTransformKind[0] = FFTW_REDFT01;
 		m_backwardTransformKind[1] = FFTW_REDFT01;
 
 		for (index_t i = 0; i < m_transformLevels.size(); ++i)
 		{
-			float* in = new float[sqr(m_settings.patchSize) * m_transformLevels[i]];
-			float* out = new float[sqr(m_settings.patchSize) * m_transformLevels[i]];
+			DOMAIN_FORMAT* in = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_transformLevels[i]];
+			DOMAIN_FORMAT* out = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_transformLevels[i]];
 
-			m_backwardPlans[i] = fftwf_plan_many_r2r(2, n, m_transformLevels[i], out, inembed, istride, idist,
+			m_backwardPlans[i] = PLAN_CTOR(2, n, m_transformLevels[i], out, inembed, istride, idist,
 				in, onembed, ostride, odist, m_backwardTransformKind, FFTW_ESTIMATE);
 
 			delete[] in;
@@ -125,25 +125,26 @@ namespace Denoise
 
 				if (row == 0 && col == 0)
 				{
-					m_forwardCoefficients[idx] = 0.5f * (0.5f / (float)(m_settings.patchSize));
+					m_forwardCoefficients[idx] = 0.5f * (0.5f / (DOMAIN_FORMAT)(m_settings.patchSize));
 					m_backwardCoefficients[idx] = 2.0f;
 				}
 				else if (row * col == 0)
 				{
-					m_forwardCoefficients[idx] = (1.0f / sqrtf(2.0f)) * (0.5f / (float)(m_settings.patchSize));
+					m_forwardCoefficients[idx] = (1.0f / sqrtf(2.0f)) * (0.5f / (DOMAIN_FORMAT)(m_settings.patchSize));
 					m_backwardCoefficients[idx] = sqrtf(2.0f);
 				}
 				else
 				{
-					m_forwardCoefficients[idx] = 1.0f * (0.5f / (float)(m_settings.patchSize));
+					m_forwardCoefficients[idx] = 1.0f * (0.5f / (DOMAIN_FORMAT)(m_settings.patchSize));
 					m_backwardCoefficients[idx] = 1.0f;
 				}
 			}
 		}
 	}
 
-	void BM3DCollaborativeFilterKernel::processCollaborativeFilter(float* block, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight,
-		float stdDeviation)
+	void BM3DCollaborativeFilterKernel::processCollaborativeFilter(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
+		std::vector<DOMAIN_FORMAT>& blockWeight,
+		const std::vector<DOMAIN_FORMAT>& stdDeviation)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
 
@@ -174,17 +175,17 @@ namespace Denoise
 			break;
 		}
 
-		std::vector<float> numRetainedCoefficients(numChannels);
+		std::vector<DOMAIN_FORMAT> numRetainedCoefficients(numChannels);
 		for (index_t i = 0; i < numRetainedCoefficients.size(); ++i)
 		{
-			numRetainedCoefficients[i] = (float)(totalSize);
+			numRetainedCoefficients[i] = (DOMAIN_FORMAT)(totalSize);
 		}
 
 		for (index_t c = 0; c < numChannels; ++c)
 		{
 			index_t colourOffset = c * totalSize;
 			//DCT
-			fftwf_execute_r2r(m_forwardPlans[planIdx], block + colourOffset, block + colourOffset);
+			PLAN_EXECUTOR(m_forwardPlans[planIdx], block + colourOffset, block + colourOffset);
 
 			//Normalise DCT
 			for (index_t patch = 0; patch < numPatches; ++patch)
@@ -210,7 +211,7 @@ namespace Denoise
 			{
 				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 				{
-					if (std::fabs(block[colourOffset + i + patch * sqr(m_settings.patchSize)]) <= stdDeviation * 2.7f * sqrtf((float)numPatches))
+					if (std::fabs(block[colourOffset + i + patch * sqr(m_settings.patchSize)]) <= stdDeviation[c] * 2.7f * sqrtf((DOMAIN_FORMAT)numPatches))
 					{
 						block[colourOffset + i + patch * sqr(m_settings.patchSize)] = 0.0f;
 						numRetainedCoefficients[c] -= 1.0f;
@@ -227,7 +228,7 @@ namespace Denoise
 			//Normalise WHT
 			for (index_t i = 0; i < totalSize; ++i)
 			{
-				block[colourOffset + i] /= (float)numPatches;
+				block[colourOffset + i] /= (DOMAIN_FORMAT)numPatches;
 			}
 
 			//Normalise DCT
@@ -244,17 +245,17 @@ namespace Denoise
 			}
 
 			//Inverse DCT
-			fftwf_execute_r2r(m_backwardPlans[planIdx], block + colourOffset, block + colourOffset);
+			PLAN_EXECUTOR(m_backwardPlans[planIdx], block + colourOffset, block + colourOffset);
 
 			//normalise again
 			for (index_t i = 0; i < totalSize; ++i)
 			{
-				block[colourOffset + i] /= (float)(m_settings.patchSize * 2);
+				block[colourOffset + i] /= (DOMAIN_FORMAT)(m_settings.patchSize * 2);
 			}
 
 			if (numRetainedCoefficients[c] > 1.0f)
 			{
-				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation, 2) * numRetainedCoefficients[c]);
+				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation[c], 2) * numRetainedCoefficients[c]);
 			}
 			else
 			{
@@ -263,8 +264,9 @@ namespace Denoise
 		}
 	}
 
-	void BM3DCollaborativeFilterKernel::processCollaborativeFilterMeanAdaptive(float* block, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight,
-		float stdDeviation)
+	void BM3DCollaborativeFilterKernel::processCollaborativeFilterMeanAdaptive(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
+		std::vector<DOMAIN_FORMAT>& blockWeight,
+		const std::vector<DOMAIN_FORMAT>& stdDeviation)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
 
@@ -296,21 +298,21 @@ namespace Denoise
 		}
 
 		//Compute Mean for Adaptive Measure ----------------
-		std::vector<float> patchMeans(numChannels * sqr(m_settings.patchSize));
+		std::vector<DOMAIN_FORMAT> patchMeans(numChannels * sqr(m_settings.patchSize));
 		calculateBlockMeans(block, numPatches, m_settings.patchSize, numChannels, &patchMeans[0]);
 		//--------------------------------------------------
 
-		std::vector<float> numRetainedCoefficients(numChannels);
+		std::vector<DOMAIN_FORMAT> numRetainedCoefficients(numChannels);
 		for (index_t i = 0; i < numRetainedCoefficients.size(); ++i)
 		{
-			numRetainedCoefficients[i] = (float)(totalSize);
+			numRetainedCoefficients[i] = (DOMAIN_FORMAT)(totalSize);
 		}
 
 		for (index_t c = 0; c < numChannels; ++c)
 		{
 			index_t colourOffset = c * totalSize;
 			//DCT
-			fftwf_execute_r2r(m_forwardPlans[planIdx], block + colourOffset, block + colourOffset);
+			PLAN_EXECUTOR(m_forwardPlans[planIdx], block + colourOffset, block + colourOffset);
 
 			//Normalise DCT
 			for (index_t patch = 0; patch < numPatches; ++patch)
@@ -336,10 +338,10 @@ namespace Denoise
 			{
 				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 				{
-					float adaptiveFactor = calculateMeanAdaptiveFactor(stdDeviation, patchMeans[c * sqr(m_settings.patchSize) + i],
-						m_settings.meanAdaptiveThresholdingFactor);
+					DOMAIN_FORMAT adaptiveFactor = calculateMeanAdaptiveFactor(stdDeviation[c], patchMeans[c * sqr(m_settings.patchSize) + i],
+						m_settings.meanAdaptiveThresholdingFactor, m_settings.meanAdaptiveThresholdingPower);
 
-					if (std::fabs(block[colourOffset + i + patch * sqr(m_settings.patchSize)]) <= stdDeviation * 2.7f * sqrtf((float)numPatches) * adaptiveFactor)
+					if (std::fabs(block[colourOffset + i + patch * sqr(m_settings.patchSize)]) <= stdDeviation[c] * 2.7f * sqrtf((DOMAIN_FORMAT)numPatches) * adaptiveFactor)
 					{
 						block[colourOffset + i + patch * sqr(m_settings.patchSize)] = 0.0f;
 						numRetainedCoefficients[c] -= 1.0f;
@@ -356,7 +358,7 @@ namespace Denoise
 			//Normalise WHT
 			for (index_t i = 0; i < totalSize; ++i)
 			{
-				block[colourOffset + i] /= (float)numPatches;
+				block[colourOffset + i] /= (DOMAIN_FORMAT)numPatches;
 			}
 
 			//Normalise DCT
@@ -373,17 +375,17 @@ namespace Denoise
 			}
 
 			//Inverse DCT
-			fftwf_execute_r2r(m_backwardPlans[planIdx], block + colourOffset, block + colourOffset);
+			PLAN_EXECUTOR(m_backwardPlans[planIdx], block + colourOffset, block + colourOffset);
 
 			//normalise again
 			for (index_t i = 0; i < totalSize; ++i)
 			{
-				block[colourOffset + i] /= (float)(m_settings.patchSize * 2);
+				block[colourOffset + i] /= (DOMAIN_FORMAT)(m_settings.patchSize * 2);
 			}
 
 			if (numRetainedCoefficients[c] > 1.0f)
 			{
-				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation, 2) * numRetainedCoefficients[c]);
+				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation[c], 2) * numRetainedCoefficients[c]);
 			}
 			else
 			{

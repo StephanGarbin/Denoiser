@@ -25,17 +25,17 @@ namespace Denoise
 	{
 	}
 
-	void IntergralImageComputerTBB::operator()(const tbb::blocked_range<index_t>& r) const
+	void IntergralImageComputerTBB::operator()(const std::pair<size_t, size_t>& r) const
 	{
 		std::vector<std::pair<int, int> > localShifts;
-		for (index_t i = r.begin(); i != r.end(); ++i)
+		for (index_t i = r.first; i != r.second; ++i)
 		{
 			localShifts.push_back(m_shifts[i]);
 		}
 
 		computeIntegralImageForSpecificShiftsBlock(m_image,
 			m_distanceImage, m_integralImage, localShifts,
-			r.begin(), m_settings, m_settingsInternal);
+			r.first, m_settings, m_settingsInternal);
 	}
 
 }

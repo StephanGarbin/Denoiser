@@ -2,6 +2,7 @@
 
 #include "BM3DSettings.h"
 #include "common.h"
+#include "TRANSFORM_DOMAIN_FORMATS.h"
 
 #include <vector>
 #include <fftw3.h>
@@ -16,9 +17,11 @@ namespace Denoise
 		BM3DCollaborativeFilterKernel(const BM3DSettings& settings);
 		~BM3DCollaborativeFilterKernel();
 
-		void processCollaborativeFilter(float* block, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight, float stdDeviation);
+		void processCollaborativeFilter(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
+			std::vector<DOMAIN_FORMAT>& blockWeight, const std::vector<DOMAIN_FORMAT>& stdDeviation);
 
-		void processCollaborativeFilterMeanAdaptive(float* block, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight, float stdDeviation);
+		void processCollaborativeFilterMeanAdaptive(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
+			std::vector<DOMAIN_FORMAT>& blockWeight, const std::vector<DOMAIN_FORMAT>& stdDeviation);
 
 
 	private:
@@ -26,21 +29,21 @@ namespace Denoise
 		void initBackwardTransforms();
 
 		void initNormalisationCoefficients();
-		std::vector<float> m_forwardCoefficients;
-		std::vector<float> m_backwardCoefficients;
+		std::vector<DOMAIN_FORMAT> m_forwardCoefficients;
+		std::vector<DOMAIN_FORMAT> m_backwardCoefficients;
 
 		BM3DSettings m_settings;
 		std::vector<index_t> m_transformLevels;
 
 		//For WHT
-		std::vector<float> m_fwhtMem;
+		std::vector<DOMAIN_FORMAT> m_fwhtMem;
 
 		//FFTW Stuff
-		fftwf_r2r_kind* m_forwardTransformKind;
-		fftwf_plan* m_forwardPlans;
+		TRANSFORM_KIND* m_forwardTransformKind;
+		PLAN_TYPE* m_forwardPlans;
 
-		fftwf_r2r_kind* m_backwardTransformKind;
-		fftwf_plan* m_backwardPlans;
+		TRANSFORM_KIND* m_backwardTransformKind;
+		PLAN_TYPE* m_backwardPlans;
 	};
 
 }

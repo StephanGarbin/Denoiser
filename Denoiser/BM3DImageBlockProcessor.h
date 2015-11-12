@@ -6,7 +6,7 @@
 #include "BufferAggregator.h"
 #include "Rectangle.h"
 #include "common.h"
-#include "TBBDefs.h"
+#include "Definitions.h"
 
 namespace Denoise
 {
@@ -38,7 +38,7 @@ namespace Denoise
 
 		ImagePatch m_patchTemplate;
 
-		TBB_MUTEX_TYPE m_mutex;
+		MUTEX_TYPE m_mutex;
 	};
 }
 

@@ -40,9 +40,9 @@ namespace Denoise
 	}
 
 
-	void BlockMatchingComputerTBB::operator()(const tbb::blocked_range<index_t>& r) const
+	void BlockMatchingComputerTBB::operator()(const std::pair<size_t, size_t>& r) const
 	{
-		for (index_t i = r.begin(); i != r.end(); ++i)
+		for (index_t i = r.first; i != r.second; ++i)
 		{
 			ImageBlockProcessorSettings localSettings = m_settings;
 			localSettings.imageBlock = m_scanlines[i];

@@ -16,9 +16,11 @@ namespace Denoise
 		BM3DWienerFilterKernel(const BM3DSettings& settings);
 		~BM3DWienerFilterKernel();
 
-		void processWienerFilter(float* blockNoisy, float* blockEstimate, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight, float stdDeviation);
+		void processWienerFilter(float* blockNoisy, float* blockEstimate, index_t numPatches,
+			index_t numChannels, std::vector<float>& blockWeight, const std::vector<float>& stdDeviation);
 
-		void processWienerFilterMeanAdaptive(float* blockNoisy, float* blockEstimate, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight, float stdDeviation);
+		void processWienerFilterMeanAdaptive(float* blockNoisy, float* blockEstimate, index_t numPatches,
+			index_t numChannels, std::vector<float>& blockWeight, const std::vector<float>& stdDeviation);
 
 	private:
 		void initForwardTransforms();

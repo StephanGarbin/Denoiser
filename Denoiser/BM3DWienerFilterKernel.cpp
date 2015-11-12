@@ -141,8 +141,9 @@ namespace Denoise
 		}
 	}
 
-	void BM3DWienerFilterKernel::processWienerFilter(float* blockNoisy, float* blockEstimate, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight,
-		float stdDeviation)
+	void BM3DWienerFilterKernel::processWienerFilter(float* blockNoisy, float* blockEstimate, index_t numPatches,
+		index_t numChannels, std::vector<float>& blockWeight,
+		const std::vector<float>& stdDeviation)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
 
@@ -232,7 +233,7 @@ namespace Denoise
 				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 				{
 					float coeff = factor * sqr(blockEstimate[colourOffset + patch * sqr(m_settings.patchSize) + i]);
-					float mult = coeff / (sqr(m_settings.stdDeviation) + coeff);
+					float mult = coeff / (sqr(m_settings.stdDeviation[c]) + coeff);
 
 					blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] =
 						blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] * mult * factor;
@@ -277,7 +278,7 @@ namespace Denoise
 
 			if (blockWeight[c] > 1.0f)
 			{
-				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation, 2) * blockWeight[c]);
+				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation[c], 2) * blockWeight[c]);
 			}
 			else
 			{
@@ -286,8 +287,9 @@ namespace Denoise
 		}
 	}
 
-	void BM3DWienerFilterKernel::processWienerFilterMeanAdaptive(float* blockNoisy, float* blockEstimate, index_t numPatches, index_t numChannels, std::vector<float>& blockWeight,
-		float stdDeviation)
+	void BM3DWienerFilterKernel::processWienerFilterMeanAdaptive(float* blockNoisy, float* blockEstimate, index_t numPatches,
+		index_t numChannels, std::vector<float>& blockWeight,
+		const std::vector<float>& stdDeviation)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
 
@@ -382,11 +384,11 @@ namespace Denoise
 			{
 				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 				{
-					float adaptiveFactor = calculateMeanAdaptiveFactor(stdDeviation, patchMeans[c * sqr(m_settings.patchSize) + i],
-						m_settings.meanAdaptiveThresholdingFactor);
+					float adaptiveFactor = calculateMeanAdaptiveFactor(stdDeviation[c], patchMeans[c * sqr(m_settings.patchSize) + i],
+						m_settings.meanAdaptiveThresholdingFactor, m_settings.meanAdaptiveThresholdingPower);
 
 					float coeff = factor * sqr(blockEstimate[colourOffset + patch * sqr(m_settings.patchSize) + i]);
-					float mult = coeff / (sqr(m_settings.stdDeviation * adaptiveFactor) + coeff);
+					float mult = coeff / (sqr(m_settings.stdDeviation[c] * adaptiveFactor) + coeff);
 
 					blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] =
 						blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] * mult * factor;
@@ -431,7 +433,7 @@ namespace Denoise
 
 			if (blockWeight[c] > 1.0f)
 			{
-				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation, 2) * blockWeight[c]);
+				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation[c], 2) * blockWeight[c]);
 			}
 			else
 			{
