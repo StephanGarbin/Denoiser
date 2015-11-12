@@ -139,68 +139,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\..\..\x64\Release;C:\Program Files\Nuke8.0v1\;..\x64\Release;..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-10.0\release\address-model-64\link-static\threading-multi\;..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DDImage.lib;libboost_thread-vc100-mt-1_57.lib;libboost_timer-vc100-mt-1_57.lib;libboost_system-vc100-mt-1_57.lib;libboost_date_time-vc100-mt-1_57.lib;libboost_chrono-vc100-mt-1_57.lib;libfftw3-3.lib;libfftw3f-3.lib;libfftw3l-3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Denoiser.lib;DDImage.lib;libboost_thread-vc100-mt-1_57.lib;libboost_timer-vc100-mt-1_57.lib;libboost_system-vc100-mt-1_57.lib;libboost_date_time-vc100-mt-1_57.lib;libboost_chrono-vc100-mt-1_57.lib;libfftw3-3.lib;libfftw3f-3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)..\x64\Release\*.dll" "C:\Users\Stephan\.nuke"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Denoiser\BlockMatchingComputerTBB.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\BM3DCollaborativeFilterKernel.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\BM3DCollaborativeFunctor.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\BM3DImageBlockProcessor.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\BM3DImageBlockProcessorBOOST.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\BM3DImageBlockProcessorFunctions.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\BM3DParallelFunctions.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\BM3DWienerFilterKernel.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\BM3DWienerFunctor.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\BufferAggregator.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\ColourSpaceTransforms.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\Image.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\ImageBlockProcessor.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\ImageBlockProcessorBOOST.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\ImageBlockProcessorFunctions.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\ImagePartitioner.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\IntergralImageComputerTBB.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\lodepng.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\RangePartitioner.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\SortedPatchCollection.cpp" />
-    <ClCompile Include="..\..\..\Denoiser\Statistics.cpp" />
     <ClCompile Include="Sakarnen.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\Denoiser\BlockMatchingComputerTBB.h" />
-    <ClInclude Include="..\..\..\Denoiser\BM3DCollaborativeFilterKernel.h" />
-    <ClInclude Include="..\..\..\Denoiser\BM3DCollaborativeFunctor.h" />
-    <ClInclude Include="..\..\..\Denoiser\BM3DImageBlockProcessor.h" />
-    <ClInclude Include="..\..\..\Denoiser\BM3DImageBlockProcessorBOOST.h" />
-    <ClInclude Include="..\..\..\Denoiser\BM3DImageBlockProcessorFunctions.h" />
-    <ClInclude Include="..\..\..\Denoiser\BM3DParallelFunctions.h" />
-    <ClInclude Include="..\..\..\Denoiser\BM3DSettings.h" />
-    <ClInclude Include="..\..\..\Denoiser\BM3DWienerFilterKernel.h" />
-    <ClInclude Include="..\..\..\Denoiser\BM3DWienerFunctor.h" />
-    <ClInclude Include="..\..\..\Denoiser\BufferAggregator.h" />
-    <ClInclude Include="..\..\..\Denoiser\ColourSpaceTransforms.h" />
-    <ClInclude Include="..\..\..\Denoiser\common.h" />
-    <ClInclude Include="..\..\..\Denoiser\Definitions.h" />
-    <ClInclude Include="..\..\..\Denoiser\Dimension.h" />
-    <ClInclude Include="..\..\..\Denoiser\IDX2.h" />
-    <ClInclude Include="..\..\..\Denoiser\Image.h" />
-    <ClInclude Include="..\..\..\Denoiser\ImageBlockProcessor.h" />
-    <ClInclude Include="..\..\..\Denoiser\ImageBlockProcessorBOOST.h" />
-    <ClInclude Include="..\..\..\Denoiser\ImageBlockProcessorFunctions.h" />
-    <ClInclude Include="..\..\..\Denoiser\ImageBlockProcessorSettings.h" />
-    <ClInclude Include="..\..\..\Denoiser\ImageBlockProcessorSettingsInternal.h" />
-    <ClInclude Include="..\..\..\Denoiser\ImagePartitioner.h" />
-    <ClInclude Include="..\..\..\Denoiser\ImagePatch.h" />
-    <ClInclude Include="..\..\..\Denoiser\IntergralImageComputerTBB.h" />
-    <ClInclude Include="..\..\..\Denoiser\lodepng.h" />
-    <ClInclude Include="..\..\..\Denoiser\RangePartitioner.h" />
-    <ClInclude Include="..\..\..\Denoiser\Rectangle.h" />
-    <ClInclude Include="..\..\..\Denoiser\SortedPatchCollection.h" />
-    <ClInclude Include="..\..\..\Denoiser\Statistics.h" />
-    <ClInclude Include="..\..\..\Denoiser\Transforms.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

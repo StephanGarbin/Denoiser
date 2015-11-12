@@ -1,6 +1,7 @@
 #include "BM3DWienerFunctor.h"
 
 #include "Statistics.h"
+#include "TRANSFORM_DOMAIN_FORMATS.h"
 
 #include <iostream>
 #include <numeric>
@@ -36,15 +37,15 @@ namespace Denoise
 
 	void BM3DWienerFunctor::operator()(const std::pair<size_t, size_t>& r) const
 	{
-		float* rawImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockWiener * 3];
+		DOMAIN_FORMAT* rawImageBlock = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockWiener * 3];
 
-		float* estimateImageBlock = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockWiener * 3];
+		DOMAIN_FORMAT* estimateImageBlock = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockWiener * 3];
 
 		//2. Process Blocks
 		for (size_t i = r.first; i != r.second; ++i)
 		{
 			index_t numValidPatches;
-			std::vector<float> weights(3);
+			std::vector<DOMAIN_FORMAT> weights(3);
 
 			//cpy BOTH blocks
 			m_image->cpy2Block3d(m_matchedBlocks[i], rawImageBlock, m_patchTemplate, -3, numValidPatches);
@@ -57,15 +58,15 @@ namespace Denoise
 
 			if (m_settings.averageBlocksBasedOnStdWiener)
 			{
-				float blockStd = std::sqrt(calculateBlockVariance(estimateImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels()));
+				DOMAIN_FORMAT blockStd = std::sqrt(calculateBlockVariance(estimateImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels()));
 
 				if (m_settings.meanAdaptiveThresholding)
 				{
-					float mean = calculateBlockMean(rawImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels());
+					DOMAIN_FORMAT mean = calculateBlockMean(rawImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels());
 					blockStd *= calculateMeanAdaptiveFactor(blockStd, mean, m_settings.meanAdaptiveThresholdingFactor, m_settings.meanAdaptiveThresholdingPower);
 				}
 
-				float meanStdDeviation = std::accumulate(m_settings.stdDeviation.begin(), m_settings.stdDeviation.end(), 0.0f)
+				DOMAIN_FORMAT meanStdDeviation = std::accumulate(m_settings.stdDeviation.begin(), m_settings.stdDeviation.end(), 0.0f)
 					/ m_settings.stdDeviation.size();
 
 				if (blockStd < meanStdDeviation * m_settings.averageBlocksBasedOnStdFactor)
@@ -115,11 +116,11 @@ namespace Denoise
 							{
 								m_buffer.addValueNumerator(channel, m_matchedBlocks[i][depth].row + patchRow,
 									m_matchedBlocks[i][depth].col + patchCol,
-									rawImageBlock[channel * sizePerChannel + depth * m_patchTemplate.width
-									* m_patchTemplate.height + patchRow * m_patchTemplate.width + patchCol] * weights[channel]);
+									(float)(rawImageBlock[channel * sizePerChannel + depth * m_patchTemplate.width
+									* m_patchTemplate.height + patchRow * m_patchTemplate.width + patchCol] * weights[channel]));
 
 								m_buffer.addValueDenominator(channel, m_matchedBlocks[i][depth].row + patchRow,
-									m_matchedBlocks[i][depth].col + patchCol, weights[channel]);
+									(float)m_matchedBlocks[i][depth].col + patchCol, weights[channel]);
 							}
 						}
 					}

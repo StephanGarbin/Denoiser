@@ -144,7 +144,7 @@ namespace Denoise
 
 	void BM3DCollaborativeFilterKernel::processCollaborativeFilter(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
 		std::vector<DOMAIN_FORMAT>& blockWeight,
-		const std::vector<DOMAIN_FORMAT>& stdDeviation)
+		const std::vector<float>& stdDeviation)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
 
@@ -266,7 +266,7 @@ namespace Denoise
 
 	void BM3DCollaborativeFilterKernel::processCollaborativeFilterMeanAdaptive(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
 		std::vector<DOMAIN_FORMAT>& blockWeight,
-		const std::vector<DOMAIN_FORMAT>& stdDeviation)
+		const std::vector<float>& stdDeviation)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
 

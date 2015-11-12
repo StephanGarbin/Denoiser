@@ -18,10 +18,10 @@ namespace Denoise
 		~BM3DCollaborativeFilterKernel();
 
 		void processCollaborativeFilter(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
-			std::vector<DOMAIN_FORMAT>& blockWeight, const std::vector<DOMAIN_FORMAT>& stdDeviation);
+			std::vector<DOMAIN_FORMAT>& blockWeight, const std::vector<float>& stdDeviation);
 
 		void processCollaborativeFilterMeanAdaptive(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
-			std::vector<DOMAIN_FORMAT>& blockWeight, const std::vector<DOMAIN_FORMAT>& stdDeviation);
+			std::vector<DOMAIN_FORMAT>& blockWeight, const std::vector<float>& stdDeviation);
 
 
 	private:

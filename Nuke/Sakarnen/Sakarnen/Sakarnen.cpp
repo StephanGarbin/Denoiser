@@ -48,10 +48,6 @@ private:
 	double m_knobPreviewBox[4];
 	bool m_knobEnablePreviewBox;
 
-	Denoise::Image* m_image;
-	Denoise::Image* m_basic;
-	Denoise::Image* m_result;
-
 public:
 
 	int maximum_inputs() const { return 1; }
@@ -90,9 +86,7 @@ public:
 
 	~Sakarnen()
 	{
-		delete m_image;
-		delete m_basic;
-		delete m_result;
+
 	}
 
 	void _validate(bool);
@@ -160,8 +154,6 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 {
 	{
     Guard guard(_lock);
-    if ( _firstTime )
-	{
       //1. BUILD Image Data struct for denoiser
       Format format = input0().format();
 
@@ -176,10 +168,13 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 	  //create an empty image data struct
 	  Denoise::Dimension dim(width, height);
 
-	  std::cout << height << "; " << width << std::endl;
+	  Denoise::Image image(dim, Denoise::Image::FLOAT_4);
+	  Denoise::Image basic(image);
 
-	  m_image = new Denoise::Image(dim, Denoise::Image::FLOAT_4);
+	  Denoise::Image result(image);
 
+	  if(_firstTime)
+	  {
 	  //get the channel set
       ChannelSet readChannels = input0().info().channels();
 
@@ -193,10 +188,10 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 			progressFraction( ry, ft - fy );
 			Row row( fx, fr );
 			row.get( input0(), ry, fx, fr, readChannels );
-			if ( aborted() )
-			{
-				return;
-			}
+			//if ( aborted() )
+			//{
+			//	return;
+			//}
 
 			int channel = 0;
 			foreach( z, readChannels )
@@ -208,16 +203,16 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 				{
 					if(channel == 0)
 					{
-						m_image->setPixel(0, ry, col, (float)*CUR);
+						image.setPixel(0, ry, col, (float)*CUR);
 					}
 					else if(channel == 1)
 					{
-						m_image->setPixel(1, ry, col, (float)*CUR);
+						image.setPixel(1, ry, col, (float)*CUR);
 					}
 					else if(channel == 2)
 					{
-						m_image->setPixel(2, ry, col, (float)*CUR);
-						m_image->setPixel(3, ry, col, 1.0f);
+						image.setPixel(2, ry, col, (float)*CUR);
+						image.setPixel(3, ry, col, 1.0f);
 					}
 					//else if(channel == 3)
 					//{
@@ -231,14 +226,10 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 			}
       }
 
-	  m_image->normalise();
-
-	  m_basic = new Denoise::Image(*m_image);
-
-	  m_result = new Denoise::Image(*m_image);
+	  //m_image->normalise();
 
 	  //2. Run Denoiser
-	  Denoise::BM3DImageBlockProcessor proc(m_image, m_basic, m_result);
+	  Denoise::BM3DImageBlockProcessor proc(&image, &basic, &result);
 
 	  parseOptions(m_settings);
 	  /*Denoise::BM3DSettings localSettings;
@@ -248,20 +239,18 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 
 	  proc.process(m_settings, true);
 
-	  m_image->undoNormalise();
-	  m_basic->undoNormalise();
-	  m_result->undoNormalise();
-
-      _firstTime = false;
-	}
-	} // end lock
+	  //m_image->undoNormalise();
+	  //m_basic->undoNormalise();
+	  //m_result->undoNormalise();
+	  _firstTime = false;
+	  }
   
   Row in( x,r);
   in.get( input0(), y, x, r, channels );
-  if ( aborted() )
-  {
-    return;
-  }
+  //if ( aborted() )
+  //{
+  //  return;
+  //}
   int channel = 0;
   foreach( z, channels ) {
     float *CUR = row.writable(z) + x;
@@ -276,15 +265,15 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 
 		if(channel == 0)
 		{
-			*CUR++ = m_basic->getPixel(0, y, col);
+			*CUR++ = basic.getPixel(0, y, col);
 		}
 		else if(channel == 1)
 		{
-			*CUR++ = m_basic->getPixel(1, y, col);
+			*CUR++ = basic.getPixel(1, y, col);
 		}
 		else if(channel == 2)
 		{
-			*CUR++ = m_basic->getPixel(2, y, col);
+			*CUR++ = basic.getPixel(2, y, col);
 		}
 		else if(channel == 3)
 		{
@@ -297,6 +286,7 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 		++col;
     }
 	++channel;
+  }
   }
 }
 

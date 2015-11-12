@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 	smoothness.push_back(stdDeviation);
 	smoothness.push_back(stdDeviation);
 
-	bm3dFilterSettings.init2defaults(smoothness, true);
+	bm3dFilterSettings.init2defaults(smoothness, false);
 
 	bm3dFilter.process(bm3dFilterSettings, true);
 

@@ -32,8 +32,8 @@ namespace Denoise
 	{
 		for (index_t i = 0; i < m_transformLevels.size(); ++i)
 		{
-			fftwf_destroy_plan(m_forwardPlans[i]);
-			fftwf_destroy_plan(m_backwardPlans[i]);
+			PLAN_DTOR(m_forwardPlans[i]);
+			PLAN_DTOR(m_backwardPlans[i]);
 		}
 
 		delete[] m_forwardTransformKind;
@@ -46,7 +46,7 @@ namespace Denoise
 
 	void BM3DWienerFilterKernel::initForwardTransforms()
 	{
-		m_forwardPlans = new fftwf_plan[m_transformLevels.size()];
+		m_forwardPlans = new PLAN_TYPE[m_transformLevels.size()];
 
 		int n[2];
 		n[0] = m_settings.patchSize;
@@ -58,16 +58,16 @@ namespace Denoise
 		int *inembed = n;
 		int *onembed = n;
 
-		m_forwardTransformKind = new fftwf_r2r_kind[2];
+		m_forwardTransformKind = new TRANSFORM_KIND[2];
 		m_forwardTransformKind[0] = FFTW_REDFT10;
 		m_forwardTransformKind[1] = FFTW_REDFT10;
 
 		for (index_t i = 0; i < m_transformLevels.size(); ++i)
 		{
-			float* in = new float[sqr(m_settings.patchSize) * m_transformLevels[i]];
-			float* out = new float[sqr(m_settings.patchSize) * m_transformLevels[i]];
+			DOMAIN_FORMAT* in = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_transformLevels[i]];
+			DOMAIN_FORMAT* out = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_transformLevels[i]];
 
-			m_forwardPlans[i] = fftwf_plan_many_r2r(2, n, m_transformLevels[i], in, inembed, istride, idist,
+			m_forwardPlans[i] = PLAN_CTOR(2, n, m_transformLevels[i], in, inembed, istride, idist,
 				out, onembed, ostride, odist, m_forwardTransformKind, FFTW_ESTIMATE);
 
 			delete[] in;
@@ -77,9 +77,9 @@ namespace Denoise
 
 	void BM3DWienerFilterKernel::initBackwardTransforms()
 	{
-		m_backwardPlans = new fftwf_plan[m_transformLevels.size()];
+		m_backwardPlans = new PLAN_TYPE[m_transformLevels.size()];
 
-		float* in = new float[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockWiener];
+		DOMAIN_FORMAT* in = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockWiener];
 
 		int n[2];
 		n[0] = m_settings.patchSize;
@@ -91,16 +91,16 @@ namespace Denoise
 		int *inembed = n;
 		int *onembed = n;
 
-		m_backwardTransformKind = new fftwf_r2r_kind[2];
+		m_backwardTransformKind = new TRANSFORM_KIND[2];
 		m_backwardTransformKind[0] = FFTW_REDFT01;
 		m_backwardTransformKind[1] = FFTW_REDFT01;
 
 		for (index_t i = 0; i < m_transformLevels.size(); ++i)
 		{
-			float* in = new float[sqr(m_settings.patchSize) * m_transformLevels[i]];
-			float* out = new float[sqr(m_settings.patchSize) * m_transformLevels[i]];
+			DOMAIN_FORMAT* in = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_transformLevels[i]];
+			DOMAIN_FORMAT* out = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_transformLevels[i]];
 
-			m_backwardPlans[i] = fftwf_plan_many_r2r(2, n, m_transformLevels[i], out, inembed, istride, idist,
+			m_backwardPlans[i] = PLAN_CTOR(2, n, m_transformLevels[i], out, inembed, istride, idist,
 				in, onembed, ostride, odist, m_backwardTransformKind, FFTW_ESTIMATE);
 
 			delete[] in;
@@ -124,25 +124,25 @@ namespace Denoise
 
 				if (row == 0 && col == 0)
 				{
-					m_forwardCoefficients[idx] = 0.5f * (0.5f / (float)(m_settings.patchSize));
+					m_forwardCoefficients[idx] = 0.5f * (0.5f / (DOMAIN_FORMAT)(m_settings.patchSize));
 					m_backwardCoefficients[idx] = 2.0f;
 				}
 				else if (row * col == 0)
 				{
-					m_forwardCoefficients[idx] = (1.0f / sqrtf(2.0f)) * (0.5f / (float)(m_settings.patchSize));
+					m_forwardCoefficients[idx] = (1.0f / sqrtf(2.0f)) * (0.5f / (DOMAIN_FORMAT)(m_settings.patchSize));
 					m_backwardCoefficients[idx] = sqrtf(2.0f);
 				}
 				else
 				{
-					m_forwardCoefficients[idx] = 1.0f * (0.5f / (float)(m_settings.patchSize));
+					m_forwardCoefficients[idx] = 1.0f * (0.5f / (DOMAIN_FORMAT)(m_settings.patchSize));
 					m_backwardCoefficients[idx] = 1.0f;
 				}
 			}
 		}
 	}
 
-	void BM3DWienerFilterKernel::processWienerFilter(float* blockNoisy, float* blockEstimate, index_t numPatches,
-		index_t numChannels, std::vector<float>& blockWeight,
+	void BM3DWienerFilterKernel::processWienerFilter(DOMAIN_FORMAT* blockNoisy, DOMAIN_FORMAT* blockEstimate, index_t numPatches,
+		index_t numChannels, std::vector<DOMAIN_FORMAT>& blockWeight,
 		const std::vector<float>& stdDeviation)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
@@ -182,7 +182,7 @@ namespace Denoise
 			index_t colourOffset = c * totalSize;
 
 			//DCT for ESTIMATE
-			fftwf_execute_r2r(m_forwardPlans[planIdx], blockEstimate + colourOffset, blockEstimate + colourOffset);
+			PLAN_EXECUTOR(m_forwardPlans[planIdx], blockEstimate + colourOffset, blockEstimate + colourOffset);
 
 			//Normalise DCT for ESTIMATE
 			for (index_t patch = 0; patch < numPatches; ++patch)
@@ -204,7 +204,7 @@ namespace Denoise
 			}
 
 			//DCT for NOISY
-			fftwf_execute_r2r(m_forwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
+			PLAN_EXECUTOR(m_forwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
 
 			//Normalise DCT for NOISY
 			for (index_t patch = 0; patch < numPatches; ++patch)
@@ -226,14 +226,14 @@ namespace Denoise
 			}
 
 			//Apply Wiener Filter
-			float factor =1.0f / (float)numPatches;
+			DOMAIN_FORMAT factor =1.0f / (DOMAIN_FORMAT)numPatches;
 
 			for (index_t patch = 0; patch < numPatches; ++patch)
 			{
 				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 				{
-					float coeff = factor * sqr(blockEstimate[colourOffset + patch * sqr(m_settings.patchSize) + i]);
-					float mult = coeff / (sqr(m_settings.stdDeviation[c]) + coeff);
+					DOMAIN_FORMAT coeff = factor * sqr(blockEstimate[colourOffset + patch * sqr(m_settings.patchSize) + i]);
+					DOMAIN_FORMAT mult = coeff / (sqr(m_settings.stdDeviation[c]) + coeff);
 
 					blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] =
 						blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] * mult * factor;
@@ -251,7 +251,7 @@ namespace Denoise
 			//Normalise WHT for NOISY
 			//for (index_t i = 0; i < totalSize; ++i)
 			//{
-			//	blockNoisy[colourOffset + i] /= (float)numPatches;
+			//	blockNoisy[colourOffset + i] /= (DOMAIN_FORMAT)numPatches;
 			//}
 
 			//Normalise DCT for NOISY
@@ -268,12 +268,12 @@ namespace Denoise
 			}
 
 			//Inverse DCT for NOISY
-			fftwf_execute_r2r(m_backwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
+			PLAN_EXECUTOR(m_backwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
 
 			//normalise again
 			for (index_t i = 0; i < totalSize; ++i)
 			{
-				blockNoisy[colourOffset + i] /= (float)(m_settings.patchSize * 2);
+				blockNoisy[colourOffset + i] /= (DOMAIN_FORMAT)(m_settings.patchSize * 2);
 			}
 
 			if (blockWeight[c] > 1.0f)
@@ -287,8 +287,8 @@ namespace Denoise
 		}
 	}
 
-	void BM3DWienerFilterKernel::processWienerFilterMeanAdaptive(float* blockNoisy, float* blockEstimate, index_t numPatches,
-		index_t numChannels, std::vector<float>& blockWeight,
+	void BM3DWienerFilterKernel::processWienerFilterMeanAdaptive(DOMAIN_FORMAT* blockNoisy, DOMAIN_FORMAT* blockEstimate, index_t numPatches,
+		index_t numChannels, std::vector<DOMAIN_FORMAT>& blockWeight,
 		const std::vector<float>& stdDeviation)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
@@ -321,7 +321,7 @@ namespace Denoise
 		}
 
 		//Compute Mean for Adaptive Measure ----------------
-		std::vector<float> patchMeans(numChannels * sqr(m_settings.patchSize));
+		std::vector<DOMAIN_FORMAT> patchMeans(numChannels * sqr(m_settings.patchSize));
 		calculateBlockMeans(blockNoisy, numPatches, m_settings.patchSize, numChannels, &patchMeans[0]);
 		//--------------------------------------------------
 
@@ -334,7 +334,7 @@ namespace Denoise
 			index_t colourOffset = c * totalSize;
 
 			//DCT for ESTIMATE
-			fftwf_execute_r2r(m_forwardPlans[planIdx], blockEstimate + colourOffset, blockEstimate + colourOffset);
+			PLAN_EXECUTOR(m_forwardPlans[planIdx], blockEstimate + colourOffset, blockEstimate + colourOffset);
 
 			//Normalise DCT for ESTIMATE
 			for (index_t patch = 0; patch < numPatches; ++patch)
@@ -356,7 +356,7 @@ namespace Denoise
 			}
 
 			//DCT for NOISY
-			fftwf_execute_r2r(m_forwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
+			PLAN_EXECUTOR(m_forwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
 
 			//Normalise DCT for NOISY
 			for (index_t patch = 0; patch < numPatches; ++patch)
@@ -378,17 +378,17 @@ namespace Denoise
 			}
 
 			//Apply Wiener Filter
-			float factor = 1.0f / (float)numPatches;
+			DOMAIN_FORMAT factor = 1.0f / (DOMAIN_FORMAT)numPatches;
 
 			for (index_t patch = 0; patch < numPatches; ++patch)
 			{
 				for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
 				{
-					float adaptiveFactor = calculateMeanAdaptiveFactor(stdDeviation[c], patchMeans[c * sqr(m_settings.patchSize) + i],
+					DOMAIN_FORMAT adaptiveFactor = calculateMeanAdaptiveFactor(stdDeviation[c], patchMeans[c * sqr(m_settings.patchSize) + i],
 						m_settings.meanAdaptiveThresholdingFactor, m_settings.meanAdaptiveThresholdingPower);
 
-					float coeff = factor * sqr(blockEstimate[colourOffset + patch * sqr(m_settings.patchSize) + i]);
-					float mult = coeff / (sqr(m_settings.stdDeviation[c] * adaptiveFactor) + coeff);
+					DOMAIN_FORMAT coeff = factor * sqr(blockEstimate[colourOffset + patch * sqr(m_settings.patchSize) + i]);
+					DOMAIN_FORMAT mult = coeff / (sqr(m_settings.stdDeviation[c] * adaptiveFactor) + coeff);
 
 					blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] =
 						blockNoisy[colourOffset + patch * sqr(m_settings.patchSize) + i] * mult * factor;
@@ -406,7 +406,7 @@ namespace Denoise
 			//Normalise WHT for NOISY
 			//for (index_t i = 0; i < totalSize; ++i)
 			//{
-			//	blockNoisy[colourOffset + i] /= (float)numPatches;
+			//	blockNoisy[colourOffset + i] /= (DOMAIN_FORMAT)numPatches;
 			//}
 
 			//Normalise DCT for NOISY
@@ -423,12 +423,12 @@ namespace Denoise
 			}
 
 			//Inverse DCT for NOISY
-			fftwf_execute_r2r(m_backwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
+			PLAN_EXECUTOR(m_backwardPlans[planIdx], blockNoisy + colourOffset, blockNoisy + colourOffset);
 
 			//normalise again
 			for (index_t i = 0; i < totalSize; ++i)
 			{
-				blockNoisy[colourOffset + i] /= (float)(m_settings.patchSize * 2);
+				blockNoisy[colourOffset + i] /= (DOMAIN_FORMAT)(m_settings.patchSize * 2);
 			}
 
 			if (blockWeight[c] > 1.0f)
