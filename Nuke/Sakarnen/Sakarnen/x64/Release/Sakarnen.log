@@ -1,4 +1,4 @@
-﻿Build started 12/11/2015 15:00:54.
+﻿Build started 13/11/2015 11:21:50.
      1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Nuke\Sakarnen\Sakarnen\Sakarnen.vcxproj" on node 2 (rebuild target(s)).
      1>_PrepareForClean:
          Deleting file "x64\Release\Sakarnen.lastbuildstate".
@@ -11,12 +11,12 @@
      1>C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Image.h(234): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
      1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>Sakarnen.cpp(324): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
      1>Sakarnen.cpp(325): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
      1>Sakarnen.cpp(326): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>Sakarnen.cpp(345): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>Sakarnen.cpp(345): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>Sakarnen.cpp(354): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>Sakarnen.cpp(327): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>Sakarnen.cpp(346): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>Sakarnen.cpp(346): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>Sakarnen.cpp(355): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
        Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\Nuke\Sakarnen\x64\Release\Sakarnen.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:..\..\..\x64\Release /LIBPATH:"C:\Program Files\Nuke8.0v1\\" /LIBPATH:..\x64\Release /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-10.0\release\address-model-64\link-static\threading-multi\\" /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" Denoiser.lib DDImage.lib "libboost_thread-vc100-mt-1_57.lib" "libboost_timer-vc100-mt-1_57.lib" "libboost_system-vc100-mt-1_57.lib" "libboost_date_time-vc100-mt-1_57.lib" "libboost_chrono-vc100-mt-1_57.lib" "libfftw3-3.lib" "libfftw3f-3.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Release\Sakarnen.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\Nuke\Sakarnen\x64\Release\Sakarnen.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\Nuke\Sakarnen\x64\Release\Sakarnen.lib" /MACHINE:X64 /DLL x64\Release\Sakarnen.obj
          Generating code
@@ -36,4 +36,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:08.74
+Time Elapsed 00:00:07.50

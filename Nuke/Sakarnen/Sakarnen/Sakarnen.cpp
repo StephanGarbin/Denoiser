@@ -114,6 +114,7 @@ needed for the Iop::Description to work.
 */
 static Iop* SakarnenCreate(Node* node)
 {
+	std::cout << "Creating New Instance" << std::endl;
 	return new Sakarnen(node);
 }
 
@@ -225,6 +226,7 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 				++channel;
 			}
       }
+	  }
 
 	  //m_image->normalise();
 
@@ -237,7 +239,7 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 	  temp.push_back(0.1f); temp.push_back(0.1f); temp.push_back(0.1f);
 	  localSettings.init2defaults(temp, true);*/
 
-	  proc.process(m_settings, true);
+	 // proc.process(m_settings, true);
 
 	  //m_image->undoNormalise();
 	  //m_basic->undoNormalise();
@@ -286,7 +288,6 @@ void Sakarnen::engine(int y, int x, int r, ChannelMask channels, Row& row)
 		++col;
     }
 	++channel;
-  }
   }
 }
 
