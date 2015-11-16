@@ -12,6 +12,9 @@
 #include <qimage.h>
 #include <qaction.h>
 #include <qpushbutton.h>
+#include <qevent.h>
+
+#include "ViewPortScrollArea.h"
 
 #include "Denoiser\Image.h"
 
@@ -28,6 +31,9 @@ public:
 
 	void setup();
 
+protected:
+	void wheelEvent(QWheelEvent * event);
+
 private slots:
 	void zoomIn();
 	void zoomOut();
@@ -37,7 +43,7 @@ private:
 
 	QGridLayout* m_layoutViewerButtons;
 	QGridLayout* m_layout;
-	QScrollArea* m_scrollArea;
+	ViewPortScrollArea* m_scrollArea;
 	QLabel* m_label_imageDisplay;
 	QLabel* m_label_input;
 
@@ -50,6 +56,8 @@ private:
 	QAction *normalSizeAct;
 	
 	double m_scaleFactor;
+	double m_maxScale;
+	double m_minScale;
 
 	void scaleImage(double factor);
 	void adjustScrollBar(QScrollBar *scrollBar, double factor);

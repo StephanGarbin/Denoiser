@@ -52,8 +52,10 @@ void Sakarnen::loadImage()
 	QString fileName = QFileDialog::getOpenFileName(this,
 		tr("Load Image"),
 		tr(""),
-		tr("EXR Files (*.exr);;"
-		"PNG Files (*.png)"));
+		tr("PNG Files (*.png);;"
+			"EXR Files (*.exr)"));
+
+
 
 	if (fileName.isEmpty())
 	{

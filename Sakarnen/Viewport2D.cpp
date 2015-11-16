@@ -15,7 +15,7 @@ Viewport2D::Viewport2D(QWidget* parent) : QWidget(parent)
 	m_label_imageDisplay->setScaledContents(true);
 
 	//Scroll area to contain image display label
-	m_scrollArea = new QScrollArea(this);
+	m_scrollArea = new ViewPortScrollArea(this);
 	m_scrollArea->setBackgroundRole(QPalette::Dark);
 	m_scrollArea->setWidget(m_label_imageDisplay);
 
@@ -45,6 +45,9 @@ Viewport2D::Viewport2D(QWidget* parent) : QWidget(parent)
 	//Set up the widget
 	this->setLayout(m_layout);
 	this->setWindowTitle("Viewport");
+
+	m_maxScale = 10.0f;
+	m_minScale = 0.1f;
 }
 
 
@@ -161,4 +164,22 @@ void Viewport2D::adjustScrollBar(QScrollBar *scrollBar, double factor)
 {
 	scrollBar->setValue(int(factor * scrollBar->value()
 		+ ((factor - 1) * scrollBar->pageStep() / 2)));
+}
+
+void Viewport2D::wheelEvent(QWheelEvent * e)
+{
+	if (e->delta() < 0.0)
+	{
+		if (m_scaleFactor > m_minScale)
+		{
+			scaleImage(1.0 / std::abs((e->delta()) / 100.0));
+		}
+	}
+	else
+	{
+		if (m_scaleFactor < m_maxScale)
+		{
+			scaleImage((std::abs(e->delta()) / 100.0));
+		}
+	}
 }
