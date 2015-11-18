@@ -47,11 +47,30 @@ void ViewPortScrollArea::mouseMoveEvent(QMouseEvent * e)
 	}
 }
 
+void ViewPortScrollArea::setMoveAmount(QPointF moveAmount)
+{
+	this->verticalScrollBar()->setValue(moveAmount.y());
+	this->horizontalScrollBar()->setValue(moveAmount.x());
+}
+
+QPointF ViewPortScrollArea::getMoveAmount()
+{
+	QPoint temp;
+	temp.setY(this->verticalScrollBar()->value());
+	temp.setX(this->horizontalScrollBar()->value());
+
+	return temp;
+}
+
 void ViewPortScrollArea::keyPressEvent(QKeyEvent * e)
 {
 	if (e->key() == Qt::Key_Alt)
 	{
 		m_ATLPressed = true;
+	}
+	else
+	{
+		e->ignore();
 	}
 }
 
@@ -60,6 +79,10 @@ void ViewPortScrollArea::keyReleaseEvent(QKeyEvent * e)
 	if (e->key() == Qt::Key_Alt)
 	{
 		m_ATLPressed = false;
+	}
+	else
+	{
+		e->ignore();
 	}
 }
 

@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_Viewport2D_t {
-    QByteArrayData data[5];
-    char stringdata[38];
+    QByteArrayData data[13];
+    char stringdata[212];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,9 +33,23 @@ QT_MOC_LITERAL(0, 0, 10),
 QT_MOC_LITERAL(1, 11, 6),
 QT_MOC_LITERAL(2, 18, 0),
 QT_MOC_LITERAL(3, 19, 7),
-QT_MOC_LITERAL(4, 27, 10)
+QT_MOC_LITERAL(4, 27, 10),
+QT_MOC_LITERAL(5, 38, 13),
+QT_MOC_LITERAL(6, 52, 15),
+QT_MOC_LITERAL(7, 68, 33),
+QT_MOC_LITERAL(8, 102, 33),
+QT_MOC_LITERAL(9, 136, 1),
+QT_MOC_LITERAL(10, 138, 35),
+QT_MOC_LITERAL(11, 174, 35),
+QT_MOC_LITERAL(12, 210, 1)
     },
-    "Viewport2D\0zoomIn\0\0zoomOut\0normalSize"
+    "Viewport2D\0zoomIn\0\0zoomOut\0normalSize\0"
+    "resetContrast\0resetBrigthness\0"
+    "setSliderValuesBrightnessContrast\0"
+    "getSliderValuesBrightnessContrast\0t\0"
+    "setTextEditValuesBrightnessContrast\0"
+    "getTextEditValuesBrightnessContrast\0"
+    "v"
 };
 #undef QT_MOC_LITERAL
 
@@ -45,7 +59,7 @@ static const uint qt_meta_data_Viewport2D[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -53,14 +67,26 @@ static const uint qt_meta_data_Viewport2D[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   29,    2, 0x08 /* Private */,
-       3,    0,   30,    2, 0x08 /* Private */,
-       4,    0,   31,    2, 0x08 /* Private */,
+       1,    0,   59,    2, 0x08 /* Private */,
+       3,    0,   60,    2, 0x08 /* Private */,
+       4,    0,   61,    2, 0x08 /* Private */,
+       5,    0,   62,    2, 0x08 /* Private */,
+       6,    0,   63,    2, 0x08 /* Private */,
+       7,    0,   64,    2, 0x08 /* Private */,
+       8,    1,   65,    2, 0x08 /* Private */,
+      10,    0,   68,    2, 0x08 /* Private */,
+      11,    1,   69,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,    9,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Double,   12,
 
        0        // eod
 };
@@ -73,10 +99,15 @@ void Viewport2D::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->zoomIn(); break;
         case 1: _t->zoomOut(); break;
         case 2: _t->normalSize(); break;
+        case 3: _t->resetContrast(); break;
+        case 4: _t->resetBrigthness(); break;
+        case 5: _t->setSliderValuesBrightnessContrast(); break;
+        case 6: _t->getSliderValuesBrightnessContrast((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->setTextEditValuesBrightnessContrast(); break;
+        case 8: _t->getTextEditValuesBrightnessContrast((*reinterpret_cast< double(*)>(_a[1]))); break;
         default: ;
         }
     }
-    Q_UNUSED(_a);
 }
 
 const QMetaObject Viewport2D::staticMetaObject = {
@@ -104,13 +135,13 @@ int Viewport2D::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 9)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 9;
     }
     return _id;
 }

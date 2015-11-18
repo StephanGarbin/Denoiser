@@ -12,6 +12,8 @@
 #include <qimage.h>
 #include <qaction.h>
 #include <qpushbutton.h>
+#include <qslider.h>
+#include <qspinbox.h>
 #include <qevent.h>
 
 #include "ViewPortScrollArea.h"
@@ -31,16 +33,30 @@ public:
 
 	void setup();
 
+	bool& displayBasic() { return m_displayBasic; }
+
 protected:
-	void wheelEvent(QWheelEvent * event);
+	virtual void wheelEvent(QWheelEvent * e);
+	virtual void keyPressEvent(QKeyEvent * e);
 
 private slots:
 	void zoomIn();
 	void zoomOut();
 	void normalSize();
 
+	void resetContrast() { m_imageContrast = 1.0f; setSliderValuesBrightnessContrast(); setTextEditValuesBrightnessContrast(); }
+	void resetBrigthness() { m_imageBrightness = 1.0f; setSliderValuesBrightnessContrast(); setTextEditValuesBrightnessContrast(); }
+
+	void setSliderValuesBrightnessContrast();
+	void getSliderValuesBrightnessContrast(int t);
+
+	void setTextEditValuesBrightnessContrast();
+	void getTextEditValuesBrightnessContrast(double v);
+
 private:
 
+
+	QGridLayout* m_layoutBrightnessContrast;
 	QGridLayout* m_layoutViewerButtons;
 	QGridLayout* m_layout;
 	ViewPortScrollArea* m_scrollArea;
@@ -51,6 +67,13 @@ private:
 	QPushButton* m_buttonZoomOut;
 	QPushButton* m_buttonNormalSize;
 
+	QPushButton* m_buttonResetBrightness;
+	QPushButton* m_buttonResetContrast;
+	QSlider* m_sliderBrightness;
+	QSlider* m_sliderContrast;
+	QDoubleSpinBox* m_textEditBrightness;
+	QDoubleSpinBox* m_textEditContrast;
+
 	QAction *zoomInAct;
 	QAction *zoomOutAct;
 	QAction *normalSizeAct;
@@ -58,6 +81,13 @@ private:
 	double m_scaleFactor;
 	double m_maxScale;
 	double m_minScale;
+
+	float m_imageContrast;
+	float m_imageBrightness;
+
+	float sliderScale;
+
+	bool m_displayBasic;
 
 	void scaleImage(double factor);
 	void adjustScrollBar(QScrollBar *scrollBar, double factor);

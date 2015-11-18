@@ -12,6 +12,9 @@ public:
 	ViewPortScrollArea(QWidget* parent = nullptr);
 	~ViewPortScrollArea();
 
+	QPointF getMoveAmount();
+	void setMoveAmount(QPointF moveAmount);
+
 protected:
 	virtual void mouseMoveEvent(QMouseEvent * e);
 

@@ -77,7 +77,7 @@ void Sakarnen::loadImage()
 
 		statusBar()->showMessage("Setting up your image...");
 		m_data->noisyImage->normalise();
-		m_data->noisyImage->toColourSpace(Denoise::Image::OPP);
+		//m_data->noisyImage->toColourSpace(Denoise::Image::OPP);
 
 		m_data->basicImage = new Denoise::Image(*m_data->noisyImage);
 		m_data->resultImage = new Denoise::Image(*m_data->noisyImage);
@@ -85,6 +85,9 @@ void Sakarnen::loadImage()
 		statusBar()->showMessage("Image Loaded Successfully...");
 
 		m_viewport->addImage(m_data->noisyImage, "Input");
+		m_viewport->addImage(m_data->basicImage, "Estimate");
+		m_viewport->addImage(m_data->resultImage, "Final");
+
 		m_viewport->displayImage(1);
 	}
 }
