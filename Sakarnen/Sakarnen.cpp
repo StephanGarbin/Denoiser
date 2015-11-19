@@ -1,6 +1,7 @@
 #include "sakarnen.h"
 
 #include <qfiledialog.h>
+#include <qdesktopwidget.h>
 
 #include "PNGLoader.h"
 #include "Denoiser\Image.h"
@@ -25,6 +26,8 @@ Sakarnen::Sakarnen(QWidget *parent)
 
 	//Create Menus
 	setupMenus();
+
+	resize(QDesktopWidget().availableGeometry(this).size() * 0.8);
 }
 
 void Sakarnen::setupGeneral()
