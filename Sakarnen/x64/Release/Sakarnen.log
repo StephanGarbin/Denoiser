@@ -1,20 +1,10 @@
-﻿Build started 18/11/2015 17:57:05.
+﻿Build started 19/11/2015 16:55:52.
      1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Sakarnen\Sakarnen.vcxproj" on node 2 (Build target(s)).
-     1>CustomBuild:
-         Moc'ing SettingsWidgetRight.h...
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of moc_sakarnen.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are GeneratedFiles\Debug\moc_sakarnen.cpp, GeneratedFiles\Release\moc_sakarnen.cpp.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of moc_SettingsWidgetRight.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are GeneratedFiles\Debug\moc_SettingsWidgetRight.cpp, GeneratedFiles\Release\moc_SettingsWidgetRight.cpp.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of moc_Viewport2D.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are GeneratedFiles\Debug\moc_Viewport2D.cpp, GeneratedFiles\Release\moc_Viewport2D.cpp.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of moc_ViewPortScrollArea.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are GeneratedFiles\Debug\moc_ViewPortScrollArea.cpp, GeneratedFiles\Release\moc_ViewPortScrollArea.cpp.
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\..\Denoiser /I.\GeneratedFiles /I. /IC:\Qt\Qt5.3.0\5.3\msvc2013_64_opengl\include /I.\GeneratedFiles\Release /IC:\Qt\Qt5.3.0\5.3\msvc2013_64_opengl\include\QtCore /IC:\Qt\Qt5.3.0\5.3\msvc2013_64_opengl\include\QtGui /IC:\Qt\Qt5.3.0\5.3\msvc2013_64_opengl\include\QtMultimedia /IC:\Qt\Qt5.3.0\5.3\msvc2013_64_opengl\include\QtMultimediaWidgets /IC:\Qt\Qt5.3.0\5.3\msvc2013_64_opengl\include\QtWidgets /nologo /W1 /WX- /O2 /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_NO_DEBUG /D NDEBUG /D QT_CORE_LIB /D QT_GUI_LIB /D QT_MULTIMEDIA_LIB /D QT_MULTIMEDIAWIDGETS_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MD /GS /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt GeneratedFiles\Release\moc_SettingsWidgetRight.cpp GeneratedFiles\Release\moc_sakarnen.cpp SettingsWidgetRight.cpp main.cpp sakarnen.cpp
-         moc_SettingsWidgetRight.cpp
-         moc_sakarnen.cpp
-         SettingsWidgetRight.cpp
-         main.cpp
-         sakarnen.cpp
-         Generating Code...
-       Link:
+     1>Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\\Sakarnen.exe" /NOLOGO /LIBPATH:C:\Qt\Qt5.3.0\5.3\msvc2013_64_opengl\lib /LIBPATH:..\x64\Release Denoiser.lib qtmain.lib Qt5Core.lib Qt5Gui.lib Qt5Multimedia.lib Qt5MultimediaWidgets.lib Qt5Widgets.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Sakarnen.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Sakarnen.lib" /MACHINE:X64 x64\Release\Sakarnen.res
          x64\Release\qrc_sakarnen.obj
          x64\Release\moc_sakarnen.obj
@@ -36,4 +26,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:05.57
+Time Elapsed 00:00:00.93
