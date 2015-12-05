@@ -13,72 +13,39 @@
 #include "BM3DImageBlockProcessor.h"
 #include "BM3DSettings.h"
 
-void loadImage(Denoise::Image** image, const std::string& fileName);
-
-void saveImage(Denoise::Image* image, const std::string& fileName);
-
-
 int main(int argc, char* argv[])
 {
 	float stdDeviation;
 	index_t numThreadsBM;
 	float adaptiveFactor = 0.0f;
+	std::string inputFile;
+	std::string outputFile;
 
-	if (argc != 3)
+	if (argc != 5)
 	{
-		std::cout << "Error: Please provide standard deviation & numThreads (BM)!" << std::endl;
-		std::cout << "Value used (stdDeviation): 1" << std::endl;
-		stdDeviation = 1.0f;
-		std::cout << "Value used (numThreads BM): 1";
-		numThreadsBM = 1;
+		std::cout << "Error: Please provide standard deviation & numThreads (BM), input & output file!" << std::endl;
+		return 0;
 	}
 	else
 	{
 		stdDeviation = std::atof(argv[1]);
 		numThreadsBM = std::atoi(argv[2]);
-		//numThreadsBM = 1;
-		//adaptiveFactor = std::atof(argv[2]);
+		inputFile = std::string(argv[3]);
+		outputFile = std::string(argv[4]);
 	}
 
-	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger.png";
-	//std::string inputFile = "C:/Users/Stephan/Desktop/llama.png";
-	//std::string outputFile = "C:/Users/Stephan/Desktop/llama_padded.png";
-	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees2.png";
-	//std::string outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew2b.png";
-
-	//std::string inputFile = "C:/Users/Stephan/Desktop/noisyTrees.png";
-	//std::string outputFile;
-	//if (numThreadsBM == 1)
-	//{
-	//	outputFile  = "C:/Users/Stephan/Desktop/noisyTreesNew_sequential.png";
-	//}
-	//else
-	//{
-	//	outputFile = "C:/Users/Stephan/Desktop/noisyTreesNew_parallel.png";
-	//}
-	//std::string inputFile = "C:/Users/Stephan/Desktop/computerNoisy.png";
-	//std::string outputFile = "C:/Users/Stephan/Desktop/computerNew.png";
-
-	//std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
-	//std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
-
-	//std::string inputFile = "C:/Users/Stephan/Desktop/tiger_high.png";
-	//std::string outputFile = "C:/Users/Stephan/Desktop/tiger_high_denoised.png";
-
-	std::string inputFile = "C:/Users/Stephan/Desktop/tiger_1K.png";
-	std::string outputFile = "C:/Users/Stephan/Desktop/tiger_1K_denoised_b.png";
-
-	//std::string inputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1.png";
-	//std::string outputFile = "C:/Users/Stephan/Desktop/RendermanTestScene1BM3D.png";
 	
-	Denoise::Image* image = nullptr;
+	Denoise::Image* image = new Denoise::Image();
 
-	loadImage(&image, inputFile);
+	image->readFromFile(inputFile);
+
 	image->checkImageIntegrity(true);
 	image->normalise();
 
 	Denoise::Image result(*image);
 	Denoise::Image basic(*image);
+
+	std::cout << "Filtering..." << std::endl;
 
 	Denoise::BM3DImageBlockProcessor bm3dFilter(image, &basic, &result);
 
@@ -90,6 +57,10 @@ int main(int argc, char* argv[])
 	smoothness.push_back(stdDeviation);
 
 	bm3dFilterSettings.init2defaults(smoothness, false);
+	bm3dFilterSettings.limitHardwareConcurrency(numThreadsBM);
+	bm3dFilterSettings.enableBlockStatisticalAveraging(0.35f);
+
+	//bm3dFilterSettings.enableMeanAdaptiveThresholding(1.0f, 3.0f);
 
 	bm3dFilter.process(bm3dFilterSettings, true);
 
@@ -100,69 +71,7 @@ int main(int argc, char* argv[])
 	basic.setAlphaToOne();
 	result.setAlphaToOne();
 
-	saveImage(&result, outputFile);
+	result.save2File(outputFile);
 
 	delete image;
-}
-
-void loadImage(Denoise::Image** image, const std::string& fileName)
-{
-	std::vector<unsigned char> png;
-	std::vector<unsigned char> rawImage; //the raw pixels
-	unsigned width, height;
-
-	//load and decode
-	lodepng::load_file(png, fileName);
-	unsigned error = lodepng::decode(rawImage, width, height, png);
-
-	//if there's an error, display it
-	if (error) std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
-
-	//the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
-
-	Denoise::Dimension dim(width, height);
-	*image = new Denoise::Image(dim, Denoise::Image::FLOAT_4);
-
-	for (index_t i = 0; i < rawImage.size(); i+=4)
-	{
-		for (index_t c = 0; c < 4; ++c)
-		{
-			(*image)->setPixel(c, i / 4, (float)rawImage[i + c]);
-		}
-	}
-}
-
-void saveImage(Denoise::Image* image, const std::string& fileName)
-{
-	std::vector<unsigned char> png;
-
-	std::vector<unsigned char> rawImage;
-	rawImage.resize(image->width() * image->height() * 4);
-
-	for (index_t row = 0; row < image->height(); ++row)
-	{
-		for (index_t col = 0; col < image->width(); ++col)
-		{
-			for (index_t c = 0; c < 4; ++c)
-			{
-				index_t i = (row * image->width() + col) * 4;
-
-				if (image->getPixel(c, row, col) > 0)
-				{
-					rawImage[i + c] = (unsigned char)image->getPixel(c, row, col);
-				}
-				else
-				{
-					rawImage[i + c] = 0;
-				}
-			}
-		}
-	}
-
-	unsigned error = lodepng::encode(png, rawImage, image->width(), image->height());
-	if (!error) lodepng::save_file(png, fileName);
-
-	//if there's an error, display it
-	if (error) std::cout << "encoder error " << error << ": " << lodepng_error_text(error) << std::endl;
-
 }

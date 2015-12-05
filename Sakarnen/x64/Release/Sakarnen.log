@@ -1,5 +1,5 @@
-﻿Build started 19/11/2015 16:55:52.
-     1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Sakarnen\Sakarnen.vcxproj" on node 2 (Build target(s)).
+﻿Build started 04/12/2015 19:20:36.
+     1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Sakarnen\Sakarnen.vcxproj" on node 3 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of moc_sakarnen.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are GeneratedFiles\Debug\moc_sakarnen.cpp, GeneratedFiles\Release\moc_sakarnen.cpp.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of moc_SettingsWidgetRight.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are GeneratedFiles\Debug\moc_SettingsWidgetRight.cpp, GeneratedFiles\Release\moc_SettingsWidgetRight.cpp.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of moc_Viewport2D.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are GeneratedFiles\Debug\moc_Viewport2D.cpp, GeneratedFiles\Release\moc_Viewport2D.cpp.
@@ -18,12 +18,9 @@
          x64\Release\SettingsWidgetRight.obj
          x64\Release\Viewport2D.obj
          x64\Release\ViewPortScrollArea.obj
-         Denoiser.lib(Image.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
-         Generating code
-         Finished generating code
-         Sakarnen.vcxproj -> C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Sakarnen.exe
-     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Sakarnen\Sakarnen.vcxproj" (Build target(s)).
+     1>LINK : fatal error LNK1181: cannot open input file 'Denoiser.lib'
+     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Sakarnen\Sakarnen.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:00.93
+Time Elapsed 00:00:00.21

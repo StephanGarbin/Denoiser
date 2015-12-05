@@ -10,10 +10,11 @@ namespace Denoise
 	class ImagePartitioner
 	{
 	public:
-		ImagePartitioner(const Image* image, const BM3DSettings& settings);
+		ImagePartitioner(const Image* image);
 		~ImagePartitioner();
 
-		void createPartitionScanlines(index_t numSegments, index_t& totalNumGeneratedBlocks);
+		void createPartitionScanlines(index_t numSegments, index_t& totalNumGeneratedBlocks,
+			index_t patchSize, index_t stepSizeRows, index_t stepSizeCols);
 
 		void createPartitionRectangles(index_t numSegments);
 
@@ -29,7 +30,6 @@ namespace Denoise
 		const Image* m_image;
 		std::vector<Rectangle> m_segments;
 		std::vector<index_t> m_startIndices;
-		BM3DSettings m_settings;
 	};
 }
 

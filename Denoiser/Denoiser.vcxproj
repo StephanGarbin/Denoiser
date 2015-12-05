@@ -47,9 +47,9 @@
     <UseIntelTBB>true</UseIntelTBB>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
     <UseIntelTBB>false</UseIntelTBB>
@@ -139,11 +139,11 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\;..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\openexr\include\OpenEXR;C:\Program Files\ilmbase\include\OpenEXR;..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\;..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FloatingPointModel>
       </FloatingPointModel>
@@ -153,8 +153,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-10.0\release\address-model-64\link-static\threading-multi\;..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64;..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64;%(AdditionalLibraryDirectories);$(CudaToolkitLibDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libboost_thread-vc100-mt-1_57.lib;libboost_timer-vc100-mt-1_57.lib;libboost_system-vc100-mt-1_57.lib;libboost_date_time-vc100-mt-1_57.lib;libboost_chrono-vc100-mt-1_57.lib;libfftw3-3.lib;libfftw3f-3.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\openexr\lib;C:\Program Files\ilmbase\lib;..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-10.0\release\address-model-64\link-static\threading-multi\;..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64;..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64;%(AdditionalLibraryDirectories);$(CudaToolkitLibDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Half.lib;IlmThread-2_2.lib;IlmImf-2_2.lib;libboost_thread-vc100-mt-1_57.lib;libboost_timer-vc100-mt-1_57.lib;libboost_system-vc100-mt-1_57.lib;libboost_date_time-vc100-mt-1_57.lib;libboost_chrono-vc100-mt-1_57.lib;libfftw3-3.lib;libfftw3f-3.lib;cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CudaCompile>
       <CodeGeneration>compute_30,sm_30</CodeGeneration>
@@ -175,6 +175,7 @@
     <ClCompile Include="BM3DWienerFunctor.cpp" />
     <ClCompile Include="BufferAggregator.cpp" />
     <ClCompile Include="ColourSpaceTransforms.cpp" />
+    <ClCompile Include="EXRIO.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageBlockProcessor.cpp" />
     <ClCompile Include="ImageBlockProcessorBOOST.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="NLMeansImageBlockProcessor.cpp" />
     <ClCompile Include="RangePartitioner.cpp" />
     <ClCompile Include="SortedPatchCollection.cpp" />
     <ClCompile Include="Statistics.cpp" />
@@ -205,6 +207,7 @@
     <ClInclude Include="ColourSpaceTransforms.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Dimension.h" />
+    <ClInclude Include="EXRIO.h" />
     <ClInclude Include="IDX2.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageBlockProcessor.h" />
@@ -215,6 +218,8 @@
     <ClInclude Include="ImagePartitioner.h" />
     <ClInclude Include="IntergralImageComputerTBB.h" />
     <ClInclude Include="lodepng.h" />
+    <ClInclude Include="NLMeansImageBlockProcessor.h" />
+    <ClInclude Include="NLMeansSettings.h" />
     <ClInclude Include="RangePartitioner.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="SortedPatchCollection.h" />

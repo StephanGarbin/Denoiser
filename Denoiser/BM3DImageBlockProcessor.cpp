@@ -76,12 +76,12 @@ namespace Denoise
 		blockMatchSettings.numThreadsIntegralImageComputation = m_settings.numThreadsBlockMatching;
 		blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching;
 
-		processor.computeNMostSimilar_PARALLEL(blockMatchSettings, m_settings, m_matchedBlocks);
+		processor.computeNMostSimilar(blockMatchSettings, m_matchedBlocks);
 	}
 
 	void BM3DImageBlockProcessor::process(const BM3DSettings& settings, bool processMatching)
 	{
-		//m_image->toColourSpace(Image::OPP);
+		m_image->toColourSpace(Image::OPP);
 
 
 		//lets remember last settings for future reference
@@ -113,9 +113,9 @@ namespace Denoise
 
 		std::cout << "Collaborative Done! " << std::endl;
 
-		m_imageBasic->checkImageIntegrity(true);
+		//m_imageBasic->checkImageIntegrity(true);
 
-		std::cout << "First Check..." << std::endl;
+		//std::cout << "First Check..." << std::endl;
 
 		//divide buffers
 		m_buffer.divideBuffers();
@@ -134,7 +134,7 @@ namespace Denoise
 
 		//m_imageBasic->clamp(m_image->minPixelValue(), m_image->maxPixelValue());
 
-		m_imageBasic->checkImageIntegrity(true);
+		//m_imageBasic->checkImageIntegrity(true);
 
 		if (!m_settings.disableWienerFilter)
 		{
@@ -157,16 +157,16 @@ namespace Denoise
 		}
 
 		//clamp final image to ensure we don't get any illegal values (especially for quantised images)
-		m_imageResult->clamp(m_image->minPixelValue(), m_image->maxPixelValue());
+		//m_imageResult->clamp(m_image->minPixelValue(), m_image->maxPixelValue());
 
 		//Mark the results as being in the same colour space as the orginal
-		//m_imageBasic->setColourSpace(m_image->colourSpace());
-		//m_imageResult->setColourSpace(m_image->colourSpace());
+		m_imageBasic->setColourSpace(m_image->colourSpace());
+		m_imageResult->setColourSpace(m_image->colourSpace());
 
 		//Transform if necessary
-		//m_image->toColourSpace(Image::RGB);
-		//m_imageBasic->toColourSpace(Image::RGB);
-		//m_imageResult->toColourSpace(Image::RGB);
+		m_image->toColourSpace(Image::RGB);
+		m_imageBasic->toColourSpace(Image::RGB);
+		m_imageResult->toColourSpace(Image::RGB);
 
 		std::cout << "Done!" << std::endl;
 	}

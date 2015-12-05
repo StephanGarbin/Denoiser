@@ -103,8 +103,19 @@ SettingsWidgetRight::SettingsWidgetRight(QWidget* parent) : QDockWidget(parent)
 	m_generalWidget->setLayout(m_generalLayout);
 
 	this->setWidget(m_generalWidget);
+
+	setupUI();
 }
 
+void SettingsWidgetRight::setupUI()
+{
+
+}
+
+void SettingsWidgetRight::setOptions2Defaults()
+{
+
+}
 
 SettingsWidgetRight::~SettingsWidgetRight()
 {

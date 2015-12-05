@@ -84,6 +84,54 @@ namespace Denoise
 		delete[] averagePatch;
 	}
 
+	void setBlockToAverage(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels)
+	{
+		index_t totalSize = sqr(patchSize) * numPatches;
+		DOMAIN_FORMAT* averagePatch = new DOMAIN_FORMAT[sqr(patchSize)];
+
+		for (index_t c = 0; c < numChannels; ++c)
+		{
+			index_t colourOffset = c * totalSize;
+
+			for (index_t i = 0; i < sqr(patchSize); ++i)
+			{
+				averagePatch[i] = 0.0f;
+			}
+
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t i = 0; i < sqr(patchSize); ++i)
+				{
+					averagePatch[i] += block[colourOffset + patch * sqr(patchSize) + i];
+				}
+			}
+
+			for (index_t i = 0; i < sqr(patchSize); ++i)
+			{
+				averagePatch[i] /= (DOMAIN_FORMAT)numPatches;
+			}
+
+			float averageValue = 0.0f;
+			for (index_t i = 0; i < sqr(patchSize); ++i)
+			{
+				averageValue += averagePatch[i];
+			}
+
+			averageValue /= (float)sqr(patchSize);
+
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t i = 0; i < sqr(patchSize); ++i)
+				{
+					block[colourOffset + patch * sqr(patchSize) + i] = averageValue;
+				}
+			}
+
+		}
+		delete[] averagePatch;
+	}
+
+
 	void calculateBlockMeans(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels,
 		DOMAIN_FORMAT* means)
 	{

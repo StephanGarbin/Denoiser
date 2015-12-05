@@ -18,9 +18,15 @@ public:
 	SettingsWidgetRight(QWidget* parent = nullptr);
 	~SettingsWidgetRight();
 
-
+private slots:
+	void previewChanged(bool enabled) { if (enabled){ m_bm3dSettings.previewQuality(); } else { m_bm3dSettings.productionQuality(); } }
+	void smoothUniformChanged(bool enabled) { m_bm3dSettings.averageBlocksBasedOnStdWiener = enabled; }
+	void adaptivityChanges(bool enabled) { }
 
 private:
+	void setupUI();
+	void setOptions2Defaults();
+
 	Denoise::BM3DSettings m_bm3dSettings;
 	
 	QWidget* m_generalWidget;
@@ -67,8 +73,6 @@ private:
 	QLabel* m_artisticLuminanceAdaptivityScaleLabel;
 
 	//Technical Controls
-	QDoubleSpinBox* m_technicalNumThreads;
-	QDoubleSpinBox* m_technicalNumPatchesCollaborative;
-	QDoubleSpinBox* m_technicalNumPatchesWiener;
+	QDoubleSpinBox* m_technicalMaxNumThreads;
 };
 

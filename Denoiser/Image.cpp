@@ -7,17 +7,38 @@
 
 #include <boost/math/special_functions/fpclassify.hpp>
 
+//OpenEXR
+#include <ImfInputFile.h>
+#include <ImfOutputFile.h>
+#include <ImfChannelList.h>
+#include <ImfArray.h>
+
+#include "lodepng.h"
+#include "EXRIO.h"
+
 #include "common.h"
+
 namespace Denoise
 {
+	struct IMFDATA
+	{
+		Imf::Array2D<float> rPixels;
+		Imf::Array2D<float> gPixels;
+		Imf::Array2D<float> bPixels;
+		Imf::Array2D<float> aPixels;
+		int width; int height;
+		Imath::Box2i dataWindow;
+		Imath::Box2i displayWindow;
+	};
 
 	Image::Image()
 	{
-
+		m_ImfData = new IMFDATA();
 	}
 
 	Image::Image(const Dimension& imageDimension, index_t format)
 	{
+		m_ImfData = new IMFDATA();
 		initialise(imageDimension, format);
 	}
 
@@ -51,6 +72,12 @@ namespace Denoise
 
 		m_colourSpaceTransform = new ColourSpaceTransforms(this);
 		m_colourSpace = other.m_colourSpace;
+
+		m_ImfData = new IMFDATA();
+		m_ImfData->dataWindow = other.m_ImfData->dataWindow;
+		m_ImfData->displayWindow = other.m_ImfData->displayWindow;
+		m_ImfData->width = other.m_ImfData->width;
+		m_ImfData->height = other.m_ImfData->height;
 	}
 
 
@@ -62,6 +89,7 @@ namespace Denoise
 		}
 
 		delete m_colourSpaceTransform;
+		delete m_ImfData;
 	}
 
 	void Image::initialiseFromEmpty(const Dimension& imageDimension, index_t format)
@@ -71,26 +99,26 @@ namespace Denoise
 
 	void Image::initialise(const Dimension& imageDimension, index_t format)
 	{
-			m_actualImageDim = imageDimension;
-			m_fullImageDim = imageDimension;
-			m_numChannels = format;
-			m_format = format;
+		m_actualImageDim = imageDimension;
+		m_fullImageDim = imageDimension;
+		m_numChannels = format;
+		m_format = format;
 
-			m_isNormalised = false;
-			m_verbosityLevel = 3;
-			m_accessingFullImage = false;
-			m_isPadded = false;
+		m_isNormalised = false;
+		m_verbosityLevel = 3;
+		m_accessingFullImage = false;
+		m_isPadded = false;
 
-			//resize internal arrays
-			m_pixelData.resize(format + 1);
-			for (index_t c = 0; c < m_pixelData.size(); ++c)
-			{
-				m_pixelData[c] = new float[imageDimension.width * imageDimension.height];
-			}
-
-			m_normalisationValue = 1.0f;
-			m_colourSpaceTransform = new ColourSpaceTransforms(this);
+		//resize internal arrays
+		m_pixelData.resize(format + 1);
+		for (index_t c = 0; c < m_pixelData.size(); ++c)
+		{
+			m_pixelData[c] = new float[imageDimension.width * imageDimension.height];
 		}
+
+		m_normalisationValue = 1.0f;
+		m_colourSpaceTransform = new ColourSpaceTransforms(this);
+	}
 
 	bool Image::padImage(Padding& padAmount, bool blackOutside)
 	{
@@ -848,6 +876,184 @@ namespace Denoise
 		default:
 			printError("Colour Space Transform failed - unknown argument!");
 			break;
+		}
+	}
+
+	bool Image::readFromPNG(const std::string& file)
+	{
+		std::vector<unsigned char> png;
+		std::vector<unsigned char> rawImage; //the raw pixels
+		unsigned width, height;
+
+		//load and decode
+		lodepng::load_file(png, file);
+		unsigned error = lodepng::decode(rawImage, width, height, png);
+
+		//Handle errors
+		if (error)
+		{
+			std::cout << "Decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
+			std::cout << "Could not read [ " << file << " ].";
+			return false;
+		}
+		
+
+		Denoise::Dimension dim(width, height);
+		
+		initialise(dim, Denoise::Image::FLOAT_4);
+
+		for (index_t i = 0; i < rawImage.size(); i += 4)
+		{
+			for (index_t c = 0; c < 4; ++c)
+			{
+				setPixel(c, i / 4, (float)rawImage[i + c]);
+			}
+		}
+
+		return true;
+	}
+	
+	bool Image::save2PNG(const std::string& file)
+	{
+		std::vector<unsigned char> png;
+
+		std::vector<unsigned char> rawImage;
+		rawImage.resize(width() * height() * 4);
+
+		for (index_t row = 0; row < height(); ++row)
+		{
+			for (index_t col = 0; col < width(); ++col)
+			{
+				for (index_t c = 0; c < 4; ++c)
+				{
+					index_t i = (row * width() + col) * 4;
+
+					if (getPixel(c, row, col) > 0)
+					{
+						rawImage[i + c] = (unsigned char)getPixel(c, row, col);
+					}
+					else
+					{
+						rawImage[i + c] = 0;
+					}
+				}
+			}
+		}
+
+		unsigned error = lodepng::encode(png, rawImage, width(), height());
+
+		if (!error)
+		{
+			lodepng::save_file(png, file);
+		}
+		else
+		{
+			std::cout << "encoder error " << error << ": " << lodepng_error_text(error) << std::endl;
+			std::cout << "Could not write [ " << file << " ].";
+			return false;
+		}
+
+		return true;
+	}
+
+	bool Image::readFromEXR(const std::string& file)
+	{
+		EXRIO::readEXR(file, m_ImfData->rPixels, m_ImfData->gPixels,
+			m_ImfData->bPixels, m_ImfData->aPixels, m_ImfData->width,
+			m_ImfData->height, m_ImfData->dataWindow,
+			m_ImfData->displayWindow);
+
+		//Now transfer pixel values to the image
+		Denoise::Dimension dim(m_ImfData->width, m_ImfData->height);
+
+		initialise(dim, Denoise::Image::FLOAT_4);
+
+		for (index_t row = 0; row < m_ImfData->height; ++row)
+		{
+			for (index_t col = 0; col < m_ImfData->width; ++col)
+			{
+				setPixel(0, row, col, m_ImfData->rPixels[row][col]);
+				setPixel(1, row, col, m_ImfData->gPixels[row][col]);
+				setPixel(2, row, col, m_ImfData->bPixels[row][col]);
+				setPixel(3, row, col, m_ImfData->aPixels[row][col]);
+			}
+		}
+
+		m_ImfData->rPixels.resizeErase(0, 0);
+		m_ImfData->gPixels.resizeErase(0, 0);
+		m_ImfData->bPixels.resizeErase(0, 0);
+		m_ImfData->aPixels.resizeErase(0, 0);
+
+		return true;
+	}
+	
+	bool Image::save2EXR(const std::string& file)
+	{
+		m_ImfData->rPixels.resizeErase(height(), width());
+		m_ImfData->gPixels.resizeErase(height(), width());
+		m_ImfData->bPixels.resizeErase(height(), width());
+		m_ImfData->aPixels.resizeErase(height(), width());
+
+		for (index_t row = 0; row < height(); ++row)
+		{
+			for (index_t col = 0; col < width(); ++col)
+			{
+				m_ImfData->rPixels[row][col] = getPixel(0, row, col);
+				m_ImfData->gPixels[row][col] = getPixel(1, row, col);
+				m_ImfData->bPixels[row][col] = getPixel(2, row, col);
+				m_ImfData->aPixels[row][col] = getPixel(3, row, col);
+				//std::cout << getPixel(0, row, col) << " ";
+			}
+			//std::cout << std::endl;
+		}
+
+		EXRIO::writeEXR(file, m_ImfData->rPixels, m_ImfData->gPixels,
+			m_ImfData->bPixels, m_ImfData->aPixels, m_ImfData->dataWindow,
+			m_ImfData->displayWindow);
+
+		
+		return true;
+	}
+
+	bool Image::readFromFile(const std::string& file)
+	{
+		std::string fExtension;
+
+		fExtension = file.substr(file.find_last_of(".") + 1);
+
+		if (fExtension == "png")
+		{
+			return readFromPNG(file);
+		}
+		else if (fExtension == "exr")
+		{
+			return readFromEXR(file);
+		}
+		else
+		{
+			std::cout << "ERROR: Unrecognised File format [ " << fExtension << " ]" << std::endl;
+			return false;
+		}
+	}
+
+	bool Image::save2File(const std::string& file)
+	{
+		std::string fExtension;
+
+		fExtension = file.substr(file.find_last_of(".") + 1);
+
+		if (fExtension == "png")
+		{
+			save2PNG(file);
+		}
+		else if (fExtension == "exr")
+		{
+			save2EXR(file);
+		}
+		else
+		{
+			std::cout << "ERROR: Unrecognised File format [ " << fExtension << " ]" << std::endl;
+			return false;
 		}
 	}
 }

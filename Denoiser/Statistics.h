@@ -7,7 +7,9 @@
 namespace Denoise
 {
 	DOMAIN_FORMAT calculateBlockVariance(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels);
+
 	void setBlockToAveragePatch(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels);
+	void setBlockToAverage(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels);
 
 	void calculateBlockMeans(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels,
 		DOMAIN_FORMAT* means);

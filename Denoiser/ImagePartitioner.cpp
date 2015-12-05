@@ -6,8 +6,8 @@
 namespace Denoise
 {
 
-	ImagePartitioner::ImagePartitioner(const Image* image, const BM3DSettings& settings)
-		: m_image(image), m_settings(settings)
+	ImagePartitioner::ImagePartitioner(const Image* image)
+		: m_image(image)
 	{
 
 	}
@@ -19,15 +19,16 @@ namespace Denoise
 		m_startIndices.clear();
 	}
 
-	void ImagePartitioner::createPartitionScanlines(index_t numSegments, index_t& totalNumGeneratedBlocks)
+	void ImagePartitioner::createPartitionScanlines(index_t numSegments, index_t& totalNumGeneratedBlocks,
+		index_t patchSize, index_t stepSizeRows, index_t stepSizeCols)
 	{
 		m_segments.resize(numSegments);
 		m_startIndices.resize(numSegments + 1);
 
-		ImagePatch patchTemplate(0, 0, m_settings.patchSize, m_settings.patchSize);
+		ImagePatch patchTemplate(0, 0, patchSize, patchSize);
 
-		index_t scaledHeight = m_image->height() / m_settings.stepSizeRows;
-		index_t scaledWidth = m_image->width() / m_settings.stepSizeCols;
+		index_t scaledHeight = m_image->height() / stepSizeRows;
+		index_t scaledWidth = m_image->width() / stepSizeCols;
 
 		index_t scaledScanLineHeight = std::ceil((float)scaledHeight / (float)numSegments);
 
@@ -39,8 +40,8 @@ namespace Denoise
 			index_t scaledStart = t * scaledScanLineHeight;
 			index_t scaledEnd = (t + 1) * scaledScanLineHeight;
 
-			index_t start = scaledStart * m_settings.stepSizeRows;
-			index_t end = std::min<index_t>(scaledEnd * m_settings.stepSizeRows, m_image->height());
+			index_t start = scaledStart * stepSizeRows;
+			index_t end = std::min<index_t>(scaledEnd * stepSizeRows, m_image->height());
 
 
 			m_segments[t] = Rectangle(0, m_image->width(), end, start);

@@ -11,6 +11,8 @@
 
 namespace Denoise
 {
+	struct IMFDATA;
+
 	struct Padding
 	{
 		index_t left;
@@ -70,6 +72,10 @@ namespace Denoise
 
 		//Statistics
 		float pixelMean(index_t channel, bool ignoreZeroPixelValues);
+
+		//IO
+		bool readFromFile(const std::string& file);
+		bool save2File(const std::string& file);
 
 		//Misceallaneous Functions
 		float maxPixelValue() const;
@@ -149,6 +155,14 @@ namespace Denoise
 		//Colour
 		ColourSpaceTransforms* m_colourSpaceTransform;
 		index_t m_colourSpace;
+
+		//IO
+		bool readFromPNG(const std::string& file);
+		bool save2PNG(const std::string& file);
+		bool readFromEXR(const std::string& file);
+		bool save2EXR(const std::string& file);
+
+		IMFDATA* m_ImfData;
 
 		void generateColourSpaceTransformationMatrices(index_t space);
 	};

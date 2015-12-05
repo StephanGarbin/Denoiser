@@ -87,6 +87,12 @@
     <ClCompile Include="ImageBlockProcessorBOOST.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NLMeansImageBlockProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EXRIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Image.h">
@@ -180,6 +186,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TRANSFORM_DOMAIN_FORMATS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NLMeansImageBlockProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NLMeansSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EXRIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
