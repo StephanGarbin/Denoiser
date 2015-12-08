@@ -1,20 +1,160 @@
-﻿Build started 16/09/2015 22:29:20.
-     1>Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
+﻿Build started 06/12/2015 23:24:40.
+     1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt BlockMatchingComputerTBB.cpp BM3DCollaborativeFilterKernel.cpp BM3DCollaborativeFunctor.cpp BM3DImageBlockProcessor.cpp BM3DImageBlockProcessorBOOST.cpp BM3DImageBlockProcessorFunctions.cpp BM3DParallelFunctions.cpp BM3DWienerFilterKernel.cpp BM3DWienerFunctor.cpp BufferAggregator.cpp ColourSpaceTransforms.cpp EXRIO.cpp Image.cpp ImageBlockProcessor.cpp ImageBlockProcessorBOOST.cpp ImageBlockProcessorFunctions.cpp ImagePartitioner.cpp ImagePatch.h IntergralImageComputerTBB.cpp lodepng.cpp main.cpp NLMeansImageBlockProcessor.cpp RangePartitioner.cpp SortedPatchCollection.cpp Statistics.cpp
+         Statistics.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\transform_domain_formats.h(3): fatal error C1083: Cannot open include file: 'fftw3.h': No such file or directory
+         SortedPatchCollection.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\sortedpatchcollection.cpp(49): warning C4018: '>' : signed/unsigned mismatch
+         RangePartitioner.cpp
+         NLMeansImageBlockProcessor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\definitions.h(3): fatal error C1083: Cannot open include file: 'boost\thread\mutex.hpp': No such file or directory
          main.cpp
-     1>s:\users\stephan\documents\github\denoiser\denoiser\main.cpp(65): warning C4018: '<' : signed/unsigned mismatch
-     1>s:\users\stephan\documents\github\denoiser\denoiser\main.cpp(85): warning C4018: '<' : signed/unsigned mismatch
-     1>s:\users\stephan\documents\github\denoiser\denoiser\main.cpp(92): warning C4018: '<' : signed/unsigned mismatch
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"S:\Users\Stephan\Documents\GitHub\Denoiser\Debug\Denoiser.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"S:\Users\Stephan\Documents\GitHub\Denoiser\Debug\Denoiser.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"S:\Users\Stephan\Documents\GitHub\Denoiser\Debug\Denoiser.lib" /MACHINE:X86 Debug\Image.obj
-         Debug\ImageBlockProcessor.obj
-         Debug\ImagePatch.obj
-         Debug\lodepng.obj
-         Debug\main.obj
-         Denoiser.vcxproj -> S:\Users\Stephan\Documents\GitHub\Denoiser\Debug\Denoiser.exe
-     1>Done Building Project "S:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\definitions.h(3): fatal error C1083: Cannot open include file: 'boost\thread\mutex.hpp': No such file or directory
+         lodepng.cpp
+         IntergralImageComputerTBB.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.h(130): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.h(150): warning C4018: '>' : signed/unsigned mismatch
+         ImagePatch.h
+         ImagePartitioner.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imagepartitioner.cpp(33): warning C4244: 'initializing' : conversion from 'float' to 'unsigned int', possible loss of data
+         ImageBlockProcessorFunctions.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.h(130): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.h(150): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(28): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(36): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(91): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(111): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(136): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(149): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(169): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(194): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(206): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(231): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(248): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(253): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(278): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(294): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(299): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(322): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(332): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(337): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(360): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(416): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(437): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(468): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(481): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(501): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(524): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(532): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(577): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(585): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(655): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.cpp(657): warning C4018: '<' : signed/unsigned mismatch
+         ImageBlockProcessorBOOST.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+         ImageBlockProcessor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessor.cpp(7): fatal error C1083: Cannot open include file: 'boost/thread.hpp': No such file or directory
+         Image.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.cpp(8): fatal error C1083: Cannot open include file: 'boost/math/special_functions/fpclassify.hpp': No such file or directory
+         EXRIO.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\exrio.h(4): fatal error C1083: Cannot open include file: 'ImfInputFile.h': No such file or directory
+         ColourSpaceTransforms.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(78): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(79): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(80): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(99): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(105): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(111): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(122): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(123): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(124): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(128): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(129): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(130): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(134): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(135): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(136): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(142): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(143): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(148): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(149): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(154): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(155): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(166): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(167): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(168): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(172): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(173): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(179): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(180): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(186): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(187): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(192): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(193): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(198): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(199): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(234): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(236): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(260): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\colourspacetransforms.cpp(262): warning C4018: '<' : signed/unsigned mismatch
+         BufferAggregator.cpp
+         BM3DWienerFunctor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\definitions.h(3): fatal error C1083: Cannot open include file: 'boost\thread\mutex.hpp': No such file or directory
+         BM3DWienerFilterKernel.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\transform_domain_formats.h(3): fatal error C1083: Cannot open include file: 'fftw3.h': No such file or directory
+         BM3DParallelFunctions.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\definitions.h(3): fatal error C1083: Cannot open include file: 'boost\thread\mutex.hpp': No such file or directory
+         BM3DImageBlockProcessorFunctions.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.h(130): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.h(150): warning C4018: '>' : signed/unsigned mismatch
+         Generating Code...
+         Compiling...
+         BM3DImageBlockProcessorBOOST.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\definitions.h(3): fatal error C1083: Cannot open include file: 'boost\thread\mutex.hpp': No such file or directory
+         BM3DImageBlockProcessor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\definitions.h(3): fatal error C1083: Cannot open include file: 'boost\thread\mutex.hpp': No such file or directory
+         BM3DCollaborativeFunctor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\definitions.h(3): fatal error C1083: Cannot open include file: 'boost\thread\mutex.hpp': No such file or directory
+         BM3DCollaborativeFilterKernel.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\transform_domain_formats.h(3): fatal error C1083: Cannot open include file: 'fftw3.h': No such file or directory
+         BlockMatchingComputerTBB.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.h(130): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\imageblockprocessorfunctions.h(150): warning C4018: '>' : signed/unsigned mismatch
+         Generating Code...
+     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:01.04
+Time Elapsed 00:00:13.16

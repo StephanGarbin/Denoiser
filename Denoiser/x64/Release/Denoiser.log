@@ -1,16 +1,22 @@
-﻿Build started 05/12/2015 12:26:35.
+﻿Build started 07/12/2015 00:25:10.
      1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\openexr\include\OpenEXR" /I"C:\Program Files\ilmbase\include\OpenEXR" /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt BM3DWienerFunctor.cpp
-         BM3DWienerFunctor.cpp
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\openexr\include\OpenEXR" /I"C:\Program Files\ilmbase\include\OpenEXR" /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt BM3DCollaborativeFilterKernel.cpp BM3DWienerFilterKernel.cpp
+         BM3DCollaborativeFilterKernel.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>BM3DCollaborativeFilterKernel.cpp(214): warning C4244: 'argument' : conversion from 'Denoise::DOMAIN_FORMAT' to 'float', possible loss of data
+     1>BM3DCollaborativeFilterKernel.cpp(344): warning C4244: 'argument' : conversion from 'Denoise::DOMAIN_FORMAT' to 'float', possible loss of data
+         BM3DWienerFilterKernel.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\openexr\include\OpenEXR" /I"C:\Program Files\ilmbase\include\OpenEXR" /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt main.cpp
+         main.cpp
      1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
      1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>BM3DWienerFunctor.cpp(113): warning C4018: '<' : signed/unsigned mismatch
-     1>BM3DWienerFunctor.cpp(115): warning C4018: '<' : signed/unsigned mismatch
-     1>BM3DWienerFunctor.cpp(123): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>BM3DWienerFunctor.cpp(123): warning C4244: 'argument' : conversion from 'float' to 'unsigned int', possible loss of data
+     1>main.cpp(31): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
        Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files\openexr\lib" /LIBPATH:"C:\Program Files\ilmbase\lib" /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-10.0\release\address-model-64\link-static\threading-multi\\" /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" Half.lib "IlmThread-2_2.lib" "IlmImf-2_2.lib" "libboost_thread-vc100-mt-1_57.lib" "libboost_timer-vc100-mt-1_57.lib" "libboost_system-vc100-mt-1_57.lib" "libboost_date_time-vc100-mt-1_57.lib" "libboost_chrono-vc100-mt-1_57.lib" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Release\Denoiser.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\BlockMatchingComputerTBB.obj
          x64\Release\BM3DCollaborativeFilterKernel.obj
@@ -52,4 +58,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:10.57
+Time Elapsed 00:00:14.40

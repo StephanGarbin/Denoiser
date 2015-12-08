@@ -119,7 +119,8 @@ namespace Denoise
 
 			averageValue /= (float)sqr(patchSize);
 
-			for (index_t patch = 0; patch < numPatches; ++patch)
+			index_t patch = 0;
+			//for (index_t patch = 0; patch < numPatches; ++patch)
 			{
 				for (index_t i = 0; i < sqr(patchSize); ++i)
 				{

@@ -56,6 +56,8 @@ namespace Denoise
 				continue;
 			}
 
+			bool onlyProcessFirstPatch = false;
+
 			if (m_settings.averageBlocksBasedOnStdWiener)
 			{
 				DOMAIN_FORMAT blockStd = std::sqrt(calculateBlockVariance(estimateImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels()));
@@ -71,7 +73,10 @@ namespace Denoise
 
 				if (blockStd < meanStdDeviation * m_settings.averageBlocksBasedOnStdFactor)
 				{
-					setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels());
+					//setBlockToAveragePatch(rawImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels());
+					setBlockToAverage(rawImageBlock, m_settings.numPatchesPerBlockWiener, m_settings.patchSize, m_image->numChannels());
+					
+					onlyProcessFirstPatch = true;
 
 					for (index_t channel = 0; channel < weights.size(); ++channel)
 					{
@@ -110,6 +115,11 @@ namespace Denoise
 				{
 					for (index_t depth = 0; depth < numValidPatches; ++depth)
 					{
+						if (onlyProcessFirstPatch && depth > 0)
+						{
+							break;
+						}
+
 						for (index_t patchRow = 0; patchRow < m_patchTemplate.height; ++patchRow)
 						{
 							for (index_t patchCol = 0; patchCol < m_patchTemplate.width; ++patchCol)

@@ -51,6 +51,7 @@ namespace Denoise
 
 			if (i == m_scanlines.size() - 1)
 			{
+				std::cout << "TOP Element!" << std::endl;
 				localInternalSettings.iterateAtBorders = true;
 			}
 			else

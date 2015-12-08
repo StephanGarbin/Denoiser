@@ -59,17 +59,17 @@ namespace Denoise
 			}
 			else
 			{
-				stepSizeCols = 3;
-				stepSizeRows = 3;
-				searchWindowSize = 32;
+				stepSizeCols = 2;
+				stepSizeRows = 2;
+				searchWindowSize = 16;
 				numPatchesPerBlockCollaborative = 16;
 				numPatchesPerBlockWiener = 32;
 			}
 
 			//Block Matching
-			templateMatchingMaxAllowedPatchDistance = 2.5f;
+			templateMatchingMaxAllowedPatchDistance = 1.5f;
 			templateMatchingNorm = 2;
-			templateMatchingNumChannels = 1;
+			templateMatchingNumChannels = 3;
 
 			patchSize = 8;
 
