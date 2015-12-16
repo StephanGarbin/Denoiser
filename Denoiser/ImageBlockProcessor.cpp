@@ -53,6 +53,11 @@ namespace Denoise
 			matchedBlocksSorted.push_back(SortedPatchCollection(settings.maxSimilar));
 		}
 
+		if (matchedBlocks.size() < matchedBlocksSorted.size())
+		{
+			matchedBlocks.resize(matchedBlocksSorted.size());
+		}
+
 		//do block matching
 		int halfWindowSizeRows = settings.windowSizeRows / 2;
 		int halfWindowSizeCols = settings.windowSizeCols / 2;

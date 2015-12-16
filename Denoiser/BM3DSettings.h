@@ -59,15 +59,15 @@ namespace Denoise
 			}
 			else
 			{
-				stepSizeCols = 2;
-				stepSizeRows = 2;
+				stepSizeCols = 3;
+				stepSizeRows = 3;
 				searchWindowSize = 16;
 				numPatchesPerBlockCollaborative = 16;
 				numPatchesPerBlockWiener = 32;
 			}
 
 			//Block Matching
-			templateMatchingMaxAllowedPatchDistance = 1.5f;
+			templateMatchingMaxAllowedPatchDistance = 1.0f;
 			templateMatchingNorm = 2;
 			templateMatchingNumChannels = 3;
 
@@ -91,8 +91,8 @@ namespace Denoise
 
 		void enableBlockStatisticalAveraging(float factor)
 		{
-			averageBlocksBasedOnStdCollaborative = false;
-			averageBlocksBasedOnStdWiener = true;
+			averageBlocksBasedOnStdCollaborative = true;
+			averageBlocksBasedOnStdWiener = false;
 			averageBlocksBasedOnStdFactor = factor;
 		}
 

@@ -1,15 +1,6 @@
-﻿Build started 07/12/2015 00:25:10.
+﻿Build started 15/12/2015 23:39:30.
      1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\openexr\include\OpenEXR" /I"C:\Program Files\ilmbase\include\OpenEXR" /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt BM3DCollaborativeFilterKernel.cpp BM3DWienerFilterKernel.cpp
-         BM3DCollaborativeFilterKernel.cpp
-     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>BM3DCollaborativeFilterKernel.cpp(214): warning C4244: 'argument' : conversion from 'Denoise::DOMAIN_FORMAT' to 'float', possible loss of data
-     1>BM3DCollaborativeFilterKernel.cpp(344): warning C4244: 'argument' : conversion from 'Denoise::DOMAIN_FORMAT' to 'float', possible loss of data
-         BM3DWienerFilterKernel.cpp
-     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\openexr\include\OpenEXR" /I"C:\Program Files\ilmbase\include\OpenEXR" /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt main.cpp
          main.cpp
      1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
@@ -58,4 +49,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:14.40
+Time Elapsed 00:00:09.69

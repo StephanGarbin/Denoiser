@@ -49,8 +49,8 @@ namespace Denoise
 
 		Rectangle matchRegion(0, image->width(), image->height(), 0);
 
-		m_matchedBlocks.resize((matchRegion.width() / m_settings.stepSizeCols + 1)
-			* (matchRegion.height() / m_settings.stepSizeRows + 1));
+		//m_matchedBlocks.resize((matchRegion.width() / m_settings.stepSizeCols + 1)
+		//	* (matchRegion.height() / m_settings.stepSizeRows + 1));
 
 		ImageBlockProcessor processor(*m_image);
 

@@ -213,7 +213,8 @@ namespace Denoise
 
 	DOMAIN_FORMAT calculateMeanAdaptiveFactor(DOMAIN_FORMAT stdDeviaton, DOMAIN_FORMAT mean, DOMAIN_FORMAT scaling, DOMAIN_FORMAT power)
 	{
-		return 1.0f + std::pow(mean, power) * scaling;
+		return std::exp(1.0f + mean) * scaling;
+		//return 1.0f + mean * scaling;
 		//return 1.0f / 3.0f + (mean / 3.0f) * scaling;
 	}
 }

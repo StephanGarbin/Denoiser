@@ -447,6 +447,9 @@ namespace Denoise
 				continue;
 			}
 
+			//++blockRow;
+			//++blockRow;
+
 			if (row != settings.imageBlock.top - settings.templatePatch.height)
 			{
 				row = settings.imageBlock.top - settings.templatePatch.height;
@@ -476,7 +479,7 @@ namespace Denoise
 					if (distance <= (double)settings.maxDistance)
 					{
 						matchedBlocksSorted[blockRow
-							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+							* settingsInternal.blockWidth
 							+ blockCol].insertPatch(
 							IDX2(row + localSettings.shiftRows, col + localSettings.shiftCols, distance));
 					}
@@ -496,7 +499,7 @@ namespace Denoise
 					if (distance <= (double)settings.maxDistance)
 					{
 						matchedBlocksSorted[blockRow
-							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
+							* settingsInternal.blockWidth
 							+ blockCol].insertPatch(
 							IDX2(row + localSettings.shiftRows, col + localSettings.shiftCols, distance));
 					}

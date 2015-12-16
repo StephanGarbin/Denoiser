@@ -58,9 +58,9 @@ int main(int argc, char* argv[])
 
 	bm3dFilterSettings.init2defaults(smoothness, false);
 	bm3dFilterSettings.limitHardwareConcurrency(numThreadsBM);
-	//bm3dFilterSettings.enableBlockStatisticalAveraging(0.35f);
+	bm3dFilterSettings.enableBlockStatisticalAveraging(0.35f);
 
-	//bm3dFilterSettings.enableMeanAdaptiveThresholding(1.0f, 3.0f);
+	//bm3dFilterSettings.enableMeanAdaptiveThresholding(1.0f, 12.0f);
 
 	bm3dFilter.process(bm3dFilterSettings, true);
 
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 	basic.setAlphaToOne();
 	result.setAlphaToOne();
 
-	basic.save2File(outputFile);
+	result.save2File(outputFile);
 
 	delete image;
 }
