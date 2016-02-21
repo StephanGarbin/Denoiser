@@ -147,6 +147,7 @@
       <Optimization>Full</Optimization>
       <FloatingPointModel>
       </FloatingPointModel>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -162,14 +163,20 @@
     <PostBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)..\x64\Release\*.lib" "C:\Users\Stephan\.nuke"</Command>
     </PostBuildEvent>
+    <Bscmake>
+      <PreserveSBR>true</PreserveSBR>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlockMatchingComputerTBB.cpp" />
     <ClCompile Include="BM3DCollaborativeFilterKernel.cpp" />
     <ClCompile Include="BM3DCollaborativeFunctor.cpp" />
+    <ClCompile Include="BM3DCollaborativeFunctorNN.cpp" />
     <ClCompile Include="BM3DImageBlockProcessor.cpp" />
     <ClCompile Include="BM3DImageBlockProcessorBOOST.cpp" />
     <ClCompile Include="BM3DImageBlockProcessorFunctions.cpp" />
+    <ClCompile Include="BM3DImageBlockProcessorNN.cpp" />
+    <ClCompile Include="BM3DImageBlockProcessorNNBOOST.cpp" />
     <ClCompile Include="BM3DParallelFunctions.cpp" />
     <ClCompile Include="BM3DWienerFilterKernel.cpp" />
     <ClCompile Include="BM3DWienerFunctor.cpp" />
@@ -196,9 +203,12 @@
     <ClInclude Include="BlockMatchingComputerTBB.h" />
     <ClInclude Include="BM3DCollaborativeFilterKernel.h" />
     <ClInclude Include="BM3DCollaborativeFunctor.h" />
+    <ClInclude Include="BM3DCollaborativeFunctorNN.h" />
     <ClInclude Include="BM3DImageBlockProcessor.h" />
     <ClInclude Include="BM3DImageBlockProcessorBOOST.h" />
     <ClInclude Include="BM3DImageBlockProcessorFunctions.h" />
+    <ClInclude Include="BM3DImageBlockProcessorNN.h" />
+    <ClInclude Include="BM3DImageBlockProcessorNNBOOST.h" />
     <ClInclude Include="BM3DParallelFunctions.h" />
     <ClInclude Include="BM3DSettings.h" />
     <ClInclude Include="BM3DWienerFilterKernel.h" />

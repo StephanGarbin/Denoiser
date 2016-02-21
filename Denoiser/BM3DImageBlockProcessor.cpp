@@ -30,7 +30,7 @@ namespace Denoise
 
 	BM3DImageBlockProcessor::BM3DImageBlockProcessor(Image* image, Image* imageBasic, Image* imageResult)
 		: m_image(image), m_imageBasic(imageBasic), m_imageResult(imageResult),
-		m_buffer(image->fullDimension(), image->numChannels())
+		m_buffer(image->fullDimension(), image->numChannels(), 1)
 	{
 		m_blockMatchingProcessed = false;
 	}
@@ -75,6 +75,9 @@ namespace Denoise
 		blockMatchSettings.matchedBlocksAlreadyComputed = 0;
 		blockMatchSettings.numThreadsIntegralImageComputation = m_settings.numThreadsBlockMatching;
 		blockMatchSettings.numThreadsBlockMatching = m_settings.numThreadsBlockMatching;
+
+		blockMatchSettings.useReferencePatchAdaptiveDistance = false;
+		blockMatchSettings.referencePatchDistanceFactor = 0.000001f;
 
 		processor.computeNMostSimilar(blockMatchSettings, m_matchedBlocks);
 	}

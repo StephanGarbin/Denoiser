@@ -67,7 +67,7 @@ namespace Denoise
 			}
 
 			//Block Matching
-			templateMatchingMaxAllowedPatchDistance = 1.0f;
+			templateMatchingMaxAllowedPatchDistance = 0.01f;
 			templateMatchingNorm = 2;
 			templateMatchingNumChannels = 3;
 

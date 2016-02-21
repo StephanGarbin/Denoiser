@@ -23,6 +23,11 @@ namespace Denoise
 		void processCollaborativeFilterMeanAdaptive(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
 			std::vector<DOMAIN_FORMAT>& blockWeight, const std::vector<float>& stdDeviation);
 
+		//This version of the kernel saves/writes (unmodified) frequency representation of the block in the desination buffer
+		void processCollaborativeFilterFrequencyData(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
+			std::vector<DOMAIN_FORMAT>& blockWeight, const std::vector<float>& stdDeviation,
+			float* destination, index_t destinationIdx, bool save2Buffer);
+
 
 	private:
 		void initForwardTransforms();

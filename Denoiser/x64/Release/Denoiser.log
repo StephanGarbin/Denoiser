@@ -1,52 +1,289 @@
-﻿Build started 15/12/2015 23:39:30.
+﻿Build started 21/02/2016 23:04:55.
      1>Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\openexr\include\OpenEXR" /I"C:\Program Files\ilmbase\include\OpenEXR" /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt main.cpp
-         main.cpp
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\openexr\include\OpenEXR" /I"C:\Program Files\ilmbase\include\OpenEXR" /I..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\ /I"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /Zi /nologo /W3 /WX- /Ox /Ob2 /Oi /Ot /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /FR"x64\Release\\" /Gd /TP /errorReport:prompt BM3DCollaborativeFilterKernel.cpp BM3DCollaborativeFunctor.cpp BM3DCollaborativeFunctorNN.cpp BM3DImageBlockProcessor.cpp BM3DImageBlockProcessorBOOST.cpp BM3DImageBlockProcessorFunctions.cpp BM3DImageBlockProcessorNN.cpp BM3DImageBlockProcessorNNBOOST.cpp BM3DParallelFunctions.cpp BM3DWienerFilterKernel.cpp BM3DWienerFunctor.cpp BlockMatchingComputerTBB.cpp BufferAggregator.cpp ColourSpaceTransforms.cpp EXRIO.cpp Image.cpp ImageBlockProcessor.cpp ImageBlockProcessorBOOST.cpp ImageBlockProcessorFunctions.cpp ImagePartitioner.cpp ImagePatch.h IntergralImageComputerTBB.cpp NLMeansImageBlockProcessor.cpp RangePartitioner.cpp SortedPatchCollection.cpp Statistics.cpp lodepng.cpp
+         BM3DCollaborativeFilterKernel.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>BM3DCollaborativeFilterKernel.cpp(214): warning C4244: 'argument' : conversion from 'Denoise::DOMAIN_FORMAT' to 'float', possible loss of data
+     1>BM3DCollaborativeFilterKernel.cpp(344): warning C4244: 'argument' : conversion from 'Denoise::DOMAIN_FORMAT' to 'float', possible loss of data
+     1>BM3DCollaborativeFilterKernel.cpp(471): warning C4244: '=' : conversion from 'Denoise::DOMAIN_FORMAT' to 'float', possible loss of data
+     1>BM3DCollaborativeFilterKernel.cpp(480): warning C4244: 'argument' : conversion from 'Denoise::DOMAIN_FORMAT' to 'float', possible loss of data
+         BM3DCollaborativeFunctor.cpp
      1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
      1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
-     1>main.cpp(31): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-       Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files\openexr\lib" /LIBPATH:"C:\Program Files\ilmbase\lib" /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\boost\boost_1_57_0\bin.v2\libs\BUILD\msvc-10.0\release\address-model-64\link-static\threading-multi\\" /LIBPATH:"..\..\..\..\..\..\..\..\TOOLS\FFTW\fftw-3.3.4-dll64" /LIBPATH:"..\..\..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\x64" Half.lib "IlmThread-2_2.lib" "IlmImf-2_2.lib" "libboost_thread-vc100-mt-1_57.lib" "libboost_timer-vc100-mt-1_57.lib" "libboost_system-vc100-mt-1_57.lib" "libboost_date_time-vc100-mt-1_57.lib" "libboost_chrono-vc100-mt-1_57.lib" "libfftw3-3.lib" "libfftw3f-3.lib" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"x64\Release\Denoiser.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.lib" /MACHINE:X64 x64\Release\BlockMatchingComputerTBB.obj
-         x64\Release\BM3DCollaborativeFilterKernel.obj
-         x64\Release\BM3DCollaborativeFunctor.obj
-         x64\Release\BM3DImageBlockProcessor.obj
-         x64\Release\BM3DImageBlockProcessorBOOST.obj
-         x64\Release\BM3DImageBlockProcessorFunctions.obj
-         x64\Release\BM3DParallelFunctions.obj
-         x64\Release\BM3DWienerFilterKernel.obj
-         x64\Release\BM3DWienerFunctor.obj
-         x64\Release\BufferAggregator.obj
-         x64\Release\ColourSpaceTransforms.obj
-         x64\Release\EXRIO.obj
-         x64\Release\Image.obj
-         x64\Release\ImageBlockProcessor.obj
-         x64\Release\ImageBlockProcessorBOOST.obj
-         x64\Release\ImageBlockProcessorFunctions.obj
-         x64\Release\ImagePartitioner.obj
-         x64\Release\ImagePatch.obj
-         x64\Release\IntergralImageComputerTBB.obj
-         x64\Release\lodepng.obj
-         x64\Release\NLMeansImageBlockProcessor.obj
-         x64\Release\RangePartitioner.obj
-         x64\Release\SortedPatchCollection.obj
-         x64\Release\Statistics.obj
-         x64\Release\main.obj
-         Generating code
-     1>c:\users\stephan\documents\github\denoiser\denoiser\image.cpp(1058): warning C4715: 'Denoise::Image::save2File' : not all control paths return a value
-         Finished generating code
-         Denoiser.vcxproj -> C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe
-       Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Stephan\Documents\GitHub\Denoiser\x64\Release\Denoiser.exe;#1" /manifest x64\Release\Denoiser.exe.intermediate.manifest
-       PostBuildEvent:
-         xcopy /y /d "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\..\x64\Release\*.lib" "C:\Users\Stephan\.nuke"
-         :VCEnd
-         File not found - *.lib
-         0 File(s) copied
-     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)).
+     1>BM3DCollaborativeFunctor.cpp(110): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFunctor.cpp(112): warning C4018: '<' : signed/unsigned mismatch
+         BM3DCollaborativeFunctorNN.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>BM3DCollaborativeFunctorNN.cpp(73): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DCollaborativeFunctorNN.cpp(75): warning C4018: '<' : signed/unsigned mismatch
+         BM3DImageBlockProcessor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImagePartitioner.h(21): warning C4267: 'return' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         BM3DImageBlockProcessorBOOST.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         BM3DImageBlockProcessorFunctions.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(130): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(150): warning C4018: '>' : signed/unsigned mismatch
+         BM3DImageBlockProcessorNN.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImagePartitioner.h(21): warning C4267: 'return' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>BM3DImageBlockProcessorNN.cpp(220): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\algorithm(2249): error C2064: term does not evaluate to a function taking 1 arguments
+                 class does not define an 'operator()' or a user defined conversion operator to a pointer-to-function or reference-to-function that takes appropriate number of arguments
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\algorithm(2260) : see reference to function template instantiation 'void std::_Random_shuffle<int*,_Fn1,__int64>(_RanIt,_RanIt,_Fn1 &,_Diff *)' being compiled
+                 with
+                 [
+                     _Fn1=std::tr1::mt19937,
+                     _RanIt=int *,
+                     _Diff=__int64
+                 ]
+                 BM3DImageBlockProcessorNN.cpp(206) : see reference to function template instantiation 'void std::random_shuffle<std::_Vector_iterator<_Myvec>,std::tr1::mt19937>(_RanIt,_RanIt,_Fn1 &)' being compiled
+                 with
+                 [
+                     _Myvec=std::_Vector_val<int,std::allocator<int>>,
+                     _RanIt=std::_Vector_iterator<std::_Vector_val<int,std::allocator<int>>>,
+                     _Fn1=std::tr1::mt19937
+                 ]
+     1>c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\algorithm(2249): fatal error C1903: unable to recover from previous error(s); stopping compilation
+         BM3DImageBlockProcessorNNBOOST.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         BM3DParallelFunctions.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         BM3DWienerFilterKernel.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         BM3DWienerFunctor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>BM3DWienerFunctor.cpp(123): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFunctor.cpp(125): warning C4018: '<' : signed/unsigned mismatch
+     1>BM3DWienerFunctor.cpp(133): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>BM3DWienerFunctor.cpp(133): warning C4244: 'argument' : conversion from 'float' to 'unsigned int', possible loss of data
+         BlockMatchingComputerTBB.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(130): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(150): warning C4018: '>' : signed/unsigned mismatch
+     1>BlockMatchingComputerTBB.cpp(45): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         BufferAggregator.cpp
+         ColourSpaceTransforms.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>ColourSpaceTransforms.cpp(78): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(79): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(80): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(99): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(105): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(111): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(122): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(123): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(124): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(128): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(129): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(130): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(134): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(135): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(136): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(142): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(143): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(148): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(149): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(154): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(155): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(166): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(167): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(168): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(172): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(173): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(179): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(180): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(186): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(187): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(192): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(193): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(198): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(199): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>ColourSpaceTransforms.cpp(234): warning C4018: '<' : signed/unsigned mismatch
+     1>ColourSpaceTransforms.cpp(236): warning C4018: '<' : signed/unsigned mismatch
+     1>ColourSpaceTransforms.cpp(260): warning C4018: '<' : signed/unsigned mismatch
+     1>ColourSpaceTransforms.cpp(262): warning C4018: '<' : signed/unsigned mismatch
+         EXRIO.cpp
+     1>c:\program files\openexr\include\openexr\ImfVersion.h(112): warning C4800: 'const int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\program files\openexr\include\openexr\ImfVersion.h(113): warning C4800: 'const int' : forcing value to bool 'true' or 'false' (performance warning)
+         Image.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\program files\openexr\include\openexr\ImfVersion.h(112): warning C4800: 'const int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\program files\openexr\include\openexr\ImfVersion.h(113): warning C4800: 'const int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Image.cpp(542): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(546): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(548): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(568): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(570): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(641): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(645): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(647): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(667): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(669): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(685): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(687): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(700): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(702): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(704): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(718): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(721): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(723): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(725): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(971): warning C4018: '<' : signed/unsigned mismatch
+     1>Image.cpp(973): warning C4018: '<' : signed/unsigned mismatch
+         ImageBlockProcessor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(130): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(150): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImagePartitioner.h(21): warning C4267: 'return' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>ImageBlockProcessor.cpp(51): warning C4018: '<' : signed/unsigned mismatch
+         ImageBlockProcessorBOOST.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+         ImageBlockProcessorFunctions.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(130): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(150): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(28): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(36): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(100): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(100): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(100): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(114): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(143): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(143): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(143): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(157): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(182): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(204): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(204): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(204): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(218): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(247): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(247): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(247): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(261): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(286): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(298): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(332): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(332): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(332): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(346): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(363): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(368): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(402): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(402): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(402): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(416): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(432): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(437): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(471): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(471): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(471): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(483): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(493): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(498): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(532): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(532): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(532): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(544): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(609): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(609): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(609): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(623): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(644): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(678): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(700): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(700): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(700): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(714): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(743): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(743): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(743): warning C4267: 'argument' : conversion from 'size_t' to 'const unsigned int', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(757): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>ImageBlockProcessorFunctions.cpp(780): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(788): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(833): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(841): warning C4018: '>' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(911): warning C4018: '<' : signed/unsigned mismatch
+     1>ImageBlockProcessorFunctions.cpp(913): warning C4018: '<' : signed/unsigned mismatch
+         ImagePartitioner.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImagePartitioner.h(21): warning C4267: 'return' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>ImagePartitioner.cpp(33): warning C4244: 'initializing' : conversion from 'float' to 'unsigned int', possible loss of data
+         Compiling...
+         ImagePatch.h
+         IntergralImageComputerTBB.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(130): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\ImageBlockProcessorFunctions.h(150): warning C4018: '>' : signed/unsigned mismatch
+     1>IntergralImageComputerTBB.cpp(31): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>IntergralImageComputerTBB.cpp(38): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         NLMeansImageBlockProcessor.cpp
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(246): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\Image.h(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\stephan\documents\github\denoiser\denoiser\NLMeansSettings.h(66): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\NLMeansSettings.h(67): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(108): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>c:\users\stephan\documents\github\denoiser\denoiser\BM3DSettings.h(109): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         RangePartitioner.cpp
+         SortedPatchCollection.cpp
+     1>SortedPatchCollection.cpp(49): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+         Statistics.cpp
+     1>Statistics.cpp(118): warning C4244: '+=' : conversion from 'Denoise::DOMAIN_FORMAT' to 'float', possible loss of data
+         lodepng.cpp
+     1>lodepng.cpp(773): warning C4334: '<<' : result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+     1>lodepng.cpp(1439): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>lodepng.cpp(1443): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>lodepng.cpp(1515): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(3443): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(4246): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(4294): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(4374): warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>lodepng.cpp(5314): warning C4267: 'initializing' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>Done Building Project "C:\Users\Stephan\Documents\GitHub\Denoiser\Denoiser\Denoiser.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:09.69
+Time Elapsed 00:00:45.97

@@ -42,7 +42,8 @@ namespace Denoise
 			variances[c] /= (DOMAIN_FORMAT)totalSize;
 		}
 		
-		return std::accumulate(variances.begin(), variances.end(), 0.0f) / (DOMAIN_FORMAT)variances.size();
+		return *std::max_element(variances.begin(), variances.end());
+		//return std::accumulate(variances.begin(), variances.end(), 0.0f) / (DOMAIN_FORMAT)variances.size();
 	}
 
 	void setBlockToAveragePatch(DOMAIN_FORMAT* block, index_t numPatches, index_t patchSize, index_t numChannels)

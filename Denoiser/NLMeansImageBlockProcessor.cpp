@@ -15,7 +15,7 @@ namespace Denoise
 
 	NLMeansImageBlockProcessor::NLMeansImageBlockProcessor(Image* image, Image* imageResult)
 		: m_image(image), m_imageResult(imageResult),
-		m_buffer(image->fullDimension(), image->numChannels())
+		m_buffer(image->fullDimension(), image->numChannels(), 1)
 	{
 	}
 

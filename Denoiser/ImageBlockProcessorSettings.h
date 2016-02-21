@@ -25,5 +25,8 @@ namespace Denoise
 		index_t matchedBlocksAlreadyComputed;
 		index_t numThreadsIntegralImageComputation;
 		index_t numThreadsBlockMatching;
+
+		bool useReferencePatchAdaptiveDistance;
+		float referencePatchDistanceFactor;
 	};
 }

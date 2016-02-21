@@ -93,6 +93,15 @@
     <ClCompile Include="EXRIO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BM3DCollaborativeFunctorNN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BM3DImageBlockProcessorNN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BM3DImageBlockProcessorNNBOOST.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Image.h">
@@ -195,6 +204,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EXRIO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BM3DCollaborativeFunctorNN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BM3DImageBlockProcessorNN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BM3DImageBlockProcessorNNBOOST.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

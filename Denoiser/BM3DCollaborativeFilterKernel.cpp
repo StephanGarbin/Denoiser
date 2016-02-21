@@ -393,4 +393,153 @@ namespace Denoise
 			}
 		}
 	}
+
+	void BM3DCollaborativeFilterKernel::processCollaborativeFilterFrequencyData(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
+		std::vector<DOMAIN_FORMAT>& blockWeight,
+		const std::vector<float>& stdDeviation,
+		float* destination, index_t destinationIdx, bool save2Buffer)
+	{
+		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
+
+		index_t planIdx;
+		switch (numPatches)
+		{
+		case 1:
+			planIdx = 0;
+			break;
+		case 2:
+			planIdx = 1;
+			break;
+		case 4:
+			planIdx = 2;
+			break;
+		case 8:
+			planIdx = 3;
+			break;
+		case 16:
+			planIdx = 4;
+			break;
+		case 32:
+			planIdx = 5;
+			break;
+		default:
+			std::cout << "ERROR: No DCT plan available for numBlocks = " << numPatches << std::endl;
+			return;
+			break;
+		}
+
+		std::vector<DOMAIN_FORMAT> numRetainedCoefficients(numChannels);
+		for (index_t i = 0; i < numRetainedCoefficients.size(); ++i)
+		{
+			numRetainedCoefficients[i] = (DOMAIN_FORMAT)(totalSize);
+		}
+
+		for (index_t c = 0; c < numChannels; ++c)
+		{
+			index_t colourOffset = c * totalSize;
+			//DCT
+			PLAN_EXECUTOR(m_forwardPlans[planIdx], block + colourOffset, block + colourOffset);
+
+			//Normalise DCT
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t row = 0; row < m_settings.patchSize; ++row)
+				{
+					for (index_t col = 0; col < m_settings.patchSize; ++col)
+					{
+						block[colourOffset + patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
+							m_forwardCoefficients[row * m_settings.patchSize + col];
+					}
+				}
+			}
+
+			//WHT
+			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+			{
+				cfwht(block, 0, numPatches, numPatches, colourOffset + i, m_fwhtMem, sqr(m_settings.patchSize));
+			}
+
+			//SAVE FREQ-Domain data
+			if (save2Buffer)
+			{
+				for (index_t patch = 0; patch < numPatches; ++patch)
+				{
+					for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+					{
+						index_t blockIdx = colourOffset + i + patch * sqr(m_settings.patchSize);
+
+						destination[destinationIdx + blockIdx] = block[blockIdx];
+					}
+				}
+
+				//Thresholding
+				for (index_t patch = 0; patch < numPatches; ++patch)
+				{
+					for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+					{
+						if (std::fabs(block[colourOffset + i + patch * sqr(m_settings.patchSize)]) <= stdDeviation[c] * 2.7f * sqrtf((DOMAIN_FORMAT)numPatches))
+						{
+							block[colourOffset + i + patch * sqr(m_settings.patchSize)] = 0.0f;
+							numRetainedCoefficients[c] -= 1.0f;
+						}
+					}
+				}
+			}
+			else
+			{
+				for (index_t patch = 0; patch < numPatches; ++patch)
+				{
+					for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+					{
+						index_t blockIdx = colourOffset + i + patch * sqr(m_settings.patchSize);
+
+						block[blockIdx] = destination[destinationIdx + blockIdx];
+					}
+				}
+			}
+
+			//WHT
+			for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+			{
+				cfwht(block, 0, numPatches, numPatches, colourOffset + i, m_fwhtMem, sqr(m_settings.patchSize));
+			}
+
+			//Normalise WHT
+			for (index_t i = 0; i < totalSize; ++i)
+			{
+				block[colourOffset + i] /= (DOMAIN_FORMAT)numPatches;
+			}
+
+			//Normalise DCT
+			for (index_t patch = 0; patch < numPatches; ++patch)
+			{
+				for (index_t row = 0; row < m_settings.patchSize; ++row)
+				{
+					for (index_t col = 0; col < m_settings.patchSize; ++col)
+					{
+						block[colourOffset + patch * sqr(m_settings.patchSize) + row * m_settings.patchSize + col] *=
+							m_backwardCoefficients[row * m_settings.patchSize + col];
+					}
+				}
+			}
+
+			//Inverse DCT
+			PLAN_EXECUTOR(m_backwardPlans[planIdx], block + colourOffset, block + colourOffset);
+
+			//normalise again
+			for (index_t i = 0; i < totalSize; ++i)
+			{
+				block[colourOffset + i] /= (DOMAIN_FORMAT)(m_settings.patchSize * 2);
+			}
+
+			if (numRetainedCoefficients[c] > 1.0f)
+			{
+				blockWeight[c] = 1.0f / (std::pow(m_settings.stdDeviation[c], 2) * numRetainedCoefficients[c]);
+			}
+			else
+			{
+				blockWeight[c] = 1.0f;
+			}
+		}
+	}
 }

@@ -83,7 +83,30 @@ namespace Denoise
 
 				double distance = computeDistanceForShift(integralImage, settings, settingsInternal, row, col);
 
-				if (distance <= (double)settings.maxDistance)
+				double maxDistance;
+				if (!settings.useReferencePatchAdaptiveDistance)
+				{
+					maxDistance = (double)settings.maxDistance;
+				}
+				else
+				{
+					maxDistance = 0;
+					for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+					{
+						for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+						{
+							for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+							{
+								maxDistance += image.getPixel(pC, row + pRow, col + pCol);
+							}
+						}
+					}
+
+					maxDistance /= (double)settings.numChannelsToUse;
+					maxDistance *= settings.referencePatchDistanceFactor;
+				}
+
+				if (distance <= maxDistance)
 				{
 					matchedBlocksSorted[blockRow
 						* (settings.imageBlock.width() / settings.stepSizeCols + 1)
@@ -103,7 +126,30 @@ namespace Denoise
 
 				double distance = computeDistanceForShift(integralImage, settings, settingsInternal, row, col);
 
-				if (distance <= (double)settings.maxDistance)
+				double maxDistance;
+				if (!settings.useReferencePatchAdaptiveDistance)
+				{
+					maxDistance = (double)settings.maxDistance;
+				}
+				else
+				{
+					maxDistance = 0;
+					for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+					{
+						for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+						{
+							for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+							{
+								maxDistance += image.getPixel(pC, row + pRow, col + pCol);
+							}
+						}
+					}
+
+					maxDistance /= (double)settings.numChannelsToUse;
+					maxDistance *= settings.referencePatchDistanceFactor;
+				}
+
+				if (distance <= maxDistance)
 				{
 					matchedBlocksSorted[blockRow
 						* (settings.imageBlock.width() / settings.stepSizeCols + 1)
@@ -141,7 +187,30 @@ namespace Denoise
 
 				double distance = computeDistanceForShift(integralImage, settings, settingsInternal, row, col);
 
-				if (distance <= (double)settings.maxDistance)
+				double maxDistance;
+				if (!settings.useReferencePatchAdaptiveDistance)
+				{
+					maxDistance = (double)settings.maxDistance;
+				}
+				else
+				{
+					maxDistance = 0;
+					for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+					{
+						for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+						{
+							for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+							{
+								maxDistance += image.getPixel(pC, row + pRow, col + pCol);
+							}
+						}
+					}
+
+					maxDistance /= (double)settings.numChannelsToUse;
+					maxDistance *= settings.referencePatchDistanceFactor;
+				}
+
+				if (distance <= maxDistance)
 				{
 					matchedBlocksSorted[blockRow
 						* (settings.imageBlock.width() / settings.stepSizeCols + 1)
@@ -161,7 +230,30 @@ namespace Denoise
 
 				double distance = computeDistanceForShift(integralImage, settings, settingsInternal, row, col);
 
-				if (distance <= (double)settings.maxDistance)
+				double maxDistance;
+				if (!settings.useReferencePatchAdaptiveDistance)
+				{
+					maxDistance = (double)settings.maxDistance;
+				}
+				else
+				{
+					maxDistance = 0;
+					for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+					{
+						for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+						{
+							for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+							{
+								maxDistance += image.getPixel(pC, row + pRow, col + pCol);
+							}
+						}
+					}
+
+					maxDistance /= (double)settings.numChannelsToUse;
+					maxDistance *= settings.referencePatchDistanceFactor;
+				}
+
+				if (distance <= maxDistance)
 				{
 					matchedBlocksSorted[blockRow
 						* (settings.imageBlock.width() / settings.stepSizeCols + 1)
@@ -223,7 +315,30 @@ namespace Denoise
 					distance = -100.0f;
 				}
 
-				if (distance <= (double)settings.maxDistance)
+				double maxDistance;
+				if (!settings.useReferencePatchAdaptiveDistance)
+				{
+					maxDistance = (double)settings.maxDistance;
+				}
+				else
+				{
+					maxDistance = 0;
+					for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+					{
+						for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+						{
+							for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+							{
+								maxDistance += image.getPixel(pC, row + pRow, col + pCol);
+							}
+						}
+					}
+
+					maxDistance /= (double)settings.numChannelsToUse;
+					maxDistance *= settings.referencePatchDistanceFactor;
+				}
+
+				if (distance <= maxDistance)
 				{
 					matchedBlocksSorted[((row - settings.imageBlock.bottom) / settings.stepSizeRows)
 						* (settings.imageBlock.width() / settings.stepSizeCols + 1)
@@ -270,7 +385,30 @@ namespace Denoise
 						distance = -100.0f;
 					}
 
-					if (distance <= (double)settings.maxDistance)
+					double maxDistance;
+					if (!settings.useReferencePatchAdaptiveDistance)
+					{
+						maxDistance = (double)settings.maxDistance;
+					}
+					else
+					{
+						maxDistance = 0;
+						for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+						{
+							for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+							{
+								for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+								{
+									maxDistance += image.getPixel(pC, row + pRow, col + pCol);
+								}
+							}
+						}
+
+						maxDistance /= (double)settings.numChannelsToUse;
+						maxDistance *= settings.referencePatchDistanceFactor;
+					}
+
+					if (distance <= maxDistance)
 					{
 						matchedBlocksSorted[(settings.imageBlock.height() / settings.stepSizeRows)
 							* (settings.imageBlock.width() / settings.stepSizeCols + 1)
@@ -316,7 +454,30 @@ namespace Denoise
 						distance = -100.0f;
 					}
 
-					if (distance <= (double)settings.maxDistance)
+					double maxDistance;
+					if (!settings.useReferencePatchAdaptiveDistance)
+					{
+						maxDistance = (double)settings.maxDistance;
+					}
+					else
+					{
+						maxDistance = 0;
+						for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+						{
+							for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+							{
+								for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+								{
+									maxDistance += image.getPixel(pC, row + pRow, col + pCol);
+								}
+							}
+						}
+
+						maxDistance /= (double)settings.numChannelsToUse;
+						maxDistance *= settings.referencePatchDistanceFactor;
+					}
+
+					if (distance <= maxDistance)
 					{
 						matchedBlocksSorted[((row - settings.imageBlock.bottom) / settings.stepSizeRows) * (settings.imageBlock.width() / settings.stepSizeCols + 1) + (settings.imageBlock.width() / settings.stepSizeCols + 1)].insertPatch(
 							IDX2(row + settingsInternal.shiftRows, col + settingsInternal.shiftCols, distance));
@@ -354,7 +515,30 @@ namespace Denoise
 					distance = -100.0f;
 				}
 
-				if (distance <= (double)settings.maxDistance)
+				double maxDistance;
+				if (!settings.useReferencePatchAdaptiveDistance)
+				{
+					maxDistance = (double)settings.maxDistance;
+				}
+				else
+				{
+					maxDistance = 0;
+					for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+					{
+						for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+						{
+							for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+							{
+								maxDistance += image.getPixel(pC, row + pRow, col + pCol);
+							}
+						}
+					}
+
+					maxDistance /= (double)settings.numChannelsToUse;
+					maxDistance *= settings.referencePatchDistanceFactor;
+				}
+
+				if (distance <= maxDistance)
 				{
 					matchedBlocksSorted[matchedBlocksSorted.size() - 1].insertPatch(
 						IDX2(row + settingsInternal.shiftRows, col + settingsInternal.shiftCols, distance));
@@ -408,7 +592,30 @@ namespace Denoise
 
 					double distance = computeDistanceForShift(integralImage[i], globalSettings, localSettings, row, col);
 
-					if (distance <= (double)settings.maxDistance)
+					double maxDistance;
+					if (!settings.useReferencePatchAdaptiveDistance)
+					{
+						maxDistance = (double)settings.maxDistance;
+					}
+					else
+					{
+						maxDistance = 0;
+						for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+						{
+							for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+							{
+								for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+								{
+									maxDistance += std::abs(image.getPixel(pC, row + pRow, col + pCol));
+								}
+							}
+						}
+
+						maxDistance /= (double)settings.numChannelsToUse;
+						maxDistance *= settings.referencePatchDistanceFactor;
+					}
+
+					if (distance <= maxDistance)
 					{
 						matchedBlocksSorted[blockRow
 							* settingsInternal.blockWidth
@@ -476,7 +683,30 @@ namespace Denoise
 
 					double distance = computeDistanceForShift(integralImage[i], globalSettings, localSettings, row, col);
 
-					if (distance <= (double)settings.maxDistance)
+					double maxDistance;
+					if (!settings.useReferencePatchAdaptiveDistance)
+					{
+						maxDistance = (double)settings.maxDistance;
+					}
+					else
+					{
+						maxDistance = 0;
+						for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+						{
+							for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+							{
+								for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+								{
+									maxDistance += std::abs(image.getPixel(pC, row + pRow, col + pCol));
+								}
+							}
+						}
+
+						maxDistance /= (double)settings.numChannelsToUse;
+						maxDistance *= settings.referencePatchDistanceFactor;
+					}
+
+					if (distance <= maxDistance)
 					{
 						matchedBlocksSorted[blockRow
 							* settingsInternal.blockWidth
@@ -496,7 +726,30 @@ namespace Denoise
 
 					double distance = computeDistanceForShift(integralImage[i], globalSettings, localSettings, row, col);
 
-					if (distance <= (double)settings.maxDistance)
+					double maxDistance;
+					if (!settings.useReferencePatchAdaptiveDistance)
+					{
+						maxDistance = (double)settings.maxDistance;
+					}
+					else
+					{
+						maxDistance = 0;
+						for (size_t pC = 0; pC < settings.numChannelsToUse; ++pC)
+						{
+							for (size_t pRow = 0; pRow < settings.templatePatch.height; ++pRow)
+							{
+								for (size_t pCol = 0; pCol < settings.templatePatch.width; ++pCol)
+								{
+									maxDistance += std::abs(image.getPixel(pC, row + pRow, col + pCol));
+								}
+							}
+						}
+
+						maxDistance /= (double)settings.numChannelsToUse;
+						maxDistance *= settings.referencePatchDistanceFactor;
+					}
+
+					if (distance <= maxDistance)
 					{
 						matchedBlocksSorted[blockRow
 							* settingsInternal.blockWidth
