@@ -27,7 +27,8 @@ namespace Denoise
 		~BM3DCollaborativeFunctorNN();
 
 		void operator()(const std::pair<size_t, size_t>& r, float* destination, int* destinationIdxs,
-			bool loadBlocks) const;
+			bool loadBlocks,
+			float* untransformedRef = nullptr) const;
 
 	private:
 		Image* m_image;

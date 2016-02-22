@@ -38,7 +38,7 @@ namespace Denoise
 	}
 
 	void BM3DCollaborativeFunctorNN::operator()(const std::pair<size_t, size_t>& r, float* destination, int* destinationIdxs,
-		bool loadBlocks) const
+		bool loadBlocks, float* untransformedRef) const
 	{
 		DOMAIN_FORMAT* rawImageBlock = new DOMAIN_FORMAT[sqr(m_settings.patchSize) * m_settings.numPatchesPerBlockCollaborative * 3];
 
@@ -55,11 +55,11 @@ namespace Denoise
 			}
 			
 			//Save blocks as required by the IDX prescription
-			if (destinationIdxs[i] > 0)
+			if (destinationIdxs[i] >= 0)
 			{
 				m_kernel->processCollaborativeFilterFrequencyData(rawImageBlock, numValidPatches,
 					3, weights, m_settings.stdDeviation,
-					destination, destinationIdxs[i], !loadBlocks);
+					destination, destinationIdxs[i], loadBlocks, untransformedRef);
 			}
 
 			index_t sizePerChannel = numValidPatches * m_patchTemplate.width * m_patchTemplate.height;

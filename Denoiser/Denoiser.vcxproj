@@ -168,6 +168,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryBlockIO.cpp" />
     <ClCompile Include="BlockMatchingComputerTBB.cpp" />
     <ClCompile Include="BM3DCollaborativeFilterKernel.cpp" />
     <ClCompile Include="BM3DCollaborativeFunctor.cpp" />
@@ -192,14 +193,16 @@
     <ClCompile Include="IntergralImageComputerTBB.cpp" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="mainNNBM3DTest.cpp" />
     <ClCompile Include="NLMeansImageBlockProcessor.cpp" />
     <ClCompile Include="RangePartitioner.cpp" />
     <ClCompile Include="SortedPatchCollection.cpp" />
     <ClCompile Include="Statistics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryBlockIO.h" />
     <ClInclude Include="BlockMatchingComputerTBB.h" />
     <ClInclude Include="BM3DCollaborativeFilterKernel.h" />
     <ClInclude Include="BM3DCollaborativeFunctor.h" />

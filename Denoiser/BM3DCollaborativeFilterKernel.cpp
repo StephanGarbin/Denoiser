@@ -397,7 +397,8 @@ namespace Denoise
 	void BM3DCollaborativeFilterKernel::processCollaborativeFilterFrequencyData(DOMAIN_FORMAT* block, index_t numPatches, index_t numChannels,
 		std::vector<DOMAIN_FORMAT>& blockWeight,
 		const std::vector<float>& stdDeviation,
-		float* destination, index_t destinationIdx, bool save2Buffer)
+		float* destination, index_t destinationIdx, bool loadBlocks,
+		float* untransformedRef)
 	{
 		index_t totalSize = sqr(m_settings.patchSize) * numPatches;
 
@@ -437,6 +438,21 @@ namespace Denoise
 		for (index_t c = 0; c < numChannels; ++c)
 		{
 			index_t colourOffset = c * totalSize;
+
+			//Save noisy, untransformed result if necessary
+			if (!loadBlocks && (untransformedRef != nullptr))
+			{
+				for (index_t patch = 0; patch < numPatches; ++patch)
+				{
+					for (index_t i = 0; i < sqr(m_settings.patchSize); ++i)
+					{
+						index_t blockIdx = colourOffset + i + patch * sqr(m_settings.patchSize);
+
+						untransformedRef[destinationIdx + blockIdx] = block[blockIdx];
+					}
+				}
+			}
+
 			//DCT
 			PLAN_EXECUTOR(m_forwardPlans[planIdx], block + colourOffset, block + colourOffset);
 
@@ -460,7 +476,7 @@ namespace Denoise
 			}
 
 			//SAVE FREQ-Domain data
-			if (save2Buffer)
+			if (!loadBlocks)
 			{
 				for (index_t patch = 0; patch < numPatches; ++patch)
 				{

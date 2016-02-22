@@ -102,6 +102,12 @@
     <ClCompile Include="BM3DImageBlockProcessorNNBOOST.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BinaryBlockIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainNNBM3DTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Image.h">
@@ -213,6 +219,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BM3DImageBlockProcessorNNBOOST.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryBlockIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

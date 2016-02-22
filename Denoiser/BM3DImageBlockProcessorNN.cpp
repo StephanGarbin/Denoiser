@@ -84,21 +84,16 @@ namespace Denoise
 	}
 
 	void BM3DImageBlockProcessorNN::process(const BM3DSettings& settings,
-		bool loadBlocks, float* blocksNoisy, float* blocksReference,
-		size_t& numBlocks,
-		size_t numBlocks2Save,
+		bool loadBlocks, std::vector<float>& blocksNoisy,
+		std::vector<float>& blocksReference,
+		std::vector<float>& blocksNoisyNoFreq,
+		float percBlocks2Save,
 		bool processMatching)
 	{
 		m_image->toColourSpace(Image::OPP);
 
 		//lets remember last settings for future reference
 		m_settings = settings;
-
-		for (size_t i = 0; i < m_settings.stdDeviation.size(); ++i)
-		{
-			std::cout << m_settings.stdDeviation[i] << std::endl;
-		}
-
 
 		//1. Block Matching
 		m_patchTemplate = ImagePatch(0, 0, m_settings.patchSize, m_settings.patchSize);
@@ -116,7 +111,7 @@ namespace Denoise
 			processBlockMatching(m_image, true);
 		}
 
-		processCollaborativeFilter(loadBlocks, blocksNoisy, blocksReference, numBlocks, numBlocks2Save);
+		processCollaborativeFilter(loadBlocks, blocksNoisy, blocksReference, blocksNoisyNoFreq, percBlocks2Save);
 
 		std::cout << "Collaborative Done! " << std::endl;
 
@@ -184,15 +179,18 @@ namespace Denoise
 		std::cout << "Done!" << std::endl;
 	}
 
-	void BM3DImageBlockProcessorNN::processCollaborativeFilter(bool loadBlocks,
-		float* blocksNoisy, float* blocksReference,
-		size_t& numBlocks,
-		size_t numBlocks2Save)
+		void BM3DImageBlockProcessorNN::processCollaborativeFilter(bool loadBlocks, std::vector<float>& blocksNoisy,
+			std::vector<float>& blocksReference,
+			std::vector<float>& blocksNoisyNoFreq,
+			float percBlocks2Save)
 	{
+		size_t numBlocks2Save = m_matchedBlocks.size() * (percBlocks2Save / 100.0f);
 		std::vector<int> destinationIdxs;
 
 		destinationIdxs.resize(m_matchedBlocks.size());
 		std::iota(destinationIdxs.begin(), destinationIdxs.end(), 0);
+
+		size_t blockSize = m_settings.patchSize * m_settings.patchSize * m_settings.numPatchesPerBlockCollaborative * m_image->numChannels();
 
 		if (!loadBlocks) // fill with random sub-sample of the blocks
 		{
@@ -203,7 +201,7 @@ namespace Denoise
 			std::random_device rd;
 			std::mt19937 g(rd());
 
-			std::random_shuffle(randPerm.begin(), randPerm.end(), g);
+			std::random_shuffle(randPerm.begin(), randPerm.end());
 
 			for (size_t i = numBlocks2Save; i < m_matchedBlocks.size(); ++i)
 			{
@@ -215,16 +213,20 @@ namespace Denoise
 			size_t counter = 0;
 			for (size_t i = 0; i < destinationIdxs.size(); ++i)
 			{
-				if (destinationIdxs[i] > 0)
+				if (destinationIdxs[i] >= 0)
 				{
 					destinationIdxs[i] = counter;
 					++counter;
 				}
 			}
+
+			blocksNoisy.resize(numBlocks2Save * blockSize);
+			blocksReference.resize(numBlocks2Save * blockSize);
+			blocksNoisyNoFreq.resize(numBlocks2Save * blockSize);
 		}
 
 		std::transform(destinationIdxs.begin(), destinationIdxs.end(), destinationIdxs.begin(), std::bind1st(std::multiplies<int>(),
-			m_settings.patchSize * m_settings.patchSize * m_settings.numPatchesPerBlockCollaborative));
+			blockSize));
 
 
 		if (m_settings.numThreadsDenoising == 1)
@@ -232,16 +234,16 @@ namespace Denoise
 			BM3DCollaborativeFunctorNN kernel(m_image,
 				m_buffer, m_settings, m_matchedBlocks, m_patchTemplate,
 				m_mutex);
-			processCollaborative(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()),
-				blocksNoisy, &destinationIdxs[0], loadBlocks);
+			processCollaborativeNN(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()),
+				&blocksNoisy[0], &destinationIdxs[0], loadBlocks);
 
 			if (!loadBlocks)
 			{
 				BM3DCollaborativeFunctorNN kernel(m_imageClean,
 					m_buffer, m_settings, m_matchedBlocks, m_patchTemplate,
 					m_mutex);
-				processCollaborative(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()),
-					blocksReference, &destinationIdxs[0], loadBlocks);
+				processCollaborativeNN(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()),
+					&blocksReference[0], &destinationIdxs[0], loadBlocks, &blocksNoisyNoFreq[0]);
 			}
 		}
 		else
@@ -263,9 +265,8 @@ namespace Denoise
 
 			for (index_t t = 0; t < partitioner.numSegments(); ++t)
 			{
-				denoiseThreads.create_thread(boost::bind(processCollaborative, boost::ref(*kernels[t]), partitioner.getSegment(t),
-					blocksNoisy, destinationIdxs,
-					loadBlocks));
+				denoiseThreads.create_thread(boost::bind(processCollaborativeNN, boost::ref(*kernels[t]), partitioner.getSegment(t),
+					&blocksNoisy[0], &destinationIdxs[0], loadBlocks, nullptr));
 			}
 
 			denoiseThreads.join_all();
@@ -289,9 +290,8 @@ namespace Denoise
 
 				for (index_t t = 0; t < partitioner.numSegments(); ++t)
 				{
-					denoiseThreads.create_thread(boost::bind(processCollaborative, boost::ref(*kernels[t]), partitioner.getSegment(t),
-						blocksReference, destinationIdxs,
-						loadBlocks));
+					denoiseThreads.create_thread(boost::bind(processCollaborativeNN, boost::ref(*kernels[t]), partitioner.getSegment(t),
+						&blocksNoisy[0], &destinationIdxs[0], loadBlocks, &blocksNoisyNoFreq[0]));
 				}
 
 				denoiseThreads.join_all();
@@ -311,7 +311,7 @@ namespace Denoise
 			BM3DWienerFunctor kernel(m_image, m_imageBasic,
 				m_buffer, m_settings, m_matchedBlocks, m_patchTemplate, m_mutex);
 
-			processWiener(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()));
+			processWienerNN(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()));
 		}
 		else
 		{
@@ -330,7 +330,7 @@ namespace Denoise
 
 			for (index_t t = 0; t < partitioner.numSegments(); ++t)
 			{
-				denoiseThreads.create_thread(boost::bind(processWiener, boost::ref(*kernels[t]), partitioner.getSegment(t)));
+				denoiseThreads.create_thread(boost::bind(processWienerNN, boost::ref(*kernels[t]), partitioner.getSegment(t)));
 			}
 
 			denoiseThreads.join_all();

@@ -3,14 +3,15 @@
 namespace Denoise
 {
 
-	void processCollaborative(BM3DCollaborativeFunctorNN& processor, const std::pair<size_t, size_t>& range,
+	void processCollaborativeNN(BM3DCollaborativeFunctorNN& processor, const std::pair<size_t, size_t>& range,
 		float* destination, int* destinationIdxs,
-		bool loadBlocks)
+		bool loadBlocks,
+		float* untransformedRef)
 	{
-		processor.operator()(range, destination, destinationIdxs, loadBlocks);
+		processor.operator()(range, destination, destinationIdxs, loadBlocks, untransformedRef);
 	}
 
-	void processWiener(BM3DWienerFunctor& processor, const std::pair<size_t, size_t>& range)
+	void processWienerNN(BM3DWienerFunctor& processor, const std::pair<size_t, size_t>& range)
 	{
 		processor.operator()(range);
 	}

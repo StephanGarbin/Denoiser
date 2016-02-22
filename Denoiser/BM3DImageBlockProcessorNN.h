@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Image.h"
 #include "BM3DSettings.h"
 #include "IDX2.h"
@@ -17,9 +19,10 @@ namespace Denoise
 		~BM3DImageBlockProcessorNN();
 
 		void process(const BM3DSettings& settings,
-			bool loadBlocks, float* blocksNoisy, float* blocksReference,
-			size_t& numBlocks,
-			size_t numBlocks2Save,
+			bool loadBlocks, std::vector<float>& blocksNoisy,
+			std::vector<float>& blocksReference,
+			std::vector<float>& blocksNoisyNoFreq,
+			float percBlocks2Save,
 			bool processMatching = true);
 
 		friend void bm3dCollaborativeKernel(BM3DImageBlockProcessorNN* processor, index_t threadIdx, const Rectangle& region);
@@ -27,10 +30,10 @@ namespace Denoise
 
 	private:
 
-		void processCollaborativeFilter(bool loadBlocks,
-			float* blocksNoisy, float* blocksReference,
-			size_t& numBlocks,
-			size_t numBlocks2Save);
+		void processCollaborativeFilter(bool loadBlocks, std::vector<float>& blocksNoisy,
+			std::vector<float>& blocksReference,
+			std::vector<float>& blocksNoisyNoFreq,
+			float percBlocks2Save);
 		void processWienerFilter();
 
 		void processBlockMatching(Image* image, bool collaborative);
