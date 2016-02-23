@@ -3,6 +3,7 @@
 #include "Transforms.h"
 #include "Statistics.h"
 #include <iostream>
+#include <cmath>
 
 namespace Denoise
 {
@@ -129,8 +130,8 @@ namespace Denoise
 				}
 				else if (row * col == 0)
 				{
-					m_forwardCoefficients[idx] = (1.0f / sqrtf(2.0f)) * (0.5f / (DOMAIN_FORMAT)(m_settings.patchSize));
-					m_backwardCoefficients[idx] = sqrtf(2.0f);
+					m_forwardCoefficients[idx] = (1.0f / sqrt(2.0f)) * (0.5f / (DOMAIN_FORMAT)(m_settings.patchSize));
+					m_backwardCoefficients[idx] = sqrt(2.0f);
 				}
 				else
 				{

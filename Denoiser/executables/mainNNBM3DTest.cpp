@@ -67,6 +67,9 @@ int main(int argc, char* argv[])
 
 	Denoise::Image result(*image);
 	Denoise::Image basic(*image);
+
+	std::cout << "Filtering..." << std::endl;
+
 	Denoise::BM3DImageBlockProcessorNN bm3dFilter(image, &basic, &result, imageReference);
 
 	Denoise::BM3DSettings bm3dFilterSettings;
@@ -96,7 +99,7 @@ int main(int argc, char* argv[])
 
 	if (!read)
 	{
-		std::cout << "Writing Blocks to file [ " << binaryFile << " ]" << std::endl;
+		std::cout << "Writing Blocks to file [ " << binaryFile << " ]";
 		Denoise::BinaryBlockIO::writeBlocks2Disk(binaryFile, blockSize, numChannels, noisyBlocksFreq, refBlocksFreq,
 			noisyBlocksNoTransform);
 	}

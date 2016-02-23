@@ -12,6 +12,17 @@ namespace Denoise
 	{
 	}
 
+	std::pair<size_t, size_t>& RangePartitioner::getSegment(size_t idx)
+	{
+		return m_segments[idx];
+	}
+	  
+	size_t RangePartitioner::numSegments()
+	{
+		return m_segments.size();
+	}
+
+
 	void RangePartitioner::createPartition(size_t size, size_t numSegments)
 	{
 		size_t segmentSize = size / numSegments;
@@ -34,3 +45,5 @@ namespace Denoise
 	}
 
 }
+
+

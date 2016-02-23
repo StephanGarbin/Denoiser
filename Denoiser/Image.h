@@ -2,6 +2,7 @@
 
 #include<vector>
 #include<string>
+#include<cmath>
 
 #include "ImagePatch.h"
 #include "IDX2.h"
@@ -243,9 +244,9 @@ namespace Denoise
 	float Image::blockMatch_Naive(const ImagePatch& patch1, const ImagePatch& patch2, index_t channel, int norm)
 	{
 		float sum = 0.0f;
-		for (index_t i = 0; i < patch1.height; ++i)
+		for (index_t i = 0; i < (index_t)patch1.height; ++i)
 		{
-			for (index_t j = 0; j < patch1.width; ++j)
+			for (index_t j = 0; j < (index_t)patch1.width; ++j)
 			{
 				sum += std::pow(m_pixelData[channel][IDX2_2_1(patch1.row + i, patch1.col + j)]
 					- m_pixelData[channel][IDX2_2_1(patch2.row + i, patch2.col + j)], norm);

@@ -8,7 +8,7 @@ namespace Denoise
 	BufferAggregator::BufferAggregator(const Dimension& dim, index_t numChannels, index_t numNumerators)
 		: m_dim(dim), m_numChannels(numChannels)
 	{
-		std::cout << numNumerators << " num Numerators" << std::endl;
+		//std::cout << numNumerators << " num Numerators" << std::endl;
 
 		m_numerator.resize(numNumerators);
 		for (index_t i = 0; i < m_numerator.size(); ++i)
@@ -45,7 +45,7 @@ namespace Denoise
 
 	void BufferAggregator::divideBuffers()
 	{
-		std::cout << "Dividing!" << std::endl;
+		//std::cout << "Dividing!" << std::endl;
 		//Sum over numerators if any
 		if (m_numerator.size() > 1)
 		{

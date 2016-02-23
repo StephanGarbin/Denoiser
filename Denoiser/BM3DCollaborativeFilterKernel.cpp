@@ -3,6 +3,7 @@
 #include "Transforms.h"
 #include "Statistics.h"
 #include <iostream>
+#include <cmath>
 
 namespace Denoise
 {

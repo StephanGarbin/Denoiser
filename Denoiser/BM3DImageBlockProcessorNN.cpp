@@ -91,7 +91,7 @@ namespace Denoise
 		bool processMatching)
 	{
 		m_image->toColourSpace(Image::OPP);
-
+		m_imageClean->toColourSpace(Image::OPP);
 		//lets remember last settings for future reference
 		m_settings = settings;
 
@@ -173,10 +173,9 @@ namespace Denoise
 
 		//Transform if necessary
 		m_image->toColourSpace(Image::RGB);
+		m_imageClean->toColourSpace(Image::RGB);
 		m_imageBasic->toColourSpace(Image::RGB);
 		m_imageResult->toColourSpace(Image::RGB);
-
-		std::cout << "Done!" << std::endl;
 	}
 
 		void BM3DImageBlockProcessorNN::processCollaborativeFilter(bool loadBlocks, std::vector<float>& blocksNoisy,

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <utility>
+#include <cstddef>
 
 namespace Denoise
 {
@@ -12,9 +13,9 @@ namespace Denoise
 		RangePartitioner();
 		~RangePartitioner();
 
-		inline const std::pair<size_t, size_t>& getSegment(size_t idx){ return m_segments[idx]; }
+		std::pair<size_t, size_t>& getSegment(size_t idx);
 
-		inline size_t numSegments(){ return m_segments.size(); }
+		size_t numSegments();
 
 		void createPartition(size_t size, size_t numSegments);
 
@@ -22,4 +23,5 @@ namespace Denoise
 		std::vector<std::pair<size_t, size_t> > m_segments;
 	};
 }
+
 

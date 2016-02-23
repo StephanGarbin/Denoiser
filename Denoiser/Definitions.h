@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost\thread\mutex.hpp>
+#include <boost/thread/mutex.hpp>
 
 namespace Denoise
 {

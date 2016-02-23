@@ -220,7 +220,7 @@ namespace Denoise
 			BM3DWienerFunctor kernel(m_image, m_imageBasic,
 				m_buffer, m_settings, m_matchedBlocks, m_patchTemplate, m_mutex);
 
-			processWienerNN(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()));
+			processWiener(kernel, std::pair<size_t, size_t>(0, m_matchedBlocks.size()));
 		}
 		else
 		{
@@ -239,7 +239,7 @@ namespace Denoise
 
 			for (index_t t = 0; t < partitioner.numSegments(); ++t)
 			{
-				denoiseThreads.create_thread(boost::bind(processWienerNN, boost::ref(*kernels[t]), partitioner.getSegment(t)));
+				denoiseThreads.create_thread(boost::bind(processWiener, boost::ref(*kernels[t]), partitioner.getSegment(t)));
 			}
 
 			denoiseThreads.join_all();
