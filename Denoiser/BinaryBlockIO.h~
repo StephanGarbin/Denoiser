@@ -19,7 +19,7 @@ namespace Denoise
 
 
 		static bool readBlocksFromDisk(const std::string& fileName,
-			int& blockSize, int& numChannels,
+			int& numChannels, int& numPatchesPerBlock, int& patchSize,
 			std::vector<float>& denoisedBlocksFreq);
 
 	private:

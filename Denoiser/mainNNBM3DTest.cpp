@@ -102,9 +102,9 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "Writing Blocks to file [ " << binaryFile << " ]" << std::endl;
 		Denoise::BinaryBlockIO::writeBlocks2Disk(binaryFile, numChannels, numPatchesPerBlock, patchSize,
-			noisyBlocksFreq);
+			noisyBlocksFreq, noisyBlocksNoTransform);
 		
-		std::cout << "Writing Blocks to file [ " << binaryFile << " ]" << std::endl;
+		std::cout << "Writing Blocks to file [ " << binaryFileYs << " ]" << std::endl;
 		Denoise::BinaryBlockIO::writeBlocks2Disk(binaryFileYs, numChannels, numPatchesPerBlock, patchSize,
 			refBlocksFreq);
 	}

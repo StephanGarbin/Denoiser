@@ -70,7 +70,7 @@ namespace Denoise
 		int numFloats = noisyBlocksNoTransform.size() * 2;
 		int blockSize = numPatchesPerBlock * numChannels * 2;
 		int numFloatsPerBlock = blockSize * patchSize * patchSize;
-		int numBlocks = numFloats / numFloatsPerBlock);		
+		int numBlocks = numFloats / numFloatsPerBlock;		
 		
 		std::vector<float> temp(numFloats);
 

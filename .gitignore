@@ -29,3 +29,9 @@
 
 #VS stuff
 *.sdf
+
+# Project training binaries
+*.bin
+
+# Vim stuff
+*.swp

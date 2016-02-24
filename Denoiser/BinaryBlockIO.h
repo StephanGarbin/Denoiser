@@ -17,7 +17,6 @@ namespace Denoise
 			const std::vector<float>& noisyBlocksFreq,
 			const std::vector<float>& noisyBlocksNoTransform);
 
-
 		static bool readBlocksFromDisk(const std::string& fileName,
 			int& numChannels, int& numPatchesPerBlock, int& patchSize,
 			std::vector<float>& denoisedBlocksFreq);
